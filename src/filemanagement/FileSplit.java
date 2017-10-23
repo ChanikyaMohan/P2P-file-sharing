@@ -38,12 +38,12 @@ public class FileSplit {
 			 inpFile = new FileInputStream(cfg.fileName);
 			 for(int i=0; i<nofSplits; i++){
 				 byte[] buffer = new byte[cfg.peiceSize];
-				 int length = inpFile.read(buffer,0,cfg.peiceSize);
-				 if(length > 0){
+				 int lengthRead = inpFile.read(buffer,0,cfg.peiceSize);
+				 if(lengthRead > 0){
 					 // the variable 'i' here indicates the number of split part
 					 String splitFileName = "splitParts/"+cfg.fileName+"_"+i+1;
 					 outFile = new FileOutputStream(new File(splitFileName));
-					 outFile.write(buffer, 0, length);
+					 outFile.write(buffer, 0, lengthRead);
 					 outFile.flush();
 					 outFile.close();
 				 }
