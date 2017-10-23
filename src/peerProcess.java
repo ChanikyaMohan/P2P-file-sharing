@@ -1,3 +1,4 @@
+import init.CommonConfig;
 import init.Initialization;
 import init.Peer;
 import init.PeerInfoConfig;
@@ -31,7 +32,9 @@ public class peerProcess implements Runnable, Initialization{
 
 	@Override
 	public void init() {
-		PeerInfoConfig pconfig = new PeerInfoConfig("PeerInfo.cfg");
+		CommonConfig config = new CommonConfig();
+		config.init();
+		PeerInfoConfig pconfig = new PeerInfoConfig();
 		pconfig.init();
 		for (Peer peer : pconfig.peersList){
 			if (peer.id == peerId){
@@ -108,9 +111,9 @@ public class peerProcess implements Runnable, Initialization{
 		        t.start();
 			}
 		}
-		
+
 	}
-	
+
 	public void start(){
 		try{
 			ConnectPeers() ;

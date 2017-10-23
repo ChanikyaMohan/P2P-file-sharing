@@ -39,6 +39,8 @@ public class PeerInfoConfig implements Initialization
 	@Override
 	public void reload() {
 		// TODO Auto-generated method stub
+		peersList.clear();
+		init();
 
 	}
 
