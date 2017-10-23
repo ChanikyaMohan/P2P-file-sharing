@@ -15,7 +15,8 @@ public class CommonConfig implements Initialization{
 	HashMap<String, String> values = new HashMap<String, String>();
 	
 	String filePath = "Common.cfg";
-
+	public CommonConfig(){
+	}
 	public CommonConfig(String filepath){
 		this.filePath = filepath;
 	}
