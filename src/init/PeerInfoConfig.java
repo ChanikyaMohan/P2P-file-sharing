@@ -8,7 +8,8 @@ public class PeerInfoConfig implements Initialization
 {
 	public List<Peer> peersList = new ArrayList<Peer>();
 	String filePath = "PeerInfo.cfg";
-
+	public PeerInfoConfig(){
+	}
 	public PeerInfoConfig(String filepath){
 		this.filePath = filepath;
 	}
@@ -17,7 +18,7 @@ public class PeerInfoConfig implements Initialization
 		String st;
 		int i1;
 		try {
-			BufferedReader in = new BufferedReader(new FileReader("PeerInfo.cfg"));
+			BufferedReader in = new BufferedReader(new FileReader(this.filePath));
 			while((st = in.readLine()) != null) {
 					   String[] tokens = st.split("\\s+");
 					   Peer peer = new Peer(Integer.parseInt(tokens[0]),

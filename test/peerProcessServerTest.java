@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 
-public class peerProcessTest {
+public class peerProcessServerTest {
 
 	@Test
 	public void testPeerProcess() {

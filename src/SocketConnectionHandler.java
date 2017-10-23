@@ -91,6 +91,7 @@ public class SocketConnectionHandler implements Runnable{
 					if (message.equals("P2PFILESHARINGPROJ")  && state != ConnectionState.connected){
 						//msgQueue.add(new Handshake());
 						state = ConnectionState.connected;
+
 						System.out.println("Connected ");
 					}
 					//Capitalize all letters in the message
