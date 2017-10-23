@@ -5,6 +5,7 @@ import java.nio.*;
 import java.nio.channels.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import message.Handshake;
 import message.Message;
@@ -27,7 +28,7 @@ public class SocketConnectionHandler implements Runnable{
 	int remotepeerId;
 	private   ObjectInputStream in;	//stream read from the socket
 	private ObjectOutputStream out;    //stream write to the socket
-	private Queue<Message> msgQueue = new ConcurrentLinkedQueue<Message>();
+	private LinkedBlockingQueue<Message> msgQueue = new LinkedBlockingQueue<Message>();
 
 	public SocketConnectionHandler(int peerId,Socket socket){
 			this.socket = socket;
@@ -79,6 +80,8 @@ public class SocketConnectionHandler implements Runnable{
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						socket.isClosed();
+						state = ConnectionState.disconnected;
 					}
 					//show the message to the user
 					if (message == null)
@@ -104,6 +107,12 @@ public class SocketConnectionHandler implements Runnable{
 		} else {
 			System.out.println("Connection is closed");
 			state = ConnectionState.disconnected;
+			try {
+				socket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
 
