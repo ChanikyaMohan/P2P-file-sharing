@@ -41,20 +41,24 @@ public class Message {
 		}
 	}
 
-	public int msg_length;
+	//default length is 1 because all messages have a type field irrespective of whether they have payload or not
+	public int msg_length = 1;
 	public Type msg_type = null;
 	public byte[] msg_payload = null;
 
 	//why this?
 	public String msg= null;
 
+	//default constructor
+	public Message(){}
+
 	//for msgs without payload
-	Message(Type type){
+	public Message(Type type){
 		this.msg_type = type;
 	}
 
 	//for msgs with payload
-	Message(Type type, byte[] payload){
+	public Message(Type type, byte[] payload){
 		//msg_length will be 1 when there is no payload
 		// will be payload.length + 1 when there is payload
 		//the additional 1 byte is of variable type
