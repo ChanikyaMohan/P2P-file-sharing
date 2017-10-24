@@ -9,9 +9,9 @@ import init.CommonConfig;
  * mergeFiles() - looks into splitParts folder reads each file and writes into output file
  */
 public class FileMerge {
-	public static File outFile = null;
-	public static String outFileName = null;
-	public static CommonConfig cfg = null;
+	public File outFile = null;
+	public String outFileName = null;
+	public CommonConfig cfg = null;
 
 	public FileMerge(String oFName){
 		outFileName = oFName;
@@ -23,24 +23,25 @@ public class FileMerge {
 	 * whether the size of each piece is equal to given value or not etc
 	 */
 
-	public static void initProperties(){
+	public void initProperties(){
 		//create a config object with the output file name
 		//initialize the properties
-		cfg = new CommonConfig(outFileName);
+		cfg = new CommonConfig();
 		cfg.init();
 	}
 
-	public static void mergeFiles(){
+	public void mergeFiles(){
 	    try {
 	    	FileOutputStream outFileStream = new FileOutputStream(outFile);
 	    	FileInputStream inpFile = null;
 
 	    	//name of folder containing all the split files
 	    	//listFiles() will return all the files in the folder
-	    	File splitFilesFolder = new File("splitParts");
+	    	String splitDirectoryPath = "C:\\Users\\konya\\Desktop\\splitParts\\";
+	    	File splitFilesFolder = new File(splitDirectoryPath);
 	    	File[] listOfFiles = splitFilesFolder.listFiles();
 
-	    	//read each file in the folder and write the buffer contents to outputstream
+	    	//read each file in the folder and write the buffer contents to output stream
 	        for (File SplitFile : listOfFiles) {
 	        	inpFile = new FileInputStream(SplitFile);
 	        	int fileSize = (int) SplitFile.length();

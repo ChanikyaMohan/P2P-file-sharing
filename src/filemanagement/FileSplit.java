@@ -1,6 +1,8 @@
 package filemanagement;
 
 import java.io.*;
+import java.util.Arrays;
+
 import init.CommonConfig;
 
 /* Uses common config file to read properties like input file name/size/piece size etc
@@ -31,21 +33,28 @@ public class FileSplit {
 	}
 
 	public void splitFile(){
-		int inpFileLength = cfg.fileSize;
-		int nofSplits = (int) Math.ceil(inpFileLength/cfg.peiceSize);
+		double inpFileLength = (double) cfg.fileSize;
+		double splitPieceSize = (double) cfg.peiceSize;
+		int nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
 
 		FileInputStream inpFile = null;
 		FileOutputStream outFile = null;
 
 		 try {
 			 inpFile = new FileInputStream(cfg.fileName);
+
+			 //path of the directory where the split files need to be generated
+			 //and clean all files in the directory (if any) before adding new split files
+			 String splitDirectoryPath = "C:\\Users\\konya\\Desktop\\splitParts\\";
+			 Arrays.stream(new File(splitDirectoryPath).listFiles()).forEach(File::delete);
+
 			 for(int i=0; i<nofSplits; i++){
 				 byte[] buffer = new byte[cfg.peiceSize];
 				 int lengthRead = inpFile.read(buffer,0,cfg.peiceSize);
 				 if(lengthRead > 0){
 					 // the variable 'i' here indicates the number of split part
-					 String splitFileName = "C:\\Users\\konya\\Desktop\\splitParts\\"+i+cfg.fileName;
-					 File file = new File(splitFileName);
+					 String splitFileName = i+"_"+cfg.fileName;
+					 File file = new File(splitDirectoryPath+splitFileName);
 					 //to make sure the parent directories exist
 					 file.getParentFile().mkdirs();
 					 outFile = new FileOutputStream(file);
