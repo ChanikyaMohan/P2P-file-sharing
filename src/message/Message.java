@@ -55,10 +55,13 @@ public class Message {
 
 	//for msgs with payload
 	Message(Type type, byte[] payload){
+		//msg_length will be 1 when there is no payload
+		// will be payload.length + 1 when there is payload
+		//the additional 1 byte is of variable type
 		if(payload == null){
-			this.msg_length = 0;
+			this.msg_length = 1;
 		} else {
-			this.msg_length = payload.length;
+			this.msg_length = payload.length+1;
 		}
 		this.msg_type = type;
 		this.msg_payload = payload;
