@@ -13,21 +13,24 @@ import init.CommonConfig;
  * call splitFile() to actually split the file into chunks
  */
 public class FileSplit {
-    public static String fileName = null;
-    public static CommonConfig cfg = null;
+    public String fileName = null;
+    public CommonConfig cfg = null;
+
+    public FileSplit(){
+	}
 
 	public FileSplit(String fName){
 		fileName = fName;
 	}
 
-	public static void initProperties(){
-		//create a config object with the given file
+	public void initProperties(){
+		//create a config object with the cfg file
 		//initialize the properties
-		cfg = new CommonConfig(fileName);
+		cfg = new CommonConfig();
 		cfg.init();
 	}
 
-	public static void splitFile(){
+	public void splitFile(){
 		int inpFileLength = cfg.fileSize;
 		int nofSplits = (int) Math.ceil(inpFileLength/cfg.peiceSize);
 
@@ -41,8 +44,11 @@ public class FileSplit {
 				 int lengthRead = inpFile.read(buffer,0,cfg.peiceSize);
 				 if(lengthRead > 0){
 					 // the variable 'i' here indicates the number of split part
-					 String splitFileName = "splitParts/"+cfg.fileName+"_"+i+1;
-					 outFile = new FileOutputStream(new File(splitFileName));
+					 String splitFileName = "C:\\Users\\konya\\Desktop\\splitParts\\"+i+cfg.fileName;
+					 File file = new File(splitFileName);
+					 //to make sure the parent directories exist
+					 file.getParentFile().mkdirs();
+					 outFile = new FileOutputStream(file);
 					 outFile.write(buffer, 0, lengthRead);
 					 outFile.flush();
 					 outFile.close();
