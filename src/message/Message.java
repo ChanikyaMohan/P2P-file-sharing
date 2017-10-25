@@ -21,7 +21,8 @@ public class Message {
 	    HAVE ((byte) 4),
 	    BIT_FIELD ((byte) 5),
 	    REQUEST ((byte) 6),
-	    PIECE ((byte) 7);
+	    PIECE ((byte) 7),
+	    HANDSHAKE ((byte) 8);
 
 		final byte code;
 
