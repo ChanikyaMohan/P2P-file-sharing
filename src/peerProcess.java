@@ -89,7 +89,7 @@ public class peerProcess implements Runnable, Initialization{
 				//create a socket to connect to the server
 				System.out.println("Requesting socket Host= "+ peer.host+"and port= "+peer.port);
 				requestSocket = new Socket(peer.host, peer.port);
-				SocketConnectionHandler connection  = new SocketConnectionHandler(this.peerId, requestSocket);
+				SocketConnectionHandler connection  = new SocketConnectionHandler(this.peerId, peer.id,requestSocket);
 				System.out.println("Connected to "+peer.host+" in port "+ peer.port);
 				activeConnections.add(connection);
 				startConnection(connection);

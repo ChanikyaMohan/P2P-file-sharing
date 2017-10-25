@@ -25,14 +25,17 @@ public class SocketConnectionHandler implements Runnable{
 	final public Socket socket;
 	public ConnectionState state = ConnectionState.initiated;
 	//private String message; //change to message class
-	int remotepeerId;
+	public int remotepeerId;
 	private   ObjectInputStream in;	//stream read from the socket
+	private boolean isunchoked;
 	private ObjectOutputStream out;    //stream write to the socket
 	private LinkedBlockingQueue<Message> msgQueue = new LinkedBlockingQueue<Message>();
 
 	public SocketConnectionHandler(int peerId,Socket socket){
 			this.socket = socket;
 			this.peerId = peerId;
+			this.remotepeerId = -1;
+			this.isunchoked = false;
 
 			try {
 				out = new ObjectOutputStream(socket.getOutputStream());
@@ -45,6 +48,11 @@ public class SocketConnectionHandler implements Runnable{
 				e.printStackTrace();
 			}
 
+
+	}
+	public SocketConnectionHandler(int peerId,int remotePeer, Socket socket){
+		this(peerId, socket);
+		this.remotepeerId = remotePeer;
 
 	}
 
@@ -70,7 +78,8 @@ public class SocketConnectionHandler implements Runnable{
 		if(!socket.isClosed()){
 			String message =null;
 			System.out.println("sending handshake from "+this.peerId);
-			msgQueue.add(new Handshake());
+			if (this.remotepeerId != -1)
+				msgQueue.add(new Handshake());
 			try{
 				while(!socket.isClosed())
 				{
@@ -118,6 +127,10 @@ public class SocketConnectionHandler implements Runnable{
 		}
 
 
+	}
+
+	public void send(Message msg){
+		msgQueue.add(msg);
 	}
 
 	//send a message to the output stream
