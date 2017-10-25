@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.Arrays;
 
 import init.CommonConfig;
+import init.Initialization;
 
 /* Uses common config file to read properties like input file name/size/piece size etc
  * initProperties() - create CommonConfig object with all the properties read from the cfg file
@@ -14,7 +15,7 @@ import init.CommonConfig;
  * call initProperties() on FileSplit object to get parameters from common config
  * call splitFile() to actually split the file into chunks
  */
-public class FileSplit {
+public class FileSplit implements Initialization {
     public String fileName = null;
     public CommonConfig cfg = null;
 
@@ -25,7 +26,8 @@ public class FileSplit {
 		fileName = fName;
 	}
 
-	public void initProperties(){
+	@Override
+	public void init(){
 		//create a config object with the cfg file
 		//initialize the properties
 		cfg = new CommonConfig();
@@ -67,5 +69,11 @@ public class FileSplit {
         } catch (IOException e) {
            System.out.println("Error occured while reading,spiltting and writing file");
         }
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+
 	}
 }
