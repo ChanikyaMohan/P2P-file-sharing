@@ -11,7 +11,7 @@ public class FileSplitTest {
 	@Test
 	public void pickUpConfigProperties() {
 		FileSplit filesp =  new FileSplit();
-		filesp.initProperties();
+		filesp.init();
 		assertNotNull("config is null",filesp.cfg);
 		System.out.println("Config:"+filesp.cfg);
 		filesp.splitFile();

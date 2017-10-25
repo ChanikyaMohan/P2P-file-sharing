@@ -3,12 +3,13 @@ package filemanagement;
 import java.io.*;
 
 import init.CommonConfig;
+import init.Initialization;
 
 /* FileMerge takes name of the file to while all the split files should be merged
  * initProperties() - takes output file name and create cfg object
  * mergeFiles() - looks into splitParts folder reads each file and writes into output file
  */
-public class FileMerge {
+public class FileMerge implements Initialization{
 	public File outFile = null;
 	public String outFileName = null;
 	public CommonConfig cfg = null;
@@ -23,7 +24,9 @@ public class FileMerge {
 	 * whether the size of each piece is equal to given value or not etc
 	 */
 
-	public void initProperties(){
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
 		//create a config object with the output file name
 		//initialize the properties
 		cfg = new CommonConfig();
@@ -57,5 +60,11 @@ public class FileMerge {
 	    } catch (Exception e) {
 	       System.out.println("Error occured while merging file");
 	    }
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+
 	}
 }

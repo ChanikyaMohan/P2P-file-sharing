@@ -9,7 +9,7 @@ public class FileMergeTest {
 	@Test
 	public void testMergeFiles() {
 		FileMerge filem =  new FileMerge("mergedfile.pdf");
-		filem.initProperties();
+		filem.init();
 		System.out.println("Config:"+filem.cfg);
 		filem.mergeFiles();
 
