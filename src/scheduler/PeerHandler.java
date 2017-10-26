@@ -1,8 +1,11 @@
 package scheduler;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import init.Initialization;
 import init.Peer;
@@ -11,20 +14,33 @@ import init.Peer;
 public class PeerHandler implements Initialization {
 
 	private HashMap<Integer, Peer> _peerTable; //to get peer object based on peer ID;
-	private HashSet<Integer> _preferredPeers; //maintain set of preferred peers
-	private HashSet<Integer> _unChokedPeers;
+	private Set<Integer> _preferredPeers; //maintain set of preferred peers
+	private Set<Integer> _unChokedPeers; //maintain list of unchoked peers
+	private int OptunChokePeer;
 
-	public PeerHandler(){
+	private static PeerHandler pHandler;
+
+	private PeerHandler(){
 		_peerTable = new HashMap<Integer, Peer>();
-		_preferredPeers = new HashSet<Integer>();
-		_unChokedPeers = new HashSet<Integer>();
+		_preferredPeers = Collections.newSetFromMap(new ConcurrentHashMap<Integer, Boolean>());
+		_unChokedPeers = Collections.newSetFromMap(new ConcurrentHashMap<Integer, Boolean>());
+		this.OptunChokePeer = -1;
 
 	}
 
-	@Override
-	public void init() {
-		//todo some intialization
+	public static PeerHandler getInstance(){
+        if(pHandler == null){
+        	pHandler = new PeerHandler();
+        }
+        return pHandler;
+    }
 
+
+	public void init(List<Peer>list) {
+		//todo some intialization
+		for (Peer p : list){
+			_peerTable.put(p.id, p);
+		}
 
 	}
 
@@ -49,8 +65,8 @@ public class PeerHandler implements Initialization {
 		List<Integer> list = new ArrayList<Integer>(_preferredPeers);
 		return list;
 	}
-	
-	
+
+
 	public boolean isunChoked(int peerId){
 		return (_unChokedPeers.contains(peerId));
 	}
@@ -59,11 +75,28 @@ public class PeerHandler implements Initialization {
 		_unChokedPeers.add(p.id);
 	}
 
+
+	public void addunChokedPeer(int peerId){
+		_unChokedPeers.add(peerId);
+	}
+
+
+	public void addOptunChokedPeer(int peerId){
+		this.OptunChokePeer = peerId;
+		_unChokedPeers.add(peerId);
+	}
+
+	public int getOptunChokedPeer(){
+		return this.OptunChokePeer;
+
+	}
+
 	public List<Integer> getunChokedPeers(){
 		List<Integer> list = new ArrayList<Integer>(_unChokedPeers);
 		return list;
 	}
-	
+
+
 	public boolean isChoked(int peerId){
 		return (!_unChokedPeers.contains(peerId));
 	}
@@ -86,11 +119,16 @@ public class PeerHandler implements Initialization {
 		_preferredPeers.remove(p.id);
 	}
 
+
 	@Override
 	public void reload() {
-		_peerTable.clear();
-		_preferredPeers.clear();
 		_unChokedPeers.clear();
+
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
 
 	}
 
