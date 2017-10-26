@@ -28,8 +28,8 @@ public class UnchokeRegularScheduler implements Initialization {
 		synchronized(this){
 			UnchokeSchedulerTask unChokeTask = new UnchokeSchedulerTask(this.phandler,this.peferredn );
 			OptimisticUnchokeSchedulerTask optUnchokeTask = new OptimisticUnchokeSchedulerTask(this.phandler);
-			_Unchoketimer.scheduleAtFixedRate(unChokeTask, 0, this.UnchokeIntl);
-			_Opttimer.scheduleAtFixedRate(optUnchokeTask, 0, this.OptUnchokeIntl);
+			_Unchoketimer.scheduleAtFixedRate(unChokeTask, 0, this.UnchokeIntl*1000);
+			_Opttimer.scheduleAtFixedRate(optUnchokeTask, 0, this.OptUnchokeIntl*1000);
 			this._set = true;
 		}
 	}

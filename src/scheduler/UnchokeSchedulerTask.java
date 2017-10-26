@@ -32,8 +32,10 @@ public class UnchokeSchedulerTask extends TimerTask {
 			if (this.peerMinQueue.size() >= this.preferredN){
 				Peer top = this.peerMinQueue.peek();
 				if (top.rate == p.rate){
-					if (this._rand.nextBoolean())
+					if (this._rand.nextBoolean()){
+						this.peerMinQueue.poll();
 						this.peerMinQueue.offer(p);
+					}
 				} else if (top.rate < p.rate){
 					this.peerMinQueue.poll();
 					this.peerMinQueue.offer(p);
@@ -42,15 +44,18 @@ public class UnchokeSchedulerTask extends TimerTask {
 				this.peerMinQueue.offer(p);
 			}
 		}
+		//System.out.print("New Unchoke peers list: ");
 		this.pHandle.reload(); //clear unchoked list
 		for (Peer p :peerMinQueue){
 			this.pHandle.addunChokedPeer(p.id);
+			//System.out.print(p.id+", ");
+			
 		}
+	//	System.out.println();
 		if (this.pHandle.getOptunChokedPeer() > 0){
 			this.pHandle.addunChokedPeer(this.pHandle.getOptunChokedPeer()); //add the unchoked peer into the list
 		}
-
-
+		
 	}
 
 	public static Comparator<Peer> downloadrateComparator = new Comparator<Peer>(){

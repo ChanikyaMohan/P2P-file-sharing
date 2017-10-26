@@ -19,6 +19,7 @@ public class OptimisticUnchokeSchedulerTask extends TimerTask{
 		if (chokelist.size()>0){
 			int randompeer = _rand.nextInt(chokelist.size());
 			this.pHandle.addOptunChokedPeer(chokelist.get(randompeer));
+			System.out.println("Optimistic Unchoked peer"+chokelist.get(randompeer));
 		}
 
 
