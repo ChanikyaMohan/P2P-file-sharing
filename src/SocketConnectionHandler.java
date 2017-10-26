@@ -79,7 +79,7 @@ public class SocketConnectionHandler implements Runnable{
 			String message =null;
 			System.out.println("sending handshake from "+this.peerId);
 			if (this.remotepeerId != -1)
-				msgQueue.add(new Handshake());
+
 			try{
 				while(!socket.isClosed())
 				{

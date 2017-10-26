@@ -77,11 +77,15 @@ public class PeerHandler implements Initialization {
 
 
 	public void addunChokedPeer(int peerId){
+		Peer p = _peerTable.get(peerId);
+		p.Unchoke();
 		_unChokedPeers.add(peerId);
 	}
 
 
 	public void addOptunChokedPeer(int peerId){
+		Peer p = _peerTable.get(peerId);
+		p.OptunChoke();
 		this.OptunChokePeer = peerId;
 		_unChokedPeers.add(peerId);
 	}
@@ -102,6 +106,7 @@ public class PeerHandler implements Initialization {
 	}
 
 	public void insertChokedPeer(Peer p){
+		p.Choke();
 		_unChokedPeers.remove(p.id);
 	}
 
