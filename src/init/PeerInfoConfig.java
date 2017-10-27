@@ -16,7 +16,7 @@ public class PeerInfoConfig implements Initialization
 	@Override
 	public void init() {
 		String st;
-		int i1;
+		//int i1;
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(this.filePath));
 			while((st = in.readLine()) != null) {

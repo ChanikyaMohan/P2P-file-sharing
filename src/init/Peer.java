@@ -9,8 +9,8 @@ public class Peer {
 	public int id;
 	public boolean isFile;
 	private AtomicInteger _downloadrate;
-	private boolean _isChoke;
-	private boolean _isOptunchoke;
+	private boolean _isChoke; //not use
+	private boolean _isOptunchoke; //not use
 	public BitSet availableParts;
 	public int rate;
 	public Peer(int id, String host, int port, boolean isfile){

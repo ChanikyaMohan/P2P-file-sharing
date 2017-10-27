@@ -43,6 +43,20 @@ public class PeerHandler implements Initialization {
 		}
 
 	}
+	
+	public List<Integer> getPeersList() {
+		//todo some intialization
+		List<Integer> list = new ArrayList<Integer>(_peerTable.keySet());
+		return list;
+	}
+	
+	public void addPreferredPeerList(List<Integer>list) {
+		//todo some intialization
+		for (int p : list){
+			addPreferredPeer(p);
+		}
+
+	}
 
 	public void insertPeer(Peer p ){
 		_peerTable.put(p.id, p);
@@ -59,6 +73,10 @@ public class PeerHandler implements Initialization {
 
 	public void insertPreferredPeer(Peer p){
 		_preferredPeers.add(p.id);
+	}
+	
+	public void addPreferredPeer(int p){
+		_preferredPeers.add(p);
 	}
 
 	public List<Integer> getPreferredPeers(){
@@ -77,11 +95,15 @@ public class PeerHandler implements Initialization {
 
 
 	public void addunChokedPeer(int peerId){
+		Peer p = _peerTable.get(peerId);
+		p.Unchoke();
 		_unChokedPeers.add(peerId);
 	}
 
 
 	public void addOptunChokedPeer(int peerId){
+		Peer p = _peerTable.get(peerId);
+		p.OptunChoke();
 		this.OptunChokePeer = peerId;
 		_unChokedPeers.add(peerId);
 	}
@@ -102,6 +124,7 @@ public class PeerHandler implements Initialization {
 	}
 
 	public void insertChokedPeer(Peer p){
+		p.Choke();
 		_unChokedPeers.remove(p.id);
 	}
 
@@ -125,6 +148,7 @@ public class PeerHandler implements Initialization {
 		_unChokedPeers.clear();
 
 	}
+	
 
 	@Override
 	public void init() {

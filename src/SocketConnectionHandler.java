@@ -95,7 +95,10 @@ public class SocketConnectionHandler implements Runnable{
 			//msgQueue.add(new Handshake()); testing
 
 			if (this.remotepeerId != -1)
+<<<<<<< HEAD
 				msgQueue.add(new Handshake(peerId));
+=======
+>>>>>>> 34610b86c7c5be75e46cff96fa773bc8125f581a
 
 			try{
 				while(!socket.isClosed())
