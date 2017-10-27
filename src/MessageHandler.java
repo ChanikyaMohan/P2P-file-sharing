@@ -27,12 +27,7 @@ public class MessageHandler {
 
 		switch(msg.msg_type){
 			case UNCHOKE:
-<<<<<<< HEAD
-
-				break;
-=======
 				// send request message for a piece
-				BitSet required = selfpeer.getRequiredPart(remotepeer.availableParts);
 				if (required.cardinality() <=0){
 					// send Not interested message
 					return new NotInterested();
@@ -43,7 +38,6 @@ public class MessageHandler {
 					byte[] b = ByteBuffer.allocate(4).putInt(index).array();
 					return new Request(b);
 				}
->>>>>>> work
 			case CHOKE:
 				// do nothing for now
 				System.out.println("Received choke message");

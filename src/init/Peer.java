@@ -32,6 +32,12 @@ public class Peer {
 		availableParts.or(b);
 	}
 
+	public void setAvailablePartsIndex(int index){
+		if (index > availableParts.size())
+			return;
+		availableParts.set(index);
+	}
+
 	public BitSet getRequiredPart(BitSet b){
 		BitSet r = new BitSet();
 		r.and(b);
