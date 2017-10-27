@@ -15,6 +15,7 @@ import init.PeerInfoConfig;
 public class PeerHandler implements Initialization {
 
 	private HashMap<Integer, Peer> _peerTable; //to get peer object based on peer ID;
+	private HashMap<Integer, SocketConnectionHandler> ConnectionTable; //peer id to SocketConnectionHandlertable ;
 	private Set<Integer> _preferredPeers; //maintain set of preferred peers
 	private Set<Integer> _unChokedPeers; //maintain list of unchoked peers
 	private int OptunChokePeer;
@@ -44,16 +45,17 @@ public class PeerHandler implements Initialization {
 		//todo some intialization
 		for (Peer p : list){
 			_peerTable.put(p.id, p);
+			ConnectionTable.put(p.id, null);
 		}
 
 	}
-	
+
 	public List<Integer> getPeersList() {
 		//todo some intialization
 		List<Integer> list = new ArrayList<Integer>(_peerTable.keySet());
 		return list;
 	}
-	
+
 	public void addPreferredPeerList(List<Integer>list) {
 		//todo some intialization
 		for (int p : list){
@@ -78,7 +80,7 @@ public class PeerHandler implements Initialization {
 	public void insertPreferredPeer(Peer p){
 		_preferredPeers.add(p.id);
 	}
-	
+
 	public void addPreferredPeer(int p){
 		_preferredPeers.add(p);
 	}
@@ -152,7 +154,7 @@ public class PeerHandler implements Initialization {
 		_unChokedPeers.clear();
 
 	}
-	
+
 
 	@Override
 	public void init() {
