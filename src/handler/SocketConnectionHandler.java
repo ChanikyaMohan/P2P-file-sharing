@@ -107,9 +107,14 @@ public class SocketConnectionHandler implements Runnable{
 					if (message instanceof Handshake){
 						Handshake h = (Handshake) message;
 						System.out.println("Handshake Message Received peerid: "+h.peerID);
-						if (this.remotepeerId == h.peerID){
+						if (this.remotepeerId == -1 || this.remotepeerId == h.peerID){
 							state = ConnectionState.connected;
+							this.remotepeerId = h.peerID;
 							System.out.println("Connected to peer : "+h.peerID);
+							if (phandler.ConnectionTable.get(this.remotepeerId)!=null){
+								//do something with the old connection
+							}
+							phandler.ConnectionTable.put(this.remotepeerId, this); //add the new socket connection for the remot peer
 						}
 					} else {
 						System.out.println("other message received"+message.msg_type);

@@ -1,5 +1,6 @@
 package handler;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import util.AtomicBitSet;
 import init.Initialization;
 import init.Peer;
 import init.PeerInfoConfig;
@@ -15,12 +17,13 @@ import init.PeerInfoConfig;
 public class PeerHandler implements Initialization {
 
 	private HashMap<Integer, Peer> _peerTable; //to get peer object based on peer ID;
-	private HashMap<Integer, SocketConnectionHandler> ConnectionTable; //peer id to SocketConnectionHandlertable ;
+	public HashMap<Integer, SocketConnectionHandler> ConnectionTable; //peer id to SocketConnectionHandlertable ;
 	private Set<Integer> _preferredPeers; //maintain set of preferred peers
 	private Set<Integer> _unChokedPeers; //maintain list of unchoked peers
 	private int OptunChokePeer;
 	public static PeerInfoConfig pconfig;
 	private static PeerHandler pHandler;
+	//private BitSet _requiredParts;
 
 	private PeerHandler(){
 		_peerTable = new HashMap<Integer, Peer>();
@@ -30,16 +33,26 @@ public class PeerHandler implements Initialization {
 
 	}
 
+
 	public static PeerHandler getInstance(){
         if(pHandler == null){
         	pHandler = new PeerHandler();
         	pconfig = new PeerInfoConfig();
     		pconfig.init();
     		pHandler.init(pconfig.peersList);
+
         }
         return pHandler;
     }
 
+	/*public BitSet getRequiredParts(){
+		return this._requiredParts;
+	}
+
+
+	public void setRequiredParts(BitSet set){
+		this._requiredParts.and(set);
+	}*/
 
 	public void init(List<Peer>list) {
 		//todo some intialization
@@ -47,6 +60,7 @@ public class PeerHandler implements Initialization {
 			_peerTable.put(p.id, p);
 			ConnectionTable.put(p.id, null);
 		}
+		//this._requiredParts = new AtomicBitSet(5);// put the length as the # of file parts
 
 	}
 
