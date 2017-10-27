@@ -1,5 +1,7 @@
 package message;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 
 public class Handshake extends  Message{
@@ -12,7 +14,7 @@ public class Handshake extends  Message{
 			this.peerID = peer_id;
 
 			super.msg_type = Type.HANDSHAKE;
-			super.msg_length = 33; //18 byte header + 10 byte zero bits + 4 byte peerID + 1 (Type of message)
+			super.msg_length = 32; //18 byte header + 10 byte zero bits + 4 byte peerID + 1 (Type of message)
 
 			super.msg_payload = new byte[32];
 			System.arraycopy(this.handhsake_header.getBytes(),0,super.msg_payload,0,18);
@@ -25,4 +27,10 @@ public class Handshake extends  Message{
 			return bytes;
 		}
 
+		@Override
+		public void write (ObjectOutputStream out) throws IOException
+		{
+			if (msg_payload!=null && msg_payload.length>0) 
+				out.write(msg_payload, 0, msg_payload.length);
+		}
 }

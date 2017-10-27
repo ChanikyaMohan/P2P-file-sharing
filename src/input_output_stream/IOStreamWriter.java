@@ -14,8 +14,7 @@ public class IOStreamWriter extends ObjectOutputStream implements ObjectOutput{
 	public IOStreamWriter(OutputStream in) throws IOException, SecurityException {
 		super(in);
 		// TODO Auto-generated constructor stub
-	}
-	
+	}	
 	
 	public void writeInstanceOf (Object object) throws IOException {
     	if(object instanceof Message)

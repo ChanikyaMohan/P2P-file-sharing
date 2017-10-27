@@ -28,19 +28,25 @@ public class SocketConnectionHandler implements Runnable{
 	final public Socket socket;
 	public ConnectionState state = ConnectionState.initiated;
 	//private String message; //change to message class
-	int remotepeerId;
+
 	//private   ObjectInputStream in;	//stream read from the socket
 	//private ObjectOutputStream out;    //stream write to the socket
 	
 	String str;
 	int index;
-	private IOStreamReader in;
-	private IOStreamWriter out;
+
+	public int remotepeerId;
+	private   ObjectInputStream in;	//stream read from the socket
+	private boolean isunchoked;
+	private ObjectOutputStream out;    //stream write to the socket
+
 	private LinkedBlockingQueue<Message> msgQueue = new LinkedBlockingQueue<Message>();
 
 	public SocketConnectionHandler(int peerId,Socket socket){
 			this.socket = socket;
 			this.peerId = peerId;
+			this.remotepeerId = -1;
+			this.isunchoked = false;
 
 			try {
 				out = new IOStreamWriter(socket.getOutputStream());
@@ -53,6 +59,11 @@ public class SocketConnectionHandler implements Runnable{
 				e.printStackTrace();
 			}
 
+
+	}
+	public SocketConnectionHandler(int peerId,int remotePeer, Socket socket){
+		this(peerId, socket);
+		this.remotepeerId = remotePeer;
 
 	}
 
@@ -78,15 +89,20 @@ public class SocketConnectionHandler implements Runnable{
 		if(!socket.isClosed()){
 			Message message =null;
 			System.out.println("sending handshake from "+this.peerId);
+
 			
 			PieceTest();
 			//msgQueue.add(new Handshake()); testing
+
+			if (this.remotepeerId != -1)
+				msgQueue.add(new Handshake(peerId));
+
 			try{
 				while(!socket.isClosed())
 				{
 					//receive the message sent from the client
 					try {
-						message = (Message)in.readInstanceOf();
+						message = readInstanceOf();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -132,6 +148,10 @@ public class SocketConnectionHandler implements Runnable{
 		}
 		
 
+	}
+
+	public void send(Message msg){
+		msgQueue.add(msg);
 	}
 
 	//send a message to the output stream

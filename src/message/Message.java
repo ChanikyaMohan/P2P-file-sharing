@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.BitSet;
 
 public class Message {
 
@@ -96,7 +97,7 @@ public class Message {
 		if(type == Type.CHOKE)
 			return new Choke();
 		else if(type == Type.BIT_FIELD)
-			return new Bitfield(new byte[length]);
+			return new Bitfield(new BitSet());
 		else if(type == Type.HAVE)
 			return new Have(new byte[length]);
 		else if(type == Type.INTERESTED)
@@ -115,10 +116,11 @@ public class Message {
 	}
 	
 	//Method to read from OubjectInputStream
-	public void read (ObjectInputStream in) throws IOException 
+	public void read (byte [] buf, int pos, int length) throws IOException 
 	{
+		msg_payload = new byte[length];
         if (msg_payload!=null && msg_payload.length>0) 
-            in.readFully(msg_payload, 0, msg_payload.length);
+            System.arraycopy(buf, pos, msg_payload, 0, length);
         else
         	throw new IOException("Payload is empty");
     }
