@@ -28,7 +28,7 @@ public class MessageHandler {
 		switch(msg.msg_type){
 			case UNCHOKE:
 				// send request message for a piece
-				if (required.cardinality() <=0){
+				if (required.isEmpty()){
 					// send Not interested message
 					return new NotInterested();
 				} else {
@@ -43,12 +43,23 @@ public class MessageHandler {
 				System.out.println("Received choke message");
 				break;
 			case INTERESTED:
-
-				break;
+				// should add remotepeer in the list of preferred peers
+				this.phandler.addPreferredPeer(remotepeerID);
+				return null;
+				//break;
 			case NOT_INTERESTED:
-				break;
+				// should remove remotepeer in the list of preferred peers
+				this.phandler.removePreferredPeer(remotepeerID);
+				return null;
+				//break;
 			case HAVE:
-				break;
+				Have h = (Have)msg;
+				int index = h.getpieceIndex();
+				if (required.get(index)){
+					return new Interested(); //interesting piece
+				} else {
+					return new NotInterested(); //already have the piece
+				}
 			case BIT_FIELD:
 				break;
 			case REQUEST:

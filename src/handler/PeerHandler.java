@@ -100,6 +100,10 @@ public class PeerHandler implements Initialization {
 		_preferredPeers.add(p);
 	}
 
+	public void removePreferredPeer(int p){
+		_preferredPeers.remove(p);
+	}
+
 	public List<Integer> getPreferredPeers(){
 		List<Integer> list = new ArrayList<Integer>(_preferredPeers);
 		return list;
