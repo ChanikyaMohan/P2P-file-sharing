@@ -83,16 +83,21 @@ public class IOStreamReader extends DataInputStream implements ObjectInput{
 		}
 		if(b.length > 4)
 		{
-			int length = byteArrayToInt(b,4);
+			int len = fromByteArray(b);
 			Message msg;
 			//Type type = Message.Type.getTypeFromCode(b[4]);
+			System.out.println("lenght ="+len);
 
-			msg = Message.getMessage(Message.Type.getTypeFromCode(b[4]), length);
+			msg = Message.getMessage(Message.Type.getTypeFromCode(b[4]), len);
 			//Passing message length - type of 1 byte
-			msg.read(b,5,b.length-1);
+			msg.read(b,5,len-1);
 			return msg;
 		}
 		return null;
+	}
+
+	int fromByteArray(byte[] bytes) {
+	     return bytes[0] << 24 | (bytes[1] & 0xFF) << 16 | (bytes[2] & 0xFF) << 8 | (bytes[3] & 0xFF);
 	}
 
 

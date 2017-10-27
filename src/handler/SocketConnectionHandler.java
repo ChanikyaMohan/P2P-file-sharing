@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import message.Handshake;
+import message.Interested;
 import message.Message;
 
 /***
@@ -86,6 +87,7 @@ public class SocketConnectionHandler implements Runnable{
 			Message message =null;
 			System.out.println("sending handshake from "+this.peerId);
 			send(new Handshake(this.peerId));
+			//send(new Interested());
 			try{
 				while(!socket.isClosed())
 				{
@@ -110,7 +112,7 @@ public class SocketConnectionHandler implements Runnable{
 							System.out.println("Connected to peer : "+h.peerID);
 						}
 					} else {
-						System.out.println("other message received");
+						System.out.println("other message received"+message.msg_type);
 					}
 
 					/*if (message.equals("P2PFILESHARINGPROJ")  && state != ConnectionState.connected){

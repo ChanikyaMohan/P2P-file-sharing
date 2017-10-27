@@ -120,11 +120,13 @@ public class Message {
 	//Method to read from OubjectInputStream
 	public void read (byte [] buf, int pos, int length) throws IOException 
 	{
-		msg_payload = new byte[length];
-        if (msg_payload!=null && msg_payload.length>0) 
-            System.arraycopy(buf, pos, msg_payload, 0, length);
-        else
-        	throw new IOException("Payload is empty");
+		if (length>0){
+			msg_payload = new byte[length];
+	        if (msg_payload!=null && msg_payload.length>0) 
+	            System.arraycopy(buf, pos, msg_payload, 0, length);
+	        else
+	        	throw new IOException("Payload is empty");
+		}
     }
 	
 	//Method to write to ObjectOutputStream
