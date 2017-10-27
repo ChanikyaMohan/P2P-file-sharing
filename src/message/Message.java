@@ -1,5 +1,12 @@
 package message;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.BitSet;
+
 public class Message {
 
 	/* Enum to handle type of the message
@@ -28,7 +35,7 @@ public class Message {
 			return this.code;
 		}
 
-		public Type getType(byte code){
+		public static Type getTypeFromCode(byte code){
 			Type[] all_types = Type.values();
 			Type t = null;
 			for(int i=0;i<all_types.length;i++){
@@ -83,5 +90,47 @@ public class Message {
 	public byte[] getPayload(){
 		return this.msg_payload;
 	}
-
+	
+	//Method to return a message object according to the message type
+	public static Message getMessage (Type type, int length) throws ClassNotFoundException
+	{
+		if(type == Type.CHOKE)
+			return new Choke();
+		else if(type == Type.BIT_FIELD)
+			return new Bitfield(new BitSet());
+		else if(type == Type.HAVE)
+			return new Have(new byte[length]);
+		else if(type == Type.INTERESTED)
+			return new Interested();
+		else if(type == Type.NOT_INTERESTED)
+			return new NotInterested();
+		else if(type == Type.PIECE)
+			return new Piece(new byte[length],new byte[length]);
+		else if(type == Type.REQUEST)
+			return new Request(new byte[length]);
+		else if(type == Type.UNCHOKE)
+			return new Unchoke();
+		else
+			throw new ClassNotFoundException("Message Type not found");
+		
+	}
+	
+	//Method to read from OubjectInputStream
+	public void read (byte [] buf, int pos, int length) throws IOException 
+	{
+		msg_payload = new byte[length];
+        if (msg_payload!=null && msg_payload.length>0) 
+            System.arraycopy(buf, pos, msg_payload, 0, length);
+        else
+        	throw new IOException("Payload is empty");
+    }
+	
+	//Method to write to ObjectOutputStream
+	public void write (ObjectOutputStream out) throws IOException
+	{
+		out.writeInt(msg_length);
+		out.writeByte(msg_type.getCode());
+		if (msg_payload!=null && msg_payload.length>0) 
+			out.write(msg_payload, 0, msg_payload.length);
+	}
 }
