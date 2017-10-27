@@ -2,6 +2,7 @@ package filemanagement;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.BitSet;
 
 import init.CommonConfig;
 import init.Initialization;
@@ -18,12 +19,14 @@ import init.Initialization;
 public class FileSplit implements Initialization {
     public String fileName = null;
     public CommonConfig cfg = null;
+	private int peerID;
 
     public FileSplit(){
 	}
 
-	public FileSplit(String fName){
+	public FileSplit(String fName, int peerID){
 		fileName = fName;
+		this.peerID = peerID;
 	}
 
 	@Override
@@ -46,9 +49,20 @@ public class FileSplit implements Initialization {
 			 inpFile = new FileInputStream(cfg.fileName);
 
 			 //path of the directory where the split files need to be generated
-			 //and clean all files in the directory (if any) before adding new split files
-			 String splitDirectoryPath = "C:\\Users\\konya\\Desktop\\splitParts\\";
-			 Arrays.stream(new File(splitDirectoryPath).listFiles()).forEach(File::delete);
+			 String splitDirectoryPath =  System.getProperty("user.dir")+"\\peer_"+peerID;
+			 File folder = new File(splitDirectoryPath);
+			 if(!folder.exists()){
+				boolean result = folder.mkdir();
+				if(result){
+					System.out.println("Successfully created "+folder.getAbsolutePath());
+				} else {
+					System.out.println("Failed creating "+folder.getAbsolutePath());
+				}
+			 } else {
+				 System.out.println("Folder already exists");
+				//and clean all files in the directory (if any) before adding new split files
+				 Arrays.stream(new File(splitDirectoryPath).listFiles()).forEach(File::delete);
+			 }
 
 			 for(int i=0; i<nofSplits; i++){
 				 byte[] buffer = new byte[cfg.peiceSize];
@@ -75,5 +89,22 @@ public class FileSplit implements Initialization {
 	public void reload() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public BitSet getCurrentAvailableParts(){
+		double inpFileLength = (double) cfg.fileSize;
+		double splitPieceSize = (double) cfg.peiceSize;
+		int nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
+
+		BitSet availableParts = new BitSet(nofSplits);
+		String splitDirectoryPath =  System.getProperty("user.dir")+"\\peer_"+peerID;
+		File[] files = new File(splitDirectoryPath).listFiles();
+		for(File f:files){
+			if (f.isFile()) {
+		        int pieceIndex = f.getName().charAt(0) - '0';
+		        availableParts.set(pieceIndex);
+		    }
+		}
+		return availableParts;
 	}
 }
