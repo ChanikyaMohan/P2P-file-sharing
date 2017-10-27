@@ -11,6 +11,7 @@ import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 public class peerProcess implements Runnable, Initialization{
@@ -29,7 +30,25 @@ public class peerProcess implements Runnable, Initialization{
 	PeerHandler pHandler;
 	List<SocketConnectionHandler> activeConnections = new ArrayList<SocketConnectionHandler>();
 
-
+	public static void main (String[] args) throws IOException, ClassNotFoundException, IllegalAccessException, InterruptedException {
+        if (args.length != 1) {
+           System.out.println("wrong arguments");
+           return;
+        }
+        final int peerId = Integer.parseInt(args[0]);
+        peerProcess p1 = new peerProcess(peerId);
+		p1.init();
+		Thread t1 = new Thread(p1);
+        t1.start();
+		p1.start();
+		int i = 0;
+		while(i< 5){
+			TimeUnit.SECONDS.sleep(10);
+			System.out.println("waiting... i ="+i);
+			i++;
+		}
+		p1.isterminate = true;
+	}
 	public peerProcess(int peerId ) {
 		this.peerId = peerId;
 	}

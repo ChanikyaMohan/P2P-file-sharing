@@ -3,12 +3,15 @@ package scheduler;
 import handler.PeerHandler;
 import init.Peer;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Random;
 import java.util.TimerTask;
+
+import message.Unchoke;
 
 public class UnchokeSchedulerTask extends TimerTask {
 
@@ -30,6 +33,8 @@ public class UnchokeSchedulerTask extends TimerTask {
 		List<Integer> peers = this.pHandle.getPreferredPeers();
 		for (int i=0; i < peers.size();i++){
 			Peer p = this.pHandle.getPeer(peers.get(i));
+			if (p.id != this.pHandle.getOptunChokedPeer())
+				p.Choke(); //choke all peers as reset
 			if (this.peerMinQueue.size() >= this.preferredN){
 				Peer top = this.peerMinQueue.peek();
 				if (top.rate == p.rate){
@@ -45,13 +50,18 @@ public class UnchokeSchedulerTask extends TimerTask {
 				this.peerMinQueue.offer(p);
 			}
 		}
+		List<Integer> unchokedlist = new ArrayList<Integer>();
 		//System.out.print("New Unchoke peers list: ");
-		this.pHandle.reload(); //clear unchoked list
+		//this.pHandle.reload(); //clear unchoked list
 		for (Peer p :peerMinQueue){
-			this.pHandle.addunChokedPeer(p.id);
+			if (this.pHandle.isChoked(p.id)) // if the is choked 
+				this.pHandle.ConnectionTable.get(p.id).send(new Unchoke()); //if the new peer is the new unchoked peer send unchoke message
+			unchokedlist.add(p.id); //add the pid to the unchoke list
+			p.Unchoke(); //unchoke the preferred peers
 			//System.out.print(p.id+", ");
 			
 		}
+		this.pHandle.resetandaddunChokePeers(unchokedlist); //reset the current unchoked peer and add new one 
 	//	System.out.println();
 		if (this.pHandle.getOptunChokedPeer() > 0){
 			this.pHandle.addunChokedPeer(this.pHandle.getOptunChokedPeer()); //add the unchoked peer into the list

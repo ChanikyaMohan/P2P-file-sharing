@@ -29,6 +29,7 @@ public class PeerHandler implements Initialization {
 		_peerTable = new HashMap<Integer, Peer>();
 		_preferredPeers = Collections.newSetFromMap(new ConcurrentHashMap<Integer, Boolean>());
 		_unChokedPeers = Collections.newSetFromMap(new ConcurrentHashMap<Integer, Boolean>());
+		ConnectionTable = new HashMap<Integer, SocketConnectionHandler>();
 		this.OptunChokePeer = -1;
 
 	}
@@ -118,6 +119,12 @@ public class PeerHandler implements Initialization {
 		Peer p = _peerTable.get(peerId);
 		p.Unchoke();
 		_unChokedPeers.add(peerId);
+	}
+
+	public void resetandaddunChokePeers(List<Integer> list){
+		this._unChokedPeers.clear();
+		this._unChokedPeers.addAll(list);
+
 	}
 
 

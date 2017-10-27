@@ -118,6 +118,7 @@ public class SocketConnectionHandler implements Runnable{
 						}
 					} else {
 						System.out.println("other message received"+message.msg_type);
+						
 					}
 
 					/*if (message.equals("P2PFILESHARINGPROJ")  && state != ConnectionState.connected){

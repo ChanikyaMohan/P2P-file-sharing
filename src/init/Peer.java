@@ -28,6 +28,16 @@ public class Peer {
 		return this.rate;
 	}
 
+	public void setparts(BitSet b){
+		availableParts.or(b);
+	}
+
+	public BitSet getRequiredPart(BitSet b){
+		BitSet r = new BitSet();
+		r.and(b);
+		r.and(availableParts);
+		return r;
+	}
 	public int get_rate() {
 		return this.rate;
 	}

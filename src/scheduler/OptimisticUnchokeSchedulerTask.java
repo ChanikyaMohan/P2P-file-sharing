@@ -20,10 +20,12 @@ public class OptimisticUnchokeSchedulerTask extends TimerTask{
 		List<Integer> chokelist = this.pHandle.getChokedPeers();
 		if (chokelist.size()>0){
 			int randompeer = _rand.nextInt(chokelist.size());
-			this.pHandle.addOptunChokedPeer(chokelist.get(randompeer));
-			System.out.println("Optimistic Unchoked peer"+chokelist.get(randompeer));
+			int optpeer = chokelist.get(randompeer);
+			this.pHandle.getPeer(optpeer).OptunChoke();
+			this.pHandle.getPeer(this.pHandle.getOptunChokedPeer()).OptChoke();
+			this.pHandle.addOptunChokedPeer(optpeer);
+			System.out.println("Optimistic Unchoked peer"+optpeer);
 		}
-
 
 	}
 
