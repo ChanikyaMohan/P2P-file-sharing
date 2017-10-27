@@ -1,5 +1,7 @@
 package scheduler;
 
+import handler.PeerHandler;
+
 import java.util.List;
 import java.util.Random;
 import java.util.TimerTask;

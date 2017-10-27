@@ -1,3 +1,6 @@
+import handler.PeerHandler;
+import handler.ConnectionState;
+import handler.SocketConnectionHandler;
 import init.CommonConfig;
 import init.Initialization;
 import init.Peer;
@@ -23,6 +26,7 @@ public class peerProcess implements Runnable, Initialization{
 	String peerHostAddress;
 	List<Peer>peers = new ArrayList<Peer>();
 	PeerInfoConfig pconfig;
+	PeerHandler pHandler;
 	List<SocketConnectionHandler> activeConnections = new ArrayList<SocketConnectionHandler>();
 
 
@@ -36,6 +40,7 @@ public class peerProcess implements Runnable, Initialization{
 		config.init();
 		PeerInfoConfig pconfig = new PeerInfoConfig();
 		pconfig.init();
+		pHandler = PeerHandler.getInstance();
 		for (Peer peer : pconfig.peersList){
 			if (peer.id == peerId){
 				this.peerPort = peer.port;
@@ -59,7 +64,7 @@ public class peerProcess implements Runnable, Initialization{
 			SocketConnectionHandler connection = null;
     		while(true) {
 				try {
-						connection  = new SocketConnectionHandler(this.peerId, listener.accept());
+						connection  = new SocketConnectionHandler(this.peerId, listener.accept(), pHandler);
 		        		System.out.println("Client "  + this.peerId + " is connected!");
 		        		if (connection != null){
 			        		activeConnections.add(connection);
@@ -89,7 +94,7 @@ public class peerProcess implements Runnable, Initialization{
 				//create a socket to connect to the server
 				System.out.println("Requesting socket Host= "+ peer.host+"and port= "+peer.port);
 				requestSocket = new Socket(peer.host, peer.port);
-				SocketConnectionHandler connection  = new SocketConnectionHandler(this.peerId, peer.id,requestSocket);
+				SocketConnectionHandler connection  = new SocketConnectionHandler(this.peerId, peer.id,requestSocket, pHandler);
 				System.out.println("Connected to "+peer.host+" in port "+ peer.port);
 				activeConnections.add(connection);
 				startConnection(connection);
@@ -105,12 +110,12 @@ public class peerProcess implements Runnable, Initialization{
 
 	public void startConnection(SocketConnectionHandler connection){
 		for (SocketConnectionHandler con : activeConnections){
-			if (con == connection && con.state == ConnectionState.initiated){
-				con.state = ConnectionState.connecting;
-				Thread t = new Thread(con);
-		        t.start();
-			}
+		if (con == connection && con.state == ConnectionState.initiated){
+			con.state = ConnectionState.connecting;
+			Thread t = new Thread(con);
+	        t.start();
 		}
+	}
 
 	}
 

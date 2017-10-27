@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.concurrent.TimeUnit;
 
+import handler.PeerHandler;
 import init.CommonConfig;
 import init.PeerInfoConfig;
 

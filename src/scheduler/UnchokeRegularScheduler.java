@@ -2,6 +2,7 @@ package scheduler;
 
 import java.util.Timer;
 
+import handler.PeerHandler;
 import init.Initialization;
 
 public class UnchokeRegularScheduler implements Initialization {

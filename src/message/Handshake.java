@@ -16,7 +16,7 @@ public class Handshake extends  Message{
 
 			super.msg_payload = new byte[32];
 			System.arraycopy(this.handhsake_header.getBytes(),0,super.msg_payload,0,18);
-			System.arraycopy(convertIntToBytes(this.peerID),0,super.msg_payload,28,32);
+			System.arraycopy(convertIntToBytes(this.peerID),0,super.msg_payload,28,4);
 		}
 
 		private byte[] convertIntToBytes(int peerIDint) {

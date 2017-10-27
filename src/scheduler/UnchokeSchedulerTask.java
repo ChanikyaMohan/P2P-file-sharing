@@ -1,5 +1,6 @@
 package scheduler;
 
+import handler.PeerHandler;
 import init.Peer;
 
 import java.util.Comparator;
