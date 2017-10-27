@@ -123,6 +123,11 @@ public class peerProcess implements Runnable, Initialization{
 		try{
 			ConnectPeers() ;
 				while(!isterminate){
+					for (SocketConnectionHandler con : activeConnections){
+						if (con.state ==ConnectionState.close)
+							isterminate= true;
+							//System.out.println("terminating server");
+					}
 			}
 		} catch(Exception e){
 			System.err.println("error: "+e);

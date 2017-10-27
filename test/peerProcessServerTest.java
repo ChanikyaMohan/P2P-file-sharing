@@ -16,7 +16,7 @@ public class peerProcessServerTest {
         t1.start();
 		p1.start();
 		int i = 0;
-		while(i< 10){
+		while(i< 5){
 			TimeUnit.SECONDS.sleep(10);
 			System.out.println("waiting... i ="+i);
 			i++;

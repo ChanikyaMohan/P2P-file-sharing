@@ -1,5 +1,8 @@
 package handler;
 
+import iostream.IOStreamReader;
+import iostream.IOStreamWriter;
+
 import java.net.*;
 import java.io.*;
 import java.nio.*;
@@ -27,9 +30,9 @@ public class SocketConnectionHandler implements Runnable{
 	public ConnectionState state;
 	//private String message; //change to message class
 	public int remotepeerId;
-	private   ObjectInputStream in;	//stream read from the socket
+	private   IOStreamReader in;	//stream read from the socket
 	private boolean isunchoked;
-	private ObjectOutputStream out;    //stream write to the socket
+	private IOStreamWriter out;    //stream write to the socket
 	private LinkedBlockingQueue<Message> msgQueue = new LinkedBlockingQueue<Message>();
 	private PeerHandler phandler;
 
@@ -42,9 +45,9 @@ public class SocketConnectionHandler implements Runnable{
 			phandler = p;
 
 			try {
-				out = new ObjectOutputStream(socket.getOutputStream());
+				out = new IOStreamWriter(socket.getOutputStream());
 				out.flush();
-				in = new ObjectInputStream(socket.getInputStream());
+				in = new IOStreamReader(socket.getInputStream());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				out = null;
@@ -68,7 +71,7 @@ public class SocketConnectionHandler implements Runnable{
             public void run() {
             	Message msg = null;
             	// listen to incoming message
-            	while(true){
+            	while(!socket.isClosed()){
 					while ((msg = msgQueue.poll()) != null) {
 					    System.out.println("Sending message....");
 					    SendMessage(msg);
@@ -93,13 +96,23 @@ public class SocketConnectionHandler implements Runnable{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						socket.isClosed();
-						state = ConnectionState.disconnected;
+						state = ConnectionState.close;
 					}
 
 					//show the message to the user
 					if (message == null)
 						continue;
-					System.out.println("Message : "+message.toString());
+					if (message instanceof Handshake){
+						Handshake h = (Handshake) message;
+						System.out.println("Handshake Message Received peerid: "+h.peerID);
+						if (this.remotepeerId == h.peerID){
+							state = ConnectionState.connected;
+							System.out.println("Connected to peer : "+h.peerID);
+						}
+					} else {
+						System.out.println("other message received");
+					}
+
 					/*if (message.equals("P2PFILESHARINGPROJ")  && state != ConnectionState.connected){
 						//msgQueue.add(new Handshake());
 						state = ConnectionState.connected;
@@ -114,6 +127,9 @@ public class SocketConnectionHandler implements Runnable{
 			}
 			catch(ClassNotFoundException classnot){
 					System.err.println("Data received in unknown format");
+					classnot.printStackTrace();
+					socket.isClosed();
+					state = ConnectionState.close;
 			}
 
 

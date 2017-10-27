@@ -1,5 +1,7 @@
 package message;
 
+import iostream.IOStreamWriter;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -126,11 +128,12 @@ public class Message {
     }
 	
 	//Method to write to ObjectOutputStream
-	public void write (ObjectOutputStream out) throws IOException
+	public void write (IOStreamWriter ioStreamWriter) throws IOException
 	{
-		out.writeInt(msg_length);
-		out.writeByte(msg_type.getCode());
+		System.out.println("writing other message");
+		ioStreamWriter.writeInt(msg_length);
+		ioStreamWriter.writeByte(msg_type.getCode());
 		if (msg_payload!=null && msg_payload.length>0) 
-			out.write(msg_payload, 0, msg_payload.length);
+			ioStreamWriter.write(msg_payload, 0, msg_payload.length);
 	}
 }

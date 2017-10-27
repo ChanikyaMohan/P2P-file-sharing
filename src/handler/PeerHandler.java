@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import init.Initialization;
 import init.Peer;
+import init.PeerInfoConfig;
 
 
 public class PeerHandler implements Initialization {
@@ -17,7 +18,7 @@ public class PeerHandler implements Initialization {
 	private Set<Integer> _preferredPeers; //maintain set of preferred peers
 	private Set<Integer> _unChokedPeers; //maintain list of unchoked peers
 	private int OptunChokePeer;
-
+	public static PeerInfoConfig pconfig;
 	private static PeerHandler pHandler;
 
 	private PeerHandler(){
@@ -31,6 +32,9 @@ public class PeerHandler implements Initialization {
 	public static PeerHandler getInstance(){
         if(pHandler == null){
         	pHandler = new PeerHandler();
+        	pconfig = new PeerInfoConfig();
+    		pconfig.init();
+    		pHandler.init(pconfig.peersList);
         }
         return pHandler;
     }

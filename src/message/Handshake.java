@@ -1,5 +1,7 @@
 package message;
 
+import iostream.IOStreamWriter;
+
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
@@ -27,10 +29,17 @@ public class Handshake extends  Message{
 			return bytes;
 		}
 
+		public int getpeerID(){
+			return this.peerID;
+		}
+
 		@Override
-		public void write (ObjectOutputStream out) throws IOException
+		public void write (IOStreamWriter out) throws IOException
 		{
-			if (msg_payload!=null && msg_payload.length>0) 
+			System.out.println("writing handshake message");
+			if (msg_payload!=null && msg_payload.length>0)
 				out.write(msg_payload, 0, msg_payload.length);
+			
+			System.out.println("done writing");
 		}
 }
