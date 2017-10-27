@@ -1,3 +1,4 @@
+import java.nio.ByteBuffer;
 import java.util.BitSet;
 
 import init.Peer;
@@ -26,12 +27,29 @@ public class MessageHandler {
 
 		switch(msg.msg_type){
 			case UNCHOKE:
+<<<<<<< HEAD
 
 				break;
+=======
+				// send request message for a piece
+				BitSet required = selfpeer.getRequiredPart(remotepeer.availableParts);
+				if (required.cardinality() <=0){
+					// send Not interested message
+					return new NotInterested();
+				} else {
+					// send reuqest message of random piece index
+					int index = required.nextSetBit(0);
+					selfpeer.setAvailablePartsIndex(index);
+					byte[] b = ByteBuffer.allocate(4).putInt(index).array();
+					return new Request(b);
+				}
+>>>>>>> work
 			case CHOKE:
-
+				// do nothing for now
+				System.out.println("Received choke message");
 				break;
 			case INTERESTED:
+
 				break;
 			case NOT_INTERESTED:
 				break;
