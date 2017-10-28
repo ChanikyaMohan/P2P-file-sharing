@@ -12,13 +12,15 @@ public class peerProcessClientTest {
 
 		peerProcess p2 = new peerProcess(1002);
 		p2.init();
+		Thread t1 = new Thread(p2);
+        t1.start();
 		p2.start();
 		int i =0;
-		/*while(i< 5){
+		while(i< 5){
 			TimeUnit.SECONDS.sleep(10);
 			System.out.println("waiting... i ="+i);
 			i++;
-		}*/
+		}
 		p2.isterminate = true;
 
 

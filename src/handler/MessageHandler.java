@@ -3,6 +3,7 @@ import java.nio.ByteBuffer;
 import java.util.BitSet;
 
 import init.Peer;
+import filemanagement.FileSplit;
 import handler.PeerHandler;
 import message.*;
 import message.Message.Type;
@@ -10,10 +11,12 @@ import message.Message.Type;
 public class MessageHandler {
 	private int remotepeerID;
 	private int selfpeerID;
+	private FileSplit fmgr;
 	public PeerHandler phandler;
 
-	public MessageHandler(int self,int remote) {
+	public MessageHandler(int self,int remote, FileSplit fmgr) {
 		this.selfpeerID = self;
+		this.fmgr = fmgr;
 		this.remotepeerID =remote;
 		this.phandler = PeerHandler.getInstance();
 	}
@@ -62,14 +65,34 @@ public class MessageHandler {
 					return new NotInterested(); //already have the piece
 				}
 			case BIT_FIELD:
-				 System.out.println("Bitfield recieved :"+ ((Bitfield)msg).getBitSet());
-				break;
+				Bitfield bf = (Bitfield)msg;
+				 System.out.println("Bitfield recieved :"+ bf.getBitSet());
+				if (selfpeer.getRequiredPart(bf.getBitSet()).isEmpty()){
+					
+					return new NotInterested();
+				} else {
+					remotepeer.setparts( bf.getBitSet());
+					return new Interested();
+				}
+				
+				//break;
 			case REQUEST:
-				break;
+				Request r = (Request)msg;
+				return new Piece(r.msg_payload,fmgr.getBytefromtheIndex(r.getRequestIndex()));
+				//break;
 			case PIECE:
+				Piece p = (Piece)msg;
+				fmgr.savePiece(p.getpieceIndex(),p.getPieceContent());
+				if (this.phandler.isunChoked(this.remotepeerID)){
+					int inx = required.nextSetBit(0);
+					selfpeer.setAvailablePartsIndex(inx);
+					byte[] b = ByteBuffer.allocate(4).putInt(inx).array();
+					return new Request(b);
+				}
 				break;
 			case HANDSHAKE:
 				//after handshake get the bitfield of selfpeer and send it to remote
+				System.out.println("Sending bitfield of parts: "+selfpeer.availableParts);
 				MESSAGE = new Bitfield(selfpeer.availableParts);
 				break;
 			default: System.out.println("Illeagal Type of message recieved");

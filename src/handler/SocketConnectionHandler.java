@@ -1,5 +1,6 @@
 package handler;
 
+import filemanagement.FileSplit;
 import iostream.IOStreamReader;
 import iostream.IOStreamWriter;
 
@@ -37,14 +38,16 @@ public class SocketConnectionHandler implements Runnable{
 	private LinkedBlockingQueue<Message> msgQueue = new LinkedBlockingQueue<Message>();
 	private PeerHandler phandler;
 	private MessageHandler msgHandler;
+	private FileSplit fmgr;
 
-	public SocketConnectionHandler(int peerId,Socket socket, PeerHandler p){
+	public SocketConnectionHandler(int peerId,Socket socket, PeerHandler p,FileSplit f ){
 			this.socket = socket;
 			this.peerId = peerId;
 			this.remotepeerId = -1;
 			this.isunchoked = false;
 			this.state = ConnectionState.initiated;
 			this.msgHandler = null;
+			this.fmgr = f;
 			phandler = p;
 
 			try {
@@ -60,8 +63,8 @@ public class SocketConnectionHandler implements Runnable{
 
 
 	}
-	public SocketConnectionHandler(int peerId,int remotePeer, Socket socket, PeerHandler p){
-		this(peerId, socket, p);
+	public SocketConnectionHandler(int peerId,int remotePeer, Socket socket, PeerHandler p, FileSplit fmgr){
+		this(peerId, socket, p, fmgr);
 		this.remotepeerId = remotePeer;
 
 	}
@@ -109,7 +112,7 @@ public class SocketConnectionHandler implements Runnable{
 									//do something with the old connection
 								}
 								phandler.ConnectionTable.put(this.remotepeerId, this); //add the new socket connection for the remot peer
-								msgHandler = new MessageHandler(this.peerId,this.remotepeerId);
+								msgHandler = new MessageHandler(this.peerId,this.remotepeerId, this.fmgr);
 							}
 						}
 						if (msgHandler != null) {

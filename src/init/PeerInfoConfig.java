@@ -21,9 +21,10 @@ public class PeerInfoConfig implements Initialization
 			BufferedReader in = new BufferedReader(new FileReader(this.filePath));
 			while((st = in.readLine()) != null) {
 					   String[] tokens = st.split("\\s+");
+					   Boolean hasFile = tokens[3].equals("1")? true:false;
 					   Peer peer = new Peer(Integer.parseInt(tokens[0]),
 							   tokens[1],Integer.parseInt(tokens[2]),
-							   Boolean.parseBoolean(tokens[3]));
+							   hasFile);
 
 					   peersList.add(peer);
 

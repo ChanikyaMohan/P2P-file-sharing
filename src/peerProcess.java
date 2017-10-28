@@ -1,3 +1,4 @@
+import filemanagement.FileSplit;
 import handler.PeerHandler;
 import handler.ConnectionState;
 import handler.SocketConnectionHandler;
@@ -12,6 +13,8 @@ import java.nio.*;
 import java.nio.channels.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+
+import scheduler.UnchokeRegularScheduler;
 
 
 public class peerProcess implements Runnable, Initialization{
@@ -28,6 +31,7 @@ public class peerProcess implements Runnable, Initialization{
 	List<Peer>peers = new ArrayList<Peer>();
 	PeerInfoConfig pconfig;
 	PeerHandler pHandler;
+	FileSplit fmgr;
 	List<SocketConnectionHandler> activeConnections = new ArrayList<SocketConnectionHandler>();
 
 	public static void main (String[] args) throws IOException, ClassNotFoundException, IllegalAccessException, InterruptedException {
@@ -60,15 +64,25 @@ public class peerProcess implements Runnable, Initialization{
 		PeerInfoConfig pconfig = new PeerInfoConfig();
 		pconfig.init();
 		pHandler = PeerHandler.getInstance();
+		this.fmgr = new FileSplit(config.fileName,this.peerId);
+		this.fmgr.init();
 		for (Peer peer : pconfig.peersList){
 			if (peer.id == peerId){
 				this.peerPort = peer.port;
 				this.peerHostAddress = peer.host;
 				this.hasFile = peer.isFile;
+				if (this.hasFile){
+					this.fmgr.splitFile();
+				}
+				this.pHandler.getPeer(peerId).setparts(this.fmgr.getCurrentAvailableParts());
 				break;
 			}
 			peers.add(peer);
 		}
+
+
+		UnchokeRegularScheduler sTask = new UnchokeRegularScheduler(config.opsUnchokeIntvl, config.unchokeIntvl, config.nofNeighbour, this.pHandler );
+		sTask.run();
 
 	}
 
@@ -83,7 +97,7 @@ public class peerProcess implements Runnable, Initialization{
 			SocketConnectionHandler connection = null;
     		while(true) {
 				try {
-						connection  = new SocketConnectionHandler(this.peerId, listener.accept(), pHandler);
+						connection  = new SocketConnectionHandler(this.peerId, listener.accept(), pHandler, this.fmgr);
 		        		System.out.println("Client "  + this.peerId + " is connected!");
 		        		if (connection != null){
 			        		activeConnections.add(connection);
@@ -113,7 +127,7 @@ public class peerProcess implements Runnable, Initialization{
 				//create a socket to connect to the server
 				System.out.println("Requesting socket Host= "+ peer.host+"and port= "+peer.port);
 				requestSocket = new Socket(peer.host, peer.port);
-				SocketConnectionHandler connection  = new SocketConnectionHandler(this.peerId, peer.id,requestSocket, pHandler);
+				SocketConnectionHandler connection  = new SocketConnectionHandler(this.peerId, peer.id,requestSocket, pHandler, this.fmgr);
 				System.out.println("Connected to "+peer.host+" in port "+ peer.port);
 				activeConnections.add(connection);
 				startConnection(connection);

@@ -20,13 +20,14 @@ public class FileSplit implements Initialization {
     public String fileName = null;
     public CommonConfig cfg = null;
 	private int peerID;
-
+	private BitSet availableParts;
     public FileSplit(){
 	}
 
 	public FileSplit(String fName, int peerID){
 		fileName = fName;
 		this.peerID = peerID;
+		this.availableParts = new BitSet();
 	}
 
 	@Override
@@ -35,6 +36,7 @@ public class FileSplit implements Initialization {
 		//initialize the properties
 		cfg = new CommonConfig();
 		cfg.init();
+
 	}
 
 	public void splitFile(){
@@ -49,7 +51,7 @@ public class FileSplit implements Initialization {
 			 inpFile = new FileInputStream(cfg.fileName);
 
 			 //path of the directory where the split files need to be generated
-			 String splitDirectoryPath =  System.getProperty("user.dir")+"\\peer_"+peerID;
+			 String splitDirectoryPath =  System.getProperty("user.dir")+"/peer_"+peerID+"/";
 			 File folder = new File(splitDirectoryPath);
 			 if(!folder.exists()){
 				boolean result = folder.mkdir();
@@ -83,7 +85,89 @@ public class FileSplit implements Initialization {
         } catch (IOException e) {
            System.out.println("Error occured while reading,spiltting and writing file");
         }
+		 getAvailablePartsFromFilePieces();
 	}
+
+	public byte[] getBytefromtheIndex(int index){
+		String splitDirectoryPath =  System.getProperty("user.dir")+"\\peer_"+peerID;
+		 String splitFileName = index+"_"+cfg.fileName;
+		 File file = new File(splitDirectoryPath+splitFileName);
+		return getByteArrayFromFile(file);
+	}
+
+	public void savePiece(int index, byte[] buf){
+		String splitDirectoryPath =  System.getProperty("user.dir")+"\\peer_"+peerID;
+		 String splitFileName = index+"_"+cfg.fileName;
+		 File file = new File(splitDirectoryPath+splitFileName);
+		 file.getParentFile().mkdirs();
+		 FileOutputStream outFile = null;
+		try {
+			outFile = new FileOutputStream(file);
+			outFile.write(buf, 0, buf.length);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+
+			try {
+				outFile.close();
+				outFile.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
+		}
+
+
+	}
+
+	public BitSet getAvailablePartsFromFilePieces(){
+		double inpFileLength = (double) cfg.fileSize;
+		double splitPieceSize = (double) cfg.peiceSize;
+		int nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
+
+		this.availableParts = new BitSet(nofSplits);
+		String splitDirectoryPath =  System.getProperty("user.dir")+"/peer_"+peerID;
+		File[] files = new File(splitDirectoryPath).listFiles();
+		for(File f:files){
+			if (f.isFile()) {
+		        int pieceIndex = f.getName().charAt(0) - '0';
+		        if (pieceIndex > 0)
+		        	this.availableParts.set(pieceIndex);
+		    }
+		}
+		return this.availableParts;
+	}
+
+	 private byte[] getByteArrayFromFile(File file){
+	        FileInputStream fstream = null;
+	        try {
+	        	fstream = new FileInputStream(file);
+	            byte[] fileBytes = new byte[(int) file.length()];
+	            int bytesRead = fstream.read(fileBytes, 0, (int) file.length());
+	            fstream.close();
+	            assert (bytesRead == fileBytes.length);
+	            assert (bytesRead == (int) file.length());
+	            return fileBytes;
+	        } catch (FileNotFoundException e) {
+
+	        } catch (IOException e) {
+
+	        }
+	        finally {
+	            if (fstream != null) {
+	                try {
+	                	fstream.close();
+	                }
+	                catch (IOException ex) {}
+	            }
+	        }
+	        return null;
+
+	    }
 
 	@Override
 	public void reload() {
@@ -92,19 +176,6 @@ public class FileSplit implements Initialization {
 	}
 
 	public BitSet getCurrentAvailableParts(){
-		double inpFileLength = (double) cfg.fileSize;
-		double splitPieceSize = (double) cfg.peiceSize;
-		int nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
-
-		BitSet availableParts = new BitSet(nofSplits);
-		String splitDirectoryPath =  System.getProperty("user.dir")+"\\peer_"+peerID;
-		File[] files = new File(splitDirectoryPath).listFiles();
-		for(File f:files){
-			if (f.isFile()) {
-		        int pieceIndex = f.getName().charAt(0) - '0';
-		        availableParts.set(pieceIndex);
-		    }
-		}
-		return availableParts;
+		return this.availableParts;
 	}
 }
