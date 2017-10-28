@@ -1,3 +1,4 @@
+package handler;
 import java.nio.ByteBuffer;
 import java.util.BitSet;
 
@@ -61,6 +62,7 @@ public class MessageHandler {
 					return new NotInterested(); //already have the piece
 				}
 			case BIT_FIELD:
+				 System.out.println("Bitfield recieved :"+ ((Bitfield)msg).getBitSet());
 				break;
 			case REQUEST:
 				break;
@@ -68,7 +70,7 @@ public class MessageHandler {
 				break;
 			case HANDSHAKE:
 				//after handshake get the bitfield of selfpeer and send it to remote
-				MESSAGE = new Message(Type.BIT_FIELD,selfpeer.availableParts.toByteArray());
+				MESSAGE = new Bitfield(selfpeer.availableParts);
 				break;
 			default: System.out.println("Illeagal Type of message recieved");
 		}

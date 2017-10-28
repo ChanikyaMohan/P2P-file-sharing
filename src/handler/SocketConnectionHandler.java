@@ -36,6 +36,7 @@ public class SocketConnectionHandler implements Runnable{
 	private IOStreamWriter out;    //stream write to the socket
 	private LinkedBlockingQueue<Message> msgQueue = new LinkedBlockingQueue<Message>();
 	private PeerHandler phandler;
+	private MessageHandler msgHandler;
 
 	public SocketConnectionHandler(int peerId,Socket socket, PeerHandler p){
 			this.socket = socket;
@@ -43,6 +44,7 @@ public class SocketConnectionHandler implements Runnable{
 			this.remotepeerId = -1;
 			this.isunchoked = false;
 			this.state = ConnectionState.initiated;
+			this.msgHandler = null;
 			phandler = p;
 
 			try {
@@ -94,6 +96,27 @@ public class SocketConnectionHandler implements Runnable{
 					//receive the message sent from the client
 					try {
 						message = (Message)in.readObject();
+						if (message == null)
+							continue;
+						if (message instanceof Handshake){
+							Handshake h = (Handshake) message;
+							System.out.println("Handshake Message Received peerid: "+h.peerID);
+							if (this.remotepeerId == -1 || this.remotepeerId == h.peerID){
+								state = ConnectionState.connected;
+								this.remotepeerId = h.peerID;
+								System.out.println("Connected to peer : "+h.peerID);
+								if (phandler.ConnectionTable.get(this.remotepeerId)!=null){
+									//do something with the old connection
+								}
+								phandler.ConnectionTable.put(this.remotepeerId, this); //add the new socket connection for the remot peer
+								msgHandler = new MessageHandler(this.peerId,this.remotepeerId);
+							}
+						}
+						if (msgHandler != null) {
+							System.out.println("other message received"+message.msg_type);
+							send(msgHandler.handleRequest(message));
+						}
+
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -101,36 +124,6 @@ public class SocketConnectionHandler implements Runnable{
 						state = ConnectionState.close;
 					}
 
-					//show the message to the user
-					if (message == null)
-						continue;
-					if (message instanceof Handshake){
-						Handshake h = (Handshake) message;
-						System.out.println("Handshake Message Received peerid: "+h.peerID);
-						if (this.remotepeerId == -1 || this.remotepeerId == h.peerID){
-							state = ConnectionState.connected;
-							this.remotepeerId = h.peerID;
-							System.out.println("Connected to peer : "+h.peerID);
-							if (phandler.ConnectionTable.get(this.remotepeerId)!=null){
-								//do something with the old connection
-							}
-							phandler.ConnectionTable.put(this.remotepeerId, this); //add the new socket connection for the remot peer
-						}
-					} else {
-						System.out.println("other message received"+message.msg_type);
-						
-					}
-
-					/*if (message.equals("P2PFILESHARINGPROJ")  && state != ConnectionState.connected){
-						//msgQueue.add(new Handshake());
-						state = ConnectionState.connected;
-
-						System.out.println("Connected ");
-					}*/
-					//Capitalize all letters in the message
-					//String MESSAGE = message.toUpperCase();
-					//send MESSAGE back to the client
-					//sendMessage(MESSAGE);
 				}
 			}
 			catch(ClassNotFoundException classnot){
@@ -157,22 +150,25 @@ public class SocketConnectionHandler implements Runnable{
 	}
 
 	public void send(Message msg){
+		if (msg == null)
+			return;
 		msgQueue.add(msg);
 	}
 
 	//send a message to the output stream
-		public void SendMessage(Message message)
-		{
-
-			try{
-				out.writeObject(message);
-				out.flush();
-				System.out.println("Send message: " + message + " to Client " + peerId);
-			}
-			catch(IOException ioException){
-				ioException.printStackTrace();
-			}
+	public void SendMessage(Message message)
+	{
+		if (message == null)
+			return;
+		try{
+			out.writeObject(message);
+			out.flush();
+			System.out.println("Send message: " + message + " to Client " + peerId);
 		}
+		catch(IOException ioException){
+			ioException.printStackTrace();
+		}
+	}
 
 
 
