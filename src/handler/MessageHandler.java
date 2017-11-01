@@ -32,12 +32,15 @@ public class MessageHandler {
 		switch(msg.msg_type){
 			case UNCHOKE:
 				// send request message for a piece
+				System.out.println("Received unchoke message");
 				if (required.isEmpty()){
 					// send Not interested message
+					this.phandler.insertChokedPeer(remotepeer);
 					return new NotInterested();
 				} else {
 					// send reuqest message of random piece index
 					int index = required.nextSetBit(0);
+					System.out.println("Required Index Request: "+index);
 					selfpeer.setAvailablePartsIndex(index);
 					byte[] b = ByteBuffer.allocate(4).putInt(index).array();
 					return new Request(b);
@@ -48,6 +51,7 @@ public class MessageHandler {
 				break;
 			case INTERESTED:
 				// should add remotepeer in the list of preferred peers
+				System.out.println("Received interested message addding to preferred");
 				this.phandler.addPreferredPeer(remotepeerID);
 				return null;
 				//break;
@@ -78,6 +82,7 @@ public class MessageHandler {
 				//break;
 			case REQUEST:
 				Request r = (Request)msg;
+				 System.out.println("Request Received for index :"+r.getRequestIndex());
 				return new Piece(r.msg_payload,fmgr.getBytefromtheIndex(r.getRequestIndex()));
 				//break;
 			case PIECE:

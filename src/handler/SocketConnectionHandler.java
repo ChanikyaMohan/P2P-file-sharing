@@ -78,10 +78,14 @@ public class SocketConnectionHandler implements Runnable{
             	Message msg = null;
             	// listen to incoming message
             	while(!socket.isClosed()){
+            		try{
 					while ((msg = msgQueue.poll()) != null) {
 					    System.out.println("Sending message....");
 					    SendMessage(msg);
 					}
+            		} catch(Exception e){
+            			System.out.println("error here");
+            		}
             	}
             }
 		}.start();
@@ -116,7 +120,7 @@ public class SocketConnectionHandler implements Runnable{
 							}
 						}
 						if (msgHandler != null) {
-							System.out.println("other message received"+message.msg_type);
+							System.out.println(" Message received from peer("+this.remotepeerId+")"+message.msg_type);
 							send(msgHandler.handleRequest(message));
 						}
 
@@ -166,7 +170,7 @@ public class SocketConnectionHandler implements Runnable{
 		try{
 			out.writeObject(message);
 			out.flush();
-			System.out.println("Send message: " + message + " to Client " + peerId);
+			System.out.println("Send message from("+this.peerId+"): " + message + " to Client " + this.remotepeerId);
 		}
 		catch(IOException ioException){
 			ioException.printStackTrace();

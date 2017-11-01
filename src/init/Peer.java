@@ -39,9 +39,10 @@ public class Peer {
 	}
 
 	public BitSet getRequiredPart(BitSet b){
-		BitSet r = new BitSet();
-		r.and(b);
-		r.and(availableParts);
+		BitSet r = new BitSet(availableParts.size()) ;
+		r.or(availableParts);
+		r.flip(0, r.size());
+		r.and(b); // should flip the available bits and do and with the bitfield received
 		return r;
 	}
 	public int get_rate() {

@@ -32,7 +32,7 @@ public class peerProcess implements Runnable, Initialization{
 	PeerInfoConfig pconfig;
 	PeerHandler pHandler;
 	FileSplit fmgr;
-	List<SocketConnectionHandler> activeConnections = new ArrayList<SocketConnectionHandler>();
+	List<SocketConnectionHandler> activeConnections = Collections.synchronizedList(new ArrayList<SocketConnectionHandler>());
 
 	public static void main (String[] args) throws IOException, ClassNotFoundException, IllegalAccessException, InterruptedException {
         if (args.length != 1) {
