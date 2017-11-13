@@ -1,10 +1,14 @@
 package scheduler;
 
 import handler.PeerHandler;
+import handler.SocketConnectionHandler;
+import init.Peer;
 
 import java.util.List;
 import java.util.Random;
 import java.util.TimerTask;
+
+import message.Unchoke;
 
 public class OptimisticUnchokeSchedulerTask extends TimerTask{
 
@@ -22,7 +26,14 @@ public class OptimisticUnchokeSchedulerTask extends TimerTask{
 			int randompeer = _rand.nextInt(chokelist.size());
 			int optpeer = chokelist.get(randompeer);
 			this.pHandle.getPeer(optpeer).OptunChoke();
-			this.pHandle.getPeer(this.pHandle.getOptunChokedPeer()).OptChoke();
+			Peer oldoptunchoked = this.pHandle.getPeer(this.pHandle.getOptunChokedPeer());
+			if (oldoptunchoked!= null)
+				oldoptunchoked.OptChoke();			
+			if (this.pHandle.isChoked(optpeer)){ // if the is choked 
+				SocketConnectionHandler sc = this.pHandle.ConnectionTable.get(optpeer);
+				if (sc!=null)
+					sc.send(new Unchoke()); //if the new peer is the new unchoked peer send unchoke message
+			}
 			this.pHandle.addOptunChokedPeer(optpeer);
 			System.out.println("Optimistic Unchoked peer"+optpeer);
 		}

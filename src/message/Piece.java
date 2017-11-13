@@ -8,6 +8,7 @@ public class Piece extends Message{
 	public Piece(byte[] pieceIndex, byte[] pieceContent){
 		super.msg_type = Type.PIECE;
 		super.msg_payload = concatinateByteArrays(pieceIndex,pieceContent);
+		super.msg_length += super.msg_payload.length;
 	}
 
 	private byte[] concatinateByteArrays(byte[] pieceIndex, byte[] pieceContent) {

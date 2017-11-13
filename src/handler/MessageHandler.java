@@ -99,6 +99,7 @@ public class MessageHandler {
 				//after handshake get the bitfield of selfpeer and send it to remote
 				System.out.println("Sending bitfield of parts: "+selfpeer.availableParts);
 				MESSAGE = new Bitfield(selfpeer.availableParts);
+				System.out.println("array to bitset"+BitSet.valueOf(MESSAGE.msg_payload));
 				break;
 			default: System.out.println("Illeagal Type of message recieved");
 		}

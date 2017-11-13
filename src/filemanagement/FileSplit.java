@@ -89,16 +89,16 @@ public class FileSplit implements Initialization {
 	}
 
 	public byte[] getBytefromtheIndex(int index){
-		String splitDirectoryPath =  System.getProperty("user.dir")+"\\peer_"+peerID;
+		String splitDirectoryPath =  System.getProperty("user.dir")+"/peer_"+peerID;
 		 String splitFileName = index+"_"+cfg.fileName;
-		 File file = new File(splitDirectoryPath+splitFileName);
+		 File file = new File(splitDirectoryPath+"/"+splitFileName);
 		return getByteArrayFromFile(file);
 	}
 
 	public void savePiece(int index, byte[] buf){
-		String splitDirectoryPath =  System.getProperty("user.dir")+"\\peer_"+peerID;
+		String splitDirectoryPath =  System.getProperty("user.dir")+"/peer_"+peerID;
 		 String splitFileName = index+"_"+cfg.fileName;
-		 File file = new File(splitDirectoryPath+splitFileName);
+		 File file = new File(splitDirectoryPath+"/"+splitFileName);
 		 file.getParentFile().mkdirs();
 		 FileOutputStream outFile = null;
 		try {
@@ -153,7 +153,7 @@ public class FileSplit implements Initialization {
 	            assert (bytesRead == (int) file.length());
 	            return fileBytes;
 	        } catch (FileNotFoundException e) {
-
+	        		System.out.println("file not found");
 	        } catch (IOException e) {
 
 	        }

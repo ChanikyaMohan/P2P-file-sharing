@@ -1,6 +1,7 @@
 package scheduler;
 
 import handler.PeerHandler;
+import handler.SocketConnectionHandler;
 import init.Peer;
 
 import java.util.ArrayList;
@@ -54,8 +55,12 @@ public class UnchokeSchedulerTask extends TimerTask {
 		//System.out.print("New Unchoke peers list: ");
 		//this.pHandle.reload(); //clear unchoked list
 		for (Peer p :peerMinQueue){
-			if (this.pHandle.isChoked(p.id)) // if the is choked 
-				this.pHandle.ConnectionTable.get(p.id).send(new Unchoke()); //if the new peer is the new unchoked peer send unchoke message
+			if (this.pHandle.isChoked(p.id)){ // if the is choked 
+				SocketConnectionHandler sc = this.pHandle.ConnectionTable.get(p.id);
+				if (sc!=null)
+					sc.send(new Unchoke()); //if the new peer is the new unchoked peer send unchoke message
+			}
+				
 			unchokedlist.add(p.id); //add the pid to the unchoke list
 			p.Unchoke(); //unchoke the preferred peers
 			//System.out.print(p.id+", ");
