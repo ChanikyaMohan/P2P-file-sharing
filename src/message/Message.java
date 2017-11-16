@@ -58,6 +58,7 @@ public class Message {
 	public Type msg_type = null;
 	public byte[] msg_payload = null;
 
+
 	//why this?
 	public String msg= null;
 
@@ -134,19 +135,31 @@ public class Message {
 	//Method to write to ObjectOutputStream
 	public void write (IOStreamWriter ioStreamWriter) throws IOException
 	{
-		System.out.println("writing other message");
-		writeintgeter(ioStreamWriter, msg_length);
-		ioStreamWriter.writeByte(msg_type.getCode());
+		System.out.println("writing message");
+		byte buf [] = ByteBuffer.allocate(4+msg_length).putInt(msg_length).array();
+		buf[4] = msg_type.getCode();
+		if (msg_payload!=null && msg_payload.length>0) {
+			System.out.println("sending msg_payload ="+Arrays.toString(msg_payload)+" msg_payload.length = "+msg_payload.length);
+			System.arraycopy(msg_payload, 0, buf, 5, msg_payload.length);
+		}
+		System.out.println("output buffer ="+Arrays.toString(buf));
+		ioStreamWriter.write(buf);
+		//byte []buf = new byte[4+1+msg_payload.length];
+		//ioStreamWriter.writeByte(msg_length);
+		//writeintgeter(ioStreamWriter, msg_length);
+		//ioStreamWriter.wr
+		/*ioStreamWriter.writeByte(msg_type.getCode());
 		if (msg_payload!=null && msg_payload.length>0) {
 			System.out.println("sending msg_payload ="+Arrays.toString(msg_payload)+" msg_payload.length = "+msg_payload.length);
 			ioStreamWriter.write(msg_payload, 0, msg_payload.length);
-		}
+		}*/
 	}
 	private void writeintgeter(IOStreamWriter ioStreamWriter, int v) throws IOException{
 		byte arr[] = ByteBuffer.allocate(4).putInt(v).array();
 		System.out.println("int array  ="+Arrays.toString(arr));
-		for (byte b : arr){
-			ioStreamWriter.writeByte(b);
-		}
+		ioStreamWriter.write(arr, 0, 4);
+		//for (byte b : arr){
+		//	ioStreamWriter.writeByte(b);
+		//}
 	}
 }
