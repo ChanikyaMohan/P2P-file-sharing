@@ -21,6 +21,7 @@ public class FileSplit implements Initialization {
     public CommonConfig cfg = null;
 	private int peerID;
 	private BitSet availableParts;
+	int nofSplits= 0;
     public FileSplit(){
 	}
 
@@ -36,13 +37,17 @@ public class FileSplit implements Initialization {
 		//initialize the properties
 		cfg = new CommonConfig();
 		cfg.init();
+		double inpFileLength = (double) cfg.fileSize;
+		double splitPieceSize = (double) cfg.peiceSize;
+		nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
+		this.availableParts = new BitSet(nofSplits);
 
 	}
 
 	public void splitFile(){
-		double inpFileLength = (double) cfg.fileSize;
-		double splitPieceSize = (double) cfg.peiceSize;
-		int nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
+		//double inpFileLength = (double) cfg.fileSize;
+		//double splitPieceSize = (double) cfg.peiceSize;
+		//int nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
 
 		FileInputStream inpFile = null;
 		FileOutputStream outFile = null;
