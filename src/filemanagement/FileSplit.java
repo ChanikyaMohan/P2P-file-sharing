@@ -140,10 +140,11 @@ public class FileSplit implements Initialization {
 		for(File f:files){
 			if (f.isFile()) {
 		        int pieceIndex = f.getName().charAt(0) - '0';
-		        if (pieceIndex > 0)
+		        if (pieceIndex >= 0)
 		        	this.availableParts.set(pieceIndex);
 		    }
 		}
+		System.out.println("file split available parts= "+this.availableParts);
 		return this.availableParts;
 	}
 

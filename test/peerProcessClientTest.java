@@ -30,6 +30,9 @@ public class peerProcessClientTest {
 	public void testInit() {
 		//peerProcess p = new peerProcess(1);
 		//p.init();
+
+		peerProcess p2 = new peerProcess(1002);
+		p2.init();
 	}
 
 	@Test
