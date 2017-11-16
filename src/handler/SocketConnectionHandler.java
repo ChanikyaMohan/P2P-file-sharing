@@ -84,7 +84,7 @@ public class SocketConnectionHandler implements Runnable{
 					    SendMessage(msg);
 					}
             		} catch(Exception e){
-            			System.out.println("error here");
+            			System.out.println("error here"+e);
             		}
             	}
             }
@@ -103,7 +103,7 @@ public class SocketConnectionHandler implements Runnable{
 					//receive the message sent from the client
 					try {
 						message = (Message)in.readObject();
-					
+
 						if (message == null)
 							continue;
 						if (message instanceof Handshake){

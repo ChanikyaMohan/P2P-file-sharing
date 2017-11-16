@@ -18,7 +18,7 @@ import message.Message;
 import message.Message.Type;
 
 public class IOStreamReader extends DataInputStream implements ObjectInput{
-
+	private boolean hanshk_recvd =false;
 	public IOStreamReader(InputStream in) throws IOException, SecurityException {
 		super(in);
 		// TODO Auto-generated constructor stub
@@ -69,33 +69,38 @@ public class IOStreamReader extends DataInputStream implements ObjectInput{
 
 	@Override
 	public Object readObject() throws ClassNotFoundException, IOException {
-		byte [] b = new byte[available()] ;
-		read(b);
-		//reset();
-		//System.out.println("b ="+b.toString()+" b.length = "+b.length);
-		//System.out.println(b.toString());
-		if(b.length >= 32)
-		{
-			String s = new String (b, 0, 18);
-			System.out.println("received byte"+s);
-			System.out.println("b ="+Arrays.toString(b)+" b.length = "+b.length);
-			if(s.equals("P2PFILESHARINGPROJ"))
+		if (!hanshk_recvd){
+			byte [] b = new byte[available()] ;
+			//readfully(b,0,)
+			read(b);
+			//reset();
+			//System.out.println("b ="+b.toString()+" b.length = "+b.length);
+			//System.out.println(b.toString());
+			if(b.length >= 32)
 			{
-				return new Handshake(byteArrayToInt(b, 28));
+				String s = new String (b, 0, 18);
+				System.out.println("received byte"+s);
+				System.out.println("b ="+Arrays.toString(b)+" b.length = "+b.length);
+				if(s.equals("P2PFILESHARINGPROJ"))
+				{
+					hanshk_recvd = true;
+					return new Handshake(byteArrayToInt(b, 28));
+				}
+
 			}
-		}
-		if(b.length >= 4)
-		{
-			int len = fromByteArray(b);
+		} else {
+			int len = readInt();
+			//int len = fromByteArray(b);
 			Message msg;
-			System.out.println("b ="+Arrays.toString(b)+" b.length = "+b.length);
+			//System.out.println("b ="+Arrays.toString(b)+" b.length = "+b.length);
 			//Type type = Message.Type.getTypeFromCode(b[4]);
 			System.out.println("lent ="+len);
 
-			msg = Message.getMessage(Message.Type.getTypeFromCode(b[4]), len);
+			msg = Message.getMessage(Message.Type.getTypeFromCode(readByte()), len);
 			//Passing message length - type of 1 byte
-			msg.read(b,5,len-1);
+			msg.read(len-1);
 			return msg;
+
 		}
 		return null;
 	}
