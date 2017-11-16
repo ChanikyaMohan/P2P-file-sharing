@@ -130,11 +130,11 @@ public class FileSplit implements Initialization {
 	}
 
 	public BitSet getAvailablePartsFromFilePieces(){
-		double inpFileLength = (double) cfg.fileSize;
-		double splitPieceSize = (double) cfg.peiceSize;
-		int nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
+		//double inpFileLength = (double) cfg.fileSize;
+		//double splitPieceSize = (double) cfg.peiceSize;
+		//int nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
 
-		this.availableParts = new BitSet(nofSplits);
+		//this.availableParts = new BitSet(nofSplits);
 		String splitDirectoryPath =  System.getProperty("user.dir")+"/peer_"+peerID;
 		File[] files = new File(splitDirectoryPath).listFiles();
 		for(File f:files){
