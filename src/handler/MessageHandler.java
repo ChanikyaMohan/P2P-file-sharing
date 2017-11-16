@@ -33,6 +33,7 @@ public class MessageHandler {
 			case UNCHOKE:
 				// send request message for a piece
 				System.out.println("Received unchoke message");
+				selfpeer.Unchoke();
 				if (required.isEmpty()){
 					// send Not interested message
 					this.phandler.insertChokedPeer(remotepeer);
@@ -47,6 +48,7 @@ public class MessageHandler {
 				}
 			case CHOKE:
 				// do nothing for now
+				selfpeer.Choke();
 				System.out.println("Received choke message");
 				break;
 			case INTERESTED:
@@ -72,13 +74,13 @@ public class MessageHandler {
 				Bitfield bf = (Bitfield)msg;
 				 System.out.println("Bitfield recieved :"+ bf.getBitSet());
 				if (selfpeer.getRequiredPart(bf.getBitSet()).isEmpty()){
-					
+
 					return new NotInterested();
 				} else {
 					remotepeer.setparts( bf.getBitSet());
 					return new Interested();
 				}
-				
+
 				//break;
 			case REQUEST:
 				Request r = (Request)msg;
@@ -88,7 +90,7 @@ public class MessageHandler {
 			case PIECE:
 				Piece p = (Piece)msg;
 				fmgr.savePiece(p.getpieceIndex(),p.getPieceContent());
-				if (this.phandler.isunChoked(this.remotepeerID)){
+				if (!selfpeer.ischoke()){
 					int inx = required.nextSetBit(0);
 					selfpeer.setAvailablePartsIndex(inx);
 					byte[] b = ByteBuffer.allocate(4).putInt(inx).array();

@@ -64,5 +64,8 @@ public class Peer {
 	public void OptunChoke() {
 		this._isOptunchoke = true;
 	}
+	public boolean ischoke(){
+		return this._isChoke;
+	}
 
 }
