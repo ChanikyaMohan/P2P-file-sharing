@@ -71,20 +71,24 @@ public class IOStreamReader extends DataInputStream implements ObjectInput{
 	public Object readObject() throws ClassNotFoundException, IOException {
 		byte [] b = new byte[available()] ;
 		read(b);
+		//reset();
+		//System.out.println("b ="+b.toString()+" b.length = "+b.length);
 		//System.out.println(b.toString());
 		if(b.length >= 32)
 		{
 			String s = new String (b, 0, 18);
 			System.out.println("received byte"+s);
+			System.out.println("b ="+Arrays.toString(b)+" b.length = "+b.length);
 			if(s.equals("P2PFILESHARINGPROJ"))
 			{
 				return new Handshake(byteArrayToInt(b, 28));
 			}
 		}
-		if(b.length > 4)
+		if(b.length >= 4)
 		{
 			int len = fromByteArray(b);
 			Message msg;
+			System.out.println("b ="+Arrays.toString(b)+" b.length = "+b.length);
 			//Type type = Message.Type.getTypeFromCode(b[4]);
 			System.out.println("lenght ="+len);
 

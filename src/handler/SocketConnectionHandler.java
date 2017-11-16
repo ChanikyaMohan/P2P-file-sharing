@@ -103,6 +103,7 @@ public class SocketConnectionHandler implements Runnable{
 					//receive the message sent from the client
 					try {
 						message = (Message)in.readObject();
+					
 						if (message == null)
 							continue;
 						if (message instanceof Handshake){

@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 import java.util.BitSet;
 
 public class Message {
@@ -92,7 +93,7 @@ public class Message {
 	public byte[] getPayload(){
 		return this.msg_payload;
 	}
-	
+
 	//Method to return a message object according to the message type
 	public static Message getMessage (Type type, int length) throws ClassNotFoundException
 	{
@@ -114,28 +115,30 @@ public class Message {
 			return new Unchoke();
 		else
 			throw new ClassNotFoundException("Message Type not found");
-		
+
 	}
-	
+
 	//Method to read from OubjectInputStream
-	public void read (byte [] buf, int pos, int length) throws IOException 
+	public void read (byte [] buf, int pos, int length) throws IOException
 	{
 		if (length>0){
 			msg_payload = new byte[length];
-	        if (msg_payload!=null && msg_payload.length>0) 
+	        if (msg_payload!=null && msg_payload.length>0)
 	            System.arraycopy(buf, pos, msg_payload, 0, length);
 	        else
 	        	throw new IOException("Payload is empty");
 		}
     }
-	
+
 	//Method to write to ObjectOutputStream
 	public void write (IOStreamWriter ioStreamWriter) throws IOException
 	{
 		System.out.println("writing other message");
 		ioStreamWriter.writeInt(msg_length);
 		ioStreamWriter.writeByte(msg_type.getCode());
-		if (msg_payload!=null && msg_payload.length>0) 
+		if (msg_payload!=null && msg_payload.length>0) {
+			System.out.println("sending msg_payload ="+Arrays.toString(msg_payload)+" msg_payload.length = "+msg_payload.length);
 			ioStreamWriter.write(msg_payload, 0, msg_payload.length);
+		}
 	}
 }
