@@ -28,6 +28,8 @@ public class Peer {
 		return this.rate;
 	}
 
+
+
 	public void setparts(BitSet b){
 		availableParts.or(b);
 	}

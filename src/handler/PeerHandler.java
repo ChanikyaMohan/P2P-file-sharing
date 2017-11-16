@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import util.AtomicBitSet;
+import init.CommonConfig;
 import init.Initialization;
 import init.Peer;
 import init.PeerInfoConfig;
@@ -57,7 +58,15 @@ public class PeerHandler implements Initialization {
 
 	public void init(List<Peer>list) {
 		//todo some intialization
+		CommonConfig config = new CommonConfig();
+		config.init();
+		double inpFileLength = (double) config.fileSize;
+		double splitPieceSize = (double) config.peiceSize;
+		int nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
+		//this.availableParts = new BitSet(nofSplits);
+
 		for (Peer p : list){
+			p.availableParts =  new BitSet(nofSplits);
 			_peerTable.put(p.id, p);
 			ConnectionTable.put(p.id, null);
 		}
