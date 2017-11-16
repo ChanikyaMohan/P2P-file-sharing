@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.BitSet;
 
@@ -134,11 +135,18 @@ public class Message {
 	public void write (IOStreamWriter ioStreamWriter) throws IOException
 	{
 		System.out.println("writing other message");
-		ioStreamWriter.writeInt(msg_length);
+		writeintgeter(ioStreamWriter, msg_length);
 		ioStreamWriter.writeByte(msg_type.getCode());
 		if (msg_payload!=null && msg_payload.length>0) {
 			System.out.println("sending msg_payload ="+Arrays.toString(msg_payload)+" msg_payload.length = "+msg_payload.length);
 			ioStreamWriter.write(msg_payload, 0, msg_payload.length);
+		}
+	}
+	private void writeintgeter(IOStreamWriter ioStreamWriter, int v) throws IOException{
+		byte arr[] = ByteBuffer.allocate(4).putInt(v).array();
+		System.out.println("int array  ="+Arrays.toString(arr));
+		for (byte b : arr){
+			ioStreamWriter.writeByte(b);
 		}
 	}
 }
