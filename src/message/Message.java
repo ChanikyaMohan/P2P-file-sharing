@@ -1,5 +1,6 @@
 package message;
 
+import iostream.IOStreamReader;
 import iostream.IOStreamWriter;
 
 import java.io.DataInputStream;
@@ -121,12 +122,13 @@ public class Message {
 	}
 
 	//Method to read from OubjectInputStream
-	public void read (byte [] buf, int pos, int length) throws IOException
+	public void read (IOStreamReader ioStreamReader, int length) throws IOException
 	{
 		if (length>0){
-			msg_payload = new byte[length];
+			//msg_payload = new byte[length];
 	        if (msg_payload!=null && msg_payload.length>0)
-	            System.arraycopy(buf, pos, msg_payload, 0, length);
+	        	ioStreamReader.readFully(msg_payload, 0, length);
+	            //System.arraycopy(buf, pos, msg_payload, 0, length);
 	        else
 	        	throw new IOException("Payload is empty");
 		}

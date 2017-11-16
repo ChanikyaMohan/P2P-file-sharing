@@ -43,7 +43,7 @@ public class IOStreamReader extends DataInputStream implements ObjectInput{
 
 			msg = Message.getMessage(Message.Type.getTypeFromCode(b[4]), length);
 			//Passing message length - type of 1 byte
-			msg.read(b,5,b.length-1);
+			msg.read(this,b.length-1);
 			return msg;
 		}
 		return null;
@@ -98,7 +98,7 @@ public class IOStreamReader extends DataInputStream implements ObjectInput{
 
 			msg = Message.getMessage(Message.Type.getTypeFromCode(readByte()), len);
 			//Passing message length - type of 1 byte
-			msg.read(len-1);
+			msg.read(this, len-1);
 			return msg;
 
 		}
