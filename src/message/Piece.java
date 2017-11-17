@@ -7,21 +7,31 @@ import java.nio.ByteBuffer;
 public class Piece extends Message{
 	public Piece(byte[] pieceIndex, byte[] pieceContent){
 		super.msg_type = Type.PIECE;
-		super.msg_payload = concatinateByteArrays(pieceIndex,pieceContent);
+		concatinateByteArrays(pieceIndex,pieceContent);
 		super.msg_length += super.msg_payload.length;
 	}
 
-	private byte[] concatinateByteArrays(byte[] pieceIndex, byte[] pieceContent) {
+	public Piece(){
+		super.msg_type = Type.PIECE;
+	}
+
+	private void concatinateByteArrays(byte[] pieceIndex, byte[] pieceContent) {
 		// TODO Auto-generated method stub
-		ByteArrayOutputStream stream = new ByteArrayOutputStream( );
-		try {
+		//ByteArrayOutputStream stream = new ByteArrayOutputStream( );
+		super.msg_payload  = new byte [pieceIndex.length+pieceContent.length];
+		System.arraycopy(pieceIndex, 0, super.msg_payload, 0, pieceIndex.length);
+		System.arraycopy(pieceContent, 0, super.msg_payload, pieceIndex.length, pieceContent.length);
+		System.out.println(" after pieceContent lenth = "+ super.msg_payload.length);
+		/*try {
+			System.out.println("before  pieceContent lenth = "+ pieceContent.length);
 			stream.write(pieceIndex);
 			stream.write(pieceContent);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return stream.toByteArray();
+		System.out.println(" after pieceContent lenth = "+ stream.toByteArray().length);
+		return stream.toByteArray();*/
 	}
 
 	public int getpieceIndex(){
@@ -34,10 +44,12 @@ public class Piece extends Message{
 	}
 
 	public byte[] getPieceContent(){
-		byte[] pieceContent = new byte[super.msg_length - 5]; // excluding msg_type length and pieceIndex length
-		for(int i=4;i<super.msg_payload.length;i++){
+		byte[] pieceContent = new byte[super.msg_payload.length - 4]; // excluding msg_type length and pieceIndex length
+		System.arraycopy(super.msg_payload, 4, pieceContent, 0, pieceContent.length);
+		/*for(int i=4;i<super.msg_payload.length;i++){
 			pieceContent[i] = super.msg_payload[i];
-		}
+		}*/
+		System.out.println("piececontentlen = "+pieceContent.length);
 		return pieceContent;
 	}
 }

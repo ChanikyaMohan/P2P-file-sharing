@@ -90,8 +90,8 @@ public class MessageHandler {
 			case PIECE:
 				Piece p = (Piece)msg;
 				fmgr.savePiece(p.getpieceIndex(),p.getPieceContent());
-				if (!selfpeer.ischoke()){
-					int inx = required.nextSetBit(0);
+				int inx = required.nextSetBit(0);
+				if (!selfpeer.ischoke() && inx >=0){
 					selfpeer.setAvailablePartsIndex(inx);
 					byte[] b = ByteBuffer.allocate(4).putInt(inx).array();
 					return new Request(b);

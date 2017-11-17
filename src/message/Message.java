@@ -105,15 +105,15 @@ public class Message {
 		else if(type == Type.BIT_FIELD)
 			return new Bitfield(new BitSet());
 		else if(type == Type.HAVE)
-			return new Have(new byte[length]);
+			return new Have();
 		else if(type == Type.INTERESTED)
 			return new Interested();
 		else if(type == Type.NOT_INTERESTED)
 			return new NotInterested();
 		else if(type == Type.PIECE)
-			return new Piece(new byte[length],new byte[length]);
+			return new Piece();
 		else if(type == Type.REQUEST)
-			return new Request(new byte[length]);
+			return new Request();
 		else if(type == Type.UNCHOKE)
 			return new Unchoke();
 		else

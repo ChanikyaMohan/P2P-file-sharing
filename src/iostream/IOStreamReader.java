@@ -94,7 +94,7 @@ public class IOStreamReader extends DataInputStream implements ObjectInput{
 			Message msg;
 			//System.out.println("b ="+Arrays.toString(b)+" b.length = "+b.length);
 			//Type type = Message.Type.getTypeFromCode(b[4]);
-			System.out.println("lent ="+len);
+			System.out.println("len ="+len);
 
 			msg = Message.getMessage(Message.Type.getTypeFromCode(readByte()), len);
 			//Passing message length - type of 1 byte
