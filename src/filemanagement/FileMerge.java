@@ -1,6 +1,7 @@
 package filemanagement;
 
 import java.io.*;
+import java.util.Arrays;
 
 import init.CommonConfig;
 import init.Initialization;
@@ -40,19 +41,25 @@ public class FileMerge implements Initialization{
 
 	    	//name of folder containing all the split files
 	    	//listFiles() will return all the files in the folder
-	    	String splitDirectoryPath = "C:\\Users\\konya\\Desktop\\splitParts\\";
-	    	File splitFilesFolder = new File(splitDirectoryPath);
-	    	File[] listOfFiles = splitFilesFolder.listFiles();
+	    	String splitDirectoryPath = System.getProperty("user.dir")+"/peer_1001";
+	    	//File splitFilesFolder = new File(splitDirectoryPath);
+	    	///File[] listOfFiles = splitFilesFolder.listFiles();
+	    	//int numberOfFiles = listOfFiles.length;
 
+	    	double inpFileLength = (double) cfg.fileSize;
+			double splitPieceSize = (double) cfg.peiceSize;
+			int nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
 	    	//read each file in the folder and write the buffer contents to output stream
-	        for (File SplitFile : listOfFiles) {
-	        	inpFile = new FileInputStream(SplitFile);
-	        	int fileSize = (int) SplitFile.length();
+	        for (int i=0;i<nofSplits;i++) {
+	        	System.out.println("Printing file : "+i+"_madhav.dat");
+	        	File f = new File(splitDirectoryPath+"/"+i+"_madhav.dat");
+	        	inpFile = new FileInputStream(f);
+	        	int fileSize = (int) f.length();
 	        	byte[] buffer = new byte[fileSize];
 	            int lengthRead = inpFile.read(buffer, 0, fileSize);
 	            if(lengthRead > 0){
 	            	outFileStream.write(buffer);
-	            	outFileStream.flush();
+//	            	outFileStream.flush();
 	            }
 	            inpFile.close();
 	        }
