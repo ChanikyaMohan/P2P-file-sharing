@@ -26,7 +26,7 @@ public class peerProcessClientTest {
 
 	}
 
-	@Test
+	/*@Test
 	public void testInit() {
 		//peerProcess p = new peerProcess(1);
 		//p.init();
@@ -49,6 +49,6 @@ public class peerProcessClientTest {
 	@Test
 	public void testReload() {
 		//fail("Not yet implemented");
-	}
+	}*/
 
 }

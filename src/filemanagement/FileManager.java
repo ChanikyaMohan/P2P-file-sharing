@@ -50,10 +50,11 @@ public class FileManager implements Initialization{
 		createPeerFolder();
 		fileSplit = new FileSplit(peerId,noOfSplits,cfg);
 		fileMerge = new FileMerge(peerId,noOfSplits,cfg);
-		generateSplitsIfHave();
-
 		//available parts
 		this.availableParts = new BitSet(noOfSplits);
+		generateSplitsIfHave();
+
+
 	}
 
 	private void generateSplitsIfHave() {
@@ -63,8 +64,8 @@ public class FileManager implements Initialization{
 		if(peer.isFile){
 			fileSplit.splitFile();
 			getAvailablePartsFromFilePieces();
+			LogConfig.getLogRecord().debugLog("File is split into pieces");
 		}
-		LogConfig.getLogRecord().debugLog("File is split into pieces");
 	}
 
 	private void createPeerFolder() {

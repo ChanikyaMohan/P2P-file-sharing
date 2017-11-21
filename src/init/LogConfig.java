@@ -26,6 +26,7 @@ public final class LogConfig implements Initialization{
     private static LogConfig logRecord = new LogConfig();
     static String logSuffix;
     private boolean _debug = true;
+    private int peerid;
 
     static
 	{
@@ -45,6 +46,7 @@ public final class LogConfig implements Initialization{
 
     public void setLoggerForPeer(int peerId)
     {
+    	this.peerid = peerId;
         logSuffix = ": Peer" + " " + Integer.toString(peerId);
                 String filename = "log_peer_" + Integer.toString(peerId) + ".log";
 
@@ -78,7 +80,7 @@ public final class LogConfig implements Initialization{
     public void debugLog(String msg)
     {
     	if(_debug == true)
-    		logger.log(Level.INFO, msg);
+    		logger.log(Level.INFO, this.peerid+": "+ msg);
     }
 
     public void connectTo (int peerId) {
