@@ -4,6 +4,8 @@ import java.nio.*;
 import java.nio.channels.*;
 import java.util.*;
 
+import init.LogConfig;
+
 public class Client {
 	Socket requestSocket;           //socket connect to the server
 	ObjectOutputStream out;         //stream write to the socket
@@ -12,7 +14,7 @@ public class Client {
 	String MESSAGE;                //capitalized message read from the server
 
 	public void Client() {
-		
+
 	}
 
 	void run()
@@ -20,17 +22,17 @@ public class Client {
 		try{
 			//create a socket to connect to the server
 			requestSocket = new Socket("localhost", 8000);
-			System.out.println("Connected to localhost in port 8000");
+			LogConfig.getLogRecord().debugLog("Connected to localhost in port 8000");
 			//initialize inputStream and outputStream
 			out = new ObjectOutputStream(requestSocket.getOutputStream());
 			out.flush();
 			in = new ObjectInputStream(requestSocket.getInputStream());
-			
+
 			//get Input from standard input
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 			while(true)
 			{
-				System.out.print("Hello, please input a sentence: ");
+				LogConfig.getLogRecord().debugLog("Hello, please input a sentence: ");
 				//read a sentence from the standard input
 				message = bufferedReader.readLine();
 				//Send the sentence to the server
@@ -38,17 +40,17 @@ public class Client {
 				//Receive the upperCase sentence from the server
 				MESSAGE = (String)in.readObject();
 				//show the message to the user
-				System.out.println("Receive message: " + MESSAGE);
+				LogConfig.getLogRecord().debugLog("Receive message: " + MESSAGE);
 			}
 		}
 		catch (ConnectException e) {
-    			System.err.println("Connection refused. You need to initiate a server first.");
-		} 
+			LogConfig.getLogRecord().debugLog("Connection refused. You need to initiate a server first.");
+		}
 		catch ( ClassNotFoundException e ) {
-            		System.err.println("Class not found");
-        	} 
+			LogConfig.getLogRecord().debugLog("Class not found");
+        	}
 		catch(UnknownHostException unknownHost){
-			System.err.println("You are trying to connect to an unknown host!");
+			LogConfig.getLogRecord().debugLog("You are trying to connect to an unknown host!");
 		}
 		catch(IOException ioException){
 			ioException.printStackTrace();

@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import init.LogConfig;
+
 public class Piece extends Message{
 	public Piece(byte[] pieceIndex, byte[] pieceContent){
 		super.msg_type = Type.PIECE;
@@ -21,7 +23,7 @@ public class Piece extends Message{
 		super.msg_payload  = new byte [pieceIndex.length+pieceContent.length];
 		System.arraycopy(pieceIndex, 0, super.msg_payload, 0, pieceIndex.length);
 		System.arraycopy(pieceContent, 0, super.msg_payload, pieceIndex.length, pieceContent.length);
-		System.out.println(" after pieceContent lenth = "+ super.msg_payload.length);
+		LogConfig.getLogRecord().debugLog(" after pieceContent lenth = "+ super.msg_payload.length);
 		/*try {
 			System.out.println("before  pieceContent lenth = "+ pieceContent.length);
 			stream.write(pieceIndex);
@@ -49,7 +51,7 @@ public class Piece extends Message{
 		/*for(int i=4;i<super.msg_payload.length;i++){
 			pieceContent[i] = super.msg_payload[i];
 		}*/
-		System.out.println("piececontentlen = "+pieceContent.length);
+		LogConfig.getLogRecord().debugLog("piececontentlen = "+pieceContent.length);
 		return pieceContent;
 	}
 }

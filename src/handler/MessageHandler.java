@@ -2,6 +2,7 @@ package handler;
 import java.nio.ByteBuffer;
 import java.util.BitSet;
 
+import init.LogConfig;
 import init.Peer;
 import filemanagement.FileSplit;
 import handler.PeerHandler;
@@ -32,7 +33,7 @@ public class MessageHandler {
 		switch(msg.msg_type){
 			case UNCHOKE:
 				// send request message for a piece
-				System.out.println("Received unchoke message");
+				LogConfig.getLogRecord().debugLog("Received unchoke message");
 				selfpeer.Unchoke();
 				if (required.isEmpty()){
 					// send Not interested message
@@ -41,7 +42,7 @@ public class MessageHandler {
 				} else {
 					// send reuqest message of random piece index
 					int index = required.nextSetBit(0);
-					System.out.println("Required Index Request: "+index);
+					LogConfig.getLogRecord().debugLog("Required Index Request: "+index);
 					selfpeer.setAvailablePartsIndex(index);
 					byte[] b = ByteBuffer.allocate(4).putInt(index).array();
 					return new Request(b);
@@ -49,11 +50,11 @@ public class MessageHandler {
 			case CHOKE:
 				// do nothing for now
 				selfpeer.Choke();
-				System.out.println("Received choke message");
+				LogConfig.getLogRecord().debugLog("Received choke message");
 				break;
 			case INTERESTED:
 				// should add remotepeer in the list of preferred peers
-				System.out.println("Received interested message addding to preferred");
+				LogConfig.getLogRecord().debugLog("Received interested message addding to preferred");
 				this.phandler.addPreferredPeer(remotepeerID);
 				return null;
 				//break;
@@ -72,7 +73,7 @@ public class MessageHandler {
 				}
 			case BIT_FIELD:
 				Bitfield bf = (Bitfield)msg;
-				 System.out.println("Bitfield recieved :"+ bf.getBitSet());
+				LogConfig.getLogRecord().debugLog("Bitfield recieved :"+ bf.getBitSet());
 				if (selfpeer.getRequiredPart(bf.getBitSet()).isEmpty()){
 
 					return new NotInterested();
@@ -84,7 +85,7 @@ public class MessageHandler {
 				//break;
 			case REQUEST:
 				Request r = (Request)msg;
-				 System.out.println("Request Received for index :"+r.getRequestIndex());
+				LogConfig.getLogRecord().debugLog("Request Received for index :"+r.getRequestIndex());
 				return new Piece(r.msg_payload,fmgr.getBytefromtheIndex(r.getRequestIndex()));
 				//break;
 			case PIECE:
@@ -99,11 +100,11 @@ public class MessageHandler {
 				break;
 			case HANDSHAKE:
 				//after handshake get the bitfield of selfpeer and send it to remote
-				System.out.println("Sending bitfield of parts: "+selfpeer.availableParts);
+				LogConfig.getLogRecord().debugLog("Sending bitfield of parts: "+selfpeer.availableParts);
 				MESSAGE = new Bitfield(selfpeer.availableParts);
-				System.out.println("array to bitset"+BitSet.valueOf(MESSAGE.msg_payload));
+				LogConfig.getLogRecord().debugLog("array to bitset"+BitSet.valueOf(MESSAGE.msg_payload));
 				break;
-			default: System.out.println("Illeagal Type of message recieved");
+			default: LogConfig.getLogRecord().debugLog("Illeagal Type of message recieved");
 		}
 
 		return MESSAGE;
