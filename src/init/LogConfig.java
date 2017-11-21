@@ -26,7 +26,7 @@ public final class LogConfig implements Initialization{
 	private static Logger logger;
     private static LogConfig logRecord = new LogConfig();
     static String logSuffix;
-    private boolean _debug = true;
+    private boolean _debug = false;
     private int peerid;
 
     static

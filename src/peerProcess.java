@@ -85,7 +85,7 @@ public class peerProcess implements Runnable, Initialization{
 		}
 
 
-		UnchokeRegularScheduler sTask = new UnchokeRegularScheduler(config.opsUnchokeIntvl, config.unchokeIntvl, config.nofNeighbour, this.pHandler );
+		UnchokeRegularScheduler sTask = new UnchokeRegularScheduler(this.peerId, config.opsUnchokeIntvl, config.unchokeIntvl, config.nofNeighbour, this.pHandler );
 		sTask.run();
 
 	}

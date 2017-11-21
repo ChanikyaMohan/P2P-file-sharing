@@ -24,7 +24,7 @@ public class UnchokeRegularSchedulerTest {
 		//p.addPreferredPeerList(p.getPeersList());
 		p.addPreferredPeer(1002);
 		p.reload();
-		UnchokeRegularScheduler sTask = new UnchokeRegularScheduler(config.opsUnchokeIntvl, config.unchokeIntvl, config.nofNeighbour, p );
+		UnchokeRegularScheduler sTask = new UnchokeRegularScheduler(1001, config.opsUnchokeIntvl, config.unchokeIntvl, config.nofNeighbour, p );
 		int i = 0;
 		sTask.run(); while(i <10){
 			TimeUnit.SECONDS.sleep(6);
@@ -48,7 +48,7 @@ public class UnchokeRegularSchedulerTest {
 		p.init(pconfig.peersList);
 		p.addPreferredPeer(1002);
 		p.reload();
-		UnchokeSchedulerTask utask = new UnchokeSchedulerTask(p, config.nofNeighbour);
+		UnchokeSchedulerTask utask = new UnchokeSchedulerTask(1001, p, config.nofNeighbour);
 		utask.run();
 
 	}
