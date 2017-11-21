@@ -1,0 +1,439 @@
+[33mcommit d25f888b1c06bbbe722752f8bdb61d37666f746f[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: kris21592 <kris.21592@gmail.com>
+Date:   Tue Nov 21 13:41:24 2017 -0500
+
+    Added logging functionality
+
+[33mcommit cf89a155d611c04cd4e792ea1e893b84ac80847c[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Nov 16 21:06:49 2017 -0500
+
+    fixed file merge file size case
+
+[33mcommit 075c225c8e73c3dbf8036c51180cf70bf8e57a18[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Nov 16 20:42:48 2017 -0500
+
+    fixed piece size error of double size
+
+[33mcommit 3ca71ac1cd186ac6e9ac965ba1072dfe086645a9[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Nov 16 16:17:07 2017 -0500
+
+    remove extra
+
+[33mcommit 1e6eac03f41dcee05dd5eb59c988ba3faddb3cd4[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Nov 16 16:15:25 2017 -0500
+
+    other changes
+
+[33mcommit 034fe59b0b7b5ae8912baec3aa8b2dd88dbf447b[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Nov 16 15:46:23 2017 -0500
+
+    setting parts for each peer
+
+[33mcommit eb751c8089daee0e6d81b9c3df29a0fca6f1ffdb[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Nov 16 15:28:35 2017 -0500
+
+    added ischoke in peer and fixed msg handler piece case
+
+[33mcommit 202e045f49a7e7f03312c388c9268df331b4f3b1[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Nov 16 15:11:31 2017 -0500
+
+    build error
+
+[33mcommit b555c8f1b1fa7087c72dbf039fa8e13a442de42a[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Nov 16 15:10:05 2017 -0500
+
+    fixed message read to readully
+
+[33mcommit fdac6be0811ad45e714039f443ffca91350a9be8[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Nov 16 14:28:45 2017 -0500
+
+    writing byte buffer all together
+
+[33mcommit 218a29307fcb8949e662f3837a9de5bfe35ac9e6[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Nov 16 13:59:39 2017 -0500
+
+    array byte write method
+
+[33mcommit 9a025443f15595c03a928124c2c44e543872674d[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Nov 16 13:46:53 2017 -0500
+
+    filesplit available parts set to zero
+
+[33mcommit 4d8eccda7a25b5e52d02540b326179a0d587844d[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Nov 16 13:38:22 2017 -0500
+
+    debugging and log message
+
+[33mcommit 831790999665af07db390daddd71aba7f8a152e6[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Sun Nov 12 19:07:28 2017 -0500
+
+    resolved not interested bug
+
+[33mcommit c0c1107d428e98b2e20f77a0619943ca7e4dc75d[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Wed Nov 1 16:21:07 2017 -0400
+
+    added debug logs to test handler
+
+[33mcommit ef0eefa06b9100ec2486c7d0cc98457ef133f66d[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Sat Oct 28 13:17:57 2017 -0400
+
+    msg handler implemented and other init called
+
+[33mcommit 360d3b0ab370a4231a6039e61b1403cc6ffa8b3b[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Fri Oct 27 20:00:49 2017 -0400
+
+    tested handshake message handler
+
+[33mcommit f848c584d29fae958a06f1847bb05bb4322210f9[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Fri Oct 27 19:38:30 2017 -0400
+
+    implemented interested and nointerested message
+
+[33mcommit 9d91f3cd13d987b0f6c16bcc97446d4aa0ca0919[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Fri Oct 27 19:11:02 2017 -0400
+
+    fixed conflict
+
+[33mcommit c6f0d607f36d7217af64efd235dcd39ae4c93ef7[m
+Merge: 9fc06c7 4f7a70b
+Author: madhav175 <madhav897@gmail.com>
+Date:   Fri Oct 27 19:08:24 2017 -0400
+
+    Merge branch 'work'
+
+[33mcommit 4f7a70b68e2b908496ca6520fdf626f8cc32bb4e[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Fri Oct 27 19:04:22 2017 -0400
+
+    choke unchoke implemented
+
+[33mcommit 9fc06c75a7c53022c5621d62341d6e202d280b1e[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Fri Oct 27 18:57:01 2017 -0400
+
+    after handshake bitfield is now sent
+
+[33mcommit 8f0afe40412be2dd9b6e239f854a96222d82eab4[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Fri Oct 27 18:38:05 2017 -0400
+
+    Edits in file split will now genrate split files in correct dir and can generate bitfiled from availabe parts
+
+[33mcommit 221bbc7a8233d007570fcd40eabfe9d45c9d3b5e[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Fri Oct 27 18:35:43 2017 -0400
+
+    extra changes
+
+[33mcommit 01ffd4576658dac97bd26301213f2b11088961c5[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Fri Oct 27 16:59:00 2017 -0400
+
+    bitset utils
+
+[33mcommit 0ea69c6f260cdfa73f7261f80778e3862f3e6cad[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Fri Oct 27 12:12:47 2017 -0400
+
+    Partial commit: MessageHandle still needs to be implemented
+
+[33mcommit c8484a69e5ad0799d86a707f89f4f27182703d4d[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Fri Oct 27 12:08:35 2017 -0400
+
+    created socketconnectionhandler table for each peer
+
+[33mcommit 08fd0742dc59870478439ae9ee0bb5261c97ac7b[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Oct 26 23:21:31 2017 -0400
+
+    fixed inputstream reader length
+
+[33mcommit 5f8ef20fe31b30f6243b580b728944886b4a3d3f[m[33m ([m[1;32mwork[m[33m)[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Oct 26 22:33:58 2017 -0400
+
+     fixed datastream error
+
+[33mcommit 9fb9d0f67db61482467263b70742d5ad85afab80[m
+Merge: 978fa82 3cddb08
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Oct 26 21:29:31 2017 -0400
+
+    Merge branch 'master' into mychance
+
+[33mcommit 978fa825134087495218b8cea336645cca93a187[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Oct 26 21:28:36 2017 -0400
+
+    general error and other fixes
+
+[33mcommit 3cddb08c2eeef4af616f6e8d6c7a04f9d3d6d234[m
+Merge: a0b3001 34610b8
+Author: kris21592 <kris.21592@gmail.com>
+Date:   Thu Oct 26 21:15:44 2017 -0400
+
+    Merge branch 'master' of https://github.com/ChanikyaMohan/P2P-file-sharing
+
+[33mcommit a0b3001d0a140b5e1b20a54d423cf3da77d0d504[m
+Merge: 2dd2a1a 0290ba9
+Author: kris21592 <kris.21592@gmail.com>
+Date:   Thu Oct 26 21:07:16 2017 -0400
+
+    Merge branch 'master' of https://github.com/ChanikyaMohan/P2P-file-sharing.git
+    
+    Conflicts:
+            src/SocketConnectionHandler.java
+
+[33mcommit 34610b86c7c5be75e46cff96fa773bc8125f581a[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Oct 26 16:33:36 2017 -0400
+
+    test cases for scheduler
+
+[33mcommit 36b20e96946652512d6748d252bb6bba5ea28fc3[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Oct 26 10:56:17 2017 -0400
+
+    error and some changes
+
+[33mcommit 0290ba93f3702596a8efce763fa527d6d1361b55[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Thu Oct 26 00:34:35 2017 -0400
+
+    scheduler and Peerhandler changes
+
+[33mcommit ca64c777dada65bb2a3f0a409b02f475e0673e4d[m
+Merge: e016811 f1eacd3
+Author: madhav175 <madhav897@gmail.com>
+Date:   Wed Oct 25 17:53:53 2017 -0400
+
+    Merge branch 'master' of https://github.com/ChanikyaMohan/P2P-file-sharing
+
+[33mcommit e0168116afc5bc939d5023a3db94672a8eeb4f83[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Wed Oct 25 17:53:21 2017 -0400
+
+    peerhandler and OptimisedUnchoke
+
+[33mcommit 2dd2a1a9ddd937862a5a563e65ea5a9adad87971[m
+Merge: fd8aa73 f1eacd3
+Author: kris21592 <kris.21592@gmail.com>
+Date:   Wed Oct 25 16:59:04 2017 -0400
+
+    Merge branch 'master' of https://github.com/ChanikyaMohan/P2P-file-sharing
+
+[33mcommit fd8aa735b1049fa2df866153c10b7f60b5b0d59d[m
+Author: kris21592 <kris.21592@gmail.com>
+Date:   Wed Oct 25 16:58:55 2017 -0400
+
+    Added ObjectInputStream read and ObjectOutputStream write classes
+
+[33mcommit f1eacd32f93b855c96dc07746e09e81deb7f8ed1[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Wed Oct 25 16:05:36 2017 -0400
+
+    Handshake header Message Type implemented
+
+[33mcommit 977d19be94ae19289073441f2329d81858346a60[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Wed Oct 25 14:38:25 2017 -0400
+
+    File merge and split now implements initialization
+
+[33mcommit 86b16b164e23c9917c347d232a4660a9294691d1[m[33m ([m[1;31morigin/temp[m[33m)[m
+Merge: 85368ea f15acce
+Author: madhav175 <madhav897@gmail.com>
+Date:   Tue Oct 24 20:06:30 2017 -0400
+
+    Merge branch 'master' of https://github.com/ChanikyaMohan/P2P-file-sharing
+
+[33mcommit 85368ea484a706cd60ac1baf286b6f87d77ccdfe[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Tue Oct 24 14:25:24 2017 -0400
+
+    Split and Merge completely working.
+
+[33mcommit f15accee480a40265bb135aadacce1528a9d68c7[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Tue Oct 24 14:25:24 2017 -0400
+
+    Split and Merge completely working.
+
+[33mcommit 2e74fd9ed1b53a84941fd460f2e8cc64eb1509f4[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Tue Oct 24 13:48:43 2017 -0400
+
+    Working test case for file split and changes in filesplimethods
+
+[33mcommit d3b7822e1738e6c0eb39c5d6f4b74c83ced4c86c[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Tue Oct 24 13:48:43 2017 -0400
+
+    Working test case for file split and changes in filesplimethods
+
+[33mcommit cf73149bc1a505db823685d3c32016a5ac7c98de[m
+Author: ChanikyaMohan <konyala@ufl.edu>
+Date:   Tue Oct 24 00:25:55 2017 -0400
+
+    Update README.md
+
+[33mcommit 136efec948ed31ee2827e04be57dc6cd34ffcc35[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Tue Oct 24 00:25:55 2017 -0400
+
+    Update README.md
+
+[33mcommit be3b59f2b1f77bcef6ea389e122ce6810acfd0db[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Mon Oct 23 23:20:39 2017 -0400
+
+    Message classes and child classes defined
+
+[33mcommit 3685076d521780c263e1c8051b5f79730ead1fe5[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Mon Oct 23 23:20:39 2017 -0400
+
+    Message classes and child classes defined
+
+[33mcommit 91d25fc6fc3c553353a8287205d34e3a7017d170[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Mon Oct 23 20:43:23 2017 -0400
+
+    Correction: msg_payload length is payload.length + type length
+
+[33mcommit 11b5fc0e5c9849a6abbd97c0cc76ae489a22b1c1[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Mon Oct 23 20:43:23 2017 -0400
+
+    Correction: msg_payload length is payload.length + type length
+
+[33mcommit e159a1892fb8984503d04468266f651b45e50eab[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Mon Oct 23 20:33:59 2017 -0400
+
+    Added Message class TODO: implement child classes of msg types
+
+[33mcommit 9887adfbcf64164bbc07d50d745744738da90c31[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Mon Oct 23 20:33:59 2017 -0400
+
+    Added Message class TODO: implement child classes of msg types
+
+[33mcommit 7a837df36ab4003daa65fde06bb524c776de87f0[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Mon Oct 23 18:30:32 2017 -0400
+
+    changed created test folder
+
+[33mcommit fe93dfa75bbf7485352547af8eb578e3a4c65c5d[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Mon Oct 23 18:30:32 2017 -0400
+
+    changed created test folder
+
+[33mcommit 56dab0ef3eeed57e4f4f094e78707efd73a14ac9[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Mon Oct 23 18:20:42 2017 -0400
+
+    Added cfg object method for merge file code to verify merge fil
+    
+    e parameters
+
+[33mcommit b3ae95774bd8284fd88ba3566d556a95bbebe698[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Mon Oct 23 18:20:42 2017 -0400
+
+    Added cfg object method for merge file code to verify merge fil
+    
+    e parameters
+
+[33mcommit 0f47279e06c3fc0dd8270be23ac9e9a2448b6ddd[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Mon Oct 23 18:06:29 2017 -0400
+
+    FileMerge functionality added TODO: edit folder names and paths
+
+[33mcommit bf7802b115975adf7bb867a9143bdb8b4858d5e2[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Mon Oct 23 18:06:29 2017 -0400
+
+    FileMerge functionality added TODO: edit folder names and paths
+
+[33mcommit 24f35021fd864784f4298e08a14b05980d8b734f[m
+Author: ChanikyaMohan <konyalachanikya@gmail.com>
+Date:   Mon Oct 23 17:29:07 2017 -0400
+
+    File Split done TODO: change directory to save split files
+
+[33mcommit 51be3a6719686a036254a1c7a97c1745f14c8a73[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Mon Oct 23 17:29:07 2017 -0400
+
+    File Split done TODO: change directory to save split files
+
+[33mcommit 24f8071670adb1270a6531dd6ab7adf4625e2d2a[m
+Author: Madhav Agrawal <Madhav Agrawal>
+Date:   Sun Oct 22 20:13:26 2017 -0400
+
+    Common config initialiation
+
+[33mcommit c830748c5fefbab0ed29b391413d8f4308e3f08d[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Sun Oct 22 20:13:26 2017 -0400
+
+    Common config initialiation
+
+[33mcommit 367b26420cb5ba1a878b626c7e3dfb125d8f1b7f[m
+Author: Madhav Agrawal <Madhav Agrawal>
+Date:   Sat Oct 21 22:33:40 2017 -0400
+
+    reading perrinfo config and basic message and receive
+
+[33mcommit cc8f8f755c56a6b131404995ee5ded9aebf4c5c9[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Sat Oct 21 22:33:40 2017 -0400
+
+    reading perrinfo config and basic message and receive
+
+[33mcommit 2423ad58f27cf371e25ed0d48715407ef84d05ea[m
+Author: Madhav Agrawal <Madhav Agrawal>
+Date:   Tue Oct 17 12:31:52 2017 -0400
+
+    initial files
+
+[33mcommit 90f302750caa4128f22f6c00e5f813d7419b94f9[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Tue Oct 17 12:31:52 2017 -0400
+
+    initial files
+
+[33mcommit acfae17ab0a84efec30cb3e53d4c7280fd06808e[m
+Author: ChanikyaMohan <konyala@ufl.edu>
+Date:   Tue Oct 17 12:01:17 2017 -0400
+
+    Initial commit
+
+[33mcommit 0802025d06167f47e5e42ee8e8f059be49d2a026[m
+Author: madhav175 <madhav897@gmail.com>
+Date:   Tue Oct 17 12:01:17 2017 -0400
+
+    Initial commit

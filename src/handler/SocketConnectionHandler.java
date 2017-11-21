@@ -85,6 +85,7 @@ public class SocketConnectionHandler implements Runnable{
 							LogConfig.getLogRecord().debugLog("Sending message....");
 						    SendMessage(msg);
 						}
+
             		} catch(Exception e){
             			LogConfig.getLogRecord().debugLog("error here"+e);
             		}
