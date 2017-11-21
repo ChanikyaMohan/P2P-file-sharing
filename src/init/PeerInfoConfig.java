@@ -8,8 +8,10 @@ public class PeerInfoConfig implements Initialization
 {
 	public List<Peer> peersList = new ArrayList<Peer>();
 	String filePath = "PeerInfo.cfg";
+
 	public PeerInfoConfig(){
 	}
+
 	public PeerInfoConfig(String filepath){
 		this.filePath = filepath;
 	}

@@ -1,7 +1,6 @@
 package filemanagement;
 
 import java.io.*;
-import java.util.Arrays;
 
 import init.CommonConfig;
 import init.Initialization;
@@ -14,11 +13,14 @@ import init.LogConfig;
 public class FileMerge implements Initialization{
 	public File outFile = null;
 	public String outFileName = null;
-	public CommonConfig cfg = null;
+	private CommonConfig cfg;
+	private int noOfSplits;
+	private int peerId;
 
-	public FileMerge(String oFName){
-		outFileName = oFName;
-		outFile = new File(oFName);
+	public FileMerge(int peerId,int noOfSplits,CommonConfig cmnCfg){
+		this.peerId = peerId;
+		this.noOfSplits = noOfSplits;
+		this.cfg = cmnCfg;
 	}
 
 	/* here cfg object can be used to check the size of combined file
@@ -29,10 +31,9 @@ public class FileMerge implements Initialization{
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
-		//create a config object with the output file name
-		//initialize the properties
-		cfg = new CommonConfig();
-		cfg.init();
+		//init the output file name
+		outFileName = cfg.fileName;
+		outFile = new File(outFileName);
 	}
 
 	public void mergeFiles(){
@@ -42,7 +43,7 @@ public class FileMerge implements Initialization{
 
 	    	//name of folder containing all the split files
 	    	//listFiles() will return all the files in the folder
-	    	String splitDirectoryPath = System.getProperty("user.dir")+"/peer_1001";
+	    	String splitDirectoryPath = System.getProperty("user.dir")+"/peer_"+peerId;
 	    	//File splitFilesFolder = new File(splitDirectoryPath);
 	    	///File[] listOfFiles = splitFilesFolder.listFiles();
 	    	//int numberOfFiles = listOfFiles.length;
@@ -66,6 +67,7 @@ public class FileMerge implements Initialization{
 	            inpFile.close();
 	        }
 	        outFileStream.close();
+	        System.out.println("File Merge is sucessful");
 	    } catch (Exception e) {
 	    	LogConfig.getLogRecord().debugLog("Error occured while merging file");
 	        //System.out.println("Error occured while merging file");
