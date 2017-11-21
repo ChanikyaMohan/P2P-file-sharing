@@ -17,10 +17,9 @@ public class FileMerge implements Initialization{
 	private int noOfSplits;
 	private int peerId;
 
-	public FileMerge(int peerId,int noOfSplits,CommonConfig cmnCfg){
+	public FileMerge(int peerId,int noOfSplits){
 		this.peerId = peerId;
 		this.noOfSplits = noOfSplits;
-		this.cfg = cmnCfg;
 	}
 
 	/* here cfg object can be used to check the size of combined file
@@ -30,7 +29,7 @@ public class FileMerge implements Initialization{
 
 	public FileMerge(String string) {
 		// TODO Auto-generated constructor stub
-		outFileName = cfg.fileName;
+		outFileName = string;
 		outFile = new File(outFileName);
 	}
 
@@ -53,12 +52,8 @@ public class FileMerge implements Initialization{
 	    	//File splitFilesFolder = new File(splitDirectoryPath);
 	    	///File[] listOfFiles = splitFilesFolder.listFiles();
 	    	//int numberOfFiles = listOfFiles.length;
-
-	    	double inpFileLength = (double) cfg.fileSize;
-			double splitPieceSize = (double) cfg.peiceSize;
-			int nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
 	    	//read each file in the folder and write the buffer contents to output stream
-	        for (int i=0;i<nofSplits;i++) {
+	        for (int i=0;i<noOfSplits;i++) {
 	        	LogConfig.getLogRecord().debugLog("Printing file : "+i+"_madhav.dat");
 	        	//System.out.println("Printing file : "+i+"_madhav.dat");
 	        	File f = new File(splitDirectoryPath+"/"+i+"_madhav.dat");

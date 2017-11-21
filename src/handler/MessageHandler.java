@@ -69,6 +69,11 @@ public class MessageHandler {
 				Have h = (Have)msg;
 				int index = h.getpieceIndex();
 				remotepeer.setAvailablePartsIndex(index);
+				if (selfpeer.isFile && fmgr.checkIfAllPiecesAreReceived()){
+					SocketConnectionHandler con = this.phandler.ConnectionTable.get(this.selfpeerID);
+					if (con!= null)
+						con.terminate();
+				}
 				/*if (required.get(index)){
 					return new Interested(); //interesting piece
 				} else {

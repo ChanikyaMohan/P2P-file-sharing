@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.BitSet;
 
+import handler.PeerHandler;
 import init.CommonConfig;
 import init.Initialization;
 import init.LogConfig;
@@ -49,7 +50,7 @@ public class FileManager implements Initialization{
 		//clear previous folders if any and create new folders
 		createPeerFolder();
 		fileSplit = new FileSplit(peerId,noOfSplits,cfg);
-		fileMerge = new FileMerge(peerId,noOfSplits,cfg);
+		fileMerge = new FileMerge(peerId,noOfSplits);
 		//available parts
 		this.availableParts = new BitSet(noOfSplits);
 		generateSplitsIfHave();
@@ -171,11 +172,13 @@ public class FileManager implements Initialization{
 		if(checkIfAllPiecesAreReceived()){
 			//merge all pieces
 			fileMerge.mergeFiles();
+			Peer p = PeerHandler.getInstance().getPeer(this.peerId);
+			p.isFile = true;
 		}
 		return availableParts;
 	}
 
-	private Boolean checkIfAllPiecesAreReceived() {
+	public Boolean checkIfAllPiecesAreReceived() {
 		// TODO Auto-generated method stub
 		if(availableParts.nextClearBit(0) >= noOfSplits){
 			return true;
