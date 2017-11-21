@@ -4,7 +4,6 @@ import handler.ConnectionState;
 import handler.SocketConnectionHandler;
 import init.CommonConfig;
 import init.Initialization;
-import init.LogConfig;
 import init.Peer;
 import init.PeerInfoConfig;
 
@@ -15,6 +14,7 @@ import java.nio.channels.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import message.Have;
 import scheduler.UnchokeRegularScheduler;
 
 
@@ -37,7 +37,7 @@ public class peerProcess implements Runnable, Initialization{
 
 	public static void main (String[] args) throws IOException, ClassNotFoundException, IllegalAccessException, InterruptedException {
         if (args.length != 1) {
-        	LogConfig.getLogRecord().debugLog("wrong arguments");
+           System.out.println("wrong arguments");
            return;
         }
         final int peerId = Integer.parseInt(args[0]);
@@ -49,7 +49,7 @@ public class peerProcess implements Runnable, Initialization{
 		int i = 0;
 		while(i< 5){
 			TimeUnit.SECONDS.sleep(10);
-			LogConfig.getLogRecord().debugLog("waiting... i ="+i);
+			System.out.println("waiting... i ="+i);
 			i++;
 		}
 		p1.isterminate = true;
@@ -90,16 +90,16 @@ public class peerProcess implements Runnable, Initialization{
 	@Override
 	public void run(){
 		// TODO Auto-generated method stub
-		LogConfig.getLogRecord().debugLog("Start server on port "+ this.peerPort);
+		System.out.println("Start server on port "+ this.peerPort);
     	ServerSocket listener = null;
 		try {
 			listener = new ServerSocket(this.peerPort);
-			LogConfig.getLogRecord().debugLog("server running on port "+this.peerPort);
+			System.out.println("server running on port "+this.peerPort);
 			SocketConnectionHandler connection = null;
     		while(true) {
 				try {
 						connection  = new SocketConnectionHandler(this.peerId, listener.accept(), pHandler, this.fmgr);
-						LogConfig.getLogRecord().debugLog("Client "  + this.peerId + " is connected!");
+		        		System.out.println("Client "  + this.peerId + " is connected!");
 		        		if (connection != null){
 			        		activeConnections.add(connection);
 			        		startConnection(connection);
@@ -126,16 +126,16 @@ public class peerProcess implements Runnable, Initialization{
 		for (Peer peer: peers){
 			try{
 				//create a socket to connect to the server
-				LogConfig.getLogRecord().debugLog("Requesting socket Host= "+ peer.host+"and port= "+peer.port);
+				System.out.println("Requesting socket Host= "+ peer.host+"and port= "+peer.port);
 				requestSocket = new Socket(peer.host, peer.port);
 				SocketConnectionHandler connection  = new SocketConnectionHandler(this.peerId, peer.id,requestSocket, pHandler, this.fmgr);
-				LogConfig.getLogRecord().debugLog("Connected to "+peer.host+" in port "+ peer.port);
+				System.out.println("Connected to "+peer.host+" in port "+ peer.port);
 				activeConnections.add(connection);
 				startConnection(connection);
 
 			}
 			catch (ConnectException e) {
-				LogConfig.getLogRecord().debugLog("Connection refused. You need to initiate a server first.");
+	    			System.err.println("Connection refused. You need to initiate a server first.");
 			} catch(IOException ioException){
 				ioException.printStackTrace();
 			}
@@ -173,6 +173,15 @@ public class peerProcess implements Runnable, Initialization{
 		for (SocketConnectionHandler con : activeConnections){
 			if (con !=null){
 				con.terminate();
+			}
+		}
+	}
+
+	public void sendHave(int index){
+		for (SocketConnectionHandler con : activeConnections){
+			if (con !=null){
+				//con.terminate();
+				con.send(new Have(index));
 			}
 		}
 	}
