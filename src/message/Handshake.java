@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 
+import init.LogConfig;
+
 public class Handshake extends  Message{
 		public String handhsake_header;
 		public byte[] zero_bits = new byte[10];
@@ -36,10 +38,10 @@ public class Handshake extends  Message{
 		@Override
 		public void write (IOStreamWriter out) throws IOException
 		{
-			System.out.println("writing handshake message");
+			LogConfig.getLogRecord().debugLog("writing handshake message");
 			if (msg_payload!=null && msg_payload.length>0)
 				out.write(msg_payload, 0, msg_payload.length);
-			
-			System.out.println("done writing");
+
+			LogConfig.getLogRecord().debugLog("done writing");
 		}
 }

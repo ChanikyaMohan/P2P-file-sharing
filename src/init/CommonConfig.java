@@ -13,7 +13,7 @@ public class CommonConfig implements Initialization{
 	public int fileSize;
 	public int peiceSize;
 	HashMap<String, String> values = new HashMap<String, String>();
-	
+
 	String filePath = "Common.cfg";
 	public CommonConfig(){
 	}
@@ -32,7 +32,7 @@ public class CommonConfig implements Initialization{
 			in.close();
 		}
 		catch (Exception ex) {
-			System.out.println(ex.toString());
+			LogConfig.getLogRecord().debugLog(ex.toString());
 		}
 		nofNeighbour = Integer.parseInt(values.get("NumberOfPreferredNeighbors"));
 		unchokeIntvl = Integer.parseInt(values.get("UnchokingInterval"));

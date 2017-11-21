@@ -33,7 +33,7 @@ public class PeerInfoConfig implements Initialization
 			in.close();
 		}
 		catch (Exception ex) {
-			System.out.println(ex.toString());
+			LogConfig.getLogRecord().debugLog(ex.toString());
 		}
 
 	}

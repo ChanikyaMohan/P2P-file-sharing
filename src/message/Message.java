@@ -12,6 +12,8 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.BitSet;
 
+import init.LogConfig;
+
 public class Message {
 
 	/* Enum to handle type of the message
@@ -117,7 +119,10 @@ public class Message {
 		else if(type == Type.UNCHOKE)
 			return new Unchoke();
 		else
+		{
+			LogConfig.getLogRecord().debugLog("Message Type not found");
 			throw new ClassNotFoundException("Message Type not found");
+		}
 
 	}
 
@@ -130,22 +135,25 @@ public class Message {
 	        	ioStreamReader.readFully(msg_payload, 0, length);
 	           // System.arraycopy(buf, pos, msg_payload, 0, length);
 	        else
+	        {
+	        	LogConfig.getLogRecord().debugLog("Payload is empty");
 	        	throw new IOException("Payload is empty");
+	        }
 		}
     }
 
 	//Method to write to ObjectOutputStream
 	public void write (IOStreamWriter ioStreamWriter) throws IOException
 	{
-		System.out.println("writing message");
+		LogConfig.getLogRecord().debugLog("writing message");
 		byte buf [] = ByteBuffer.allocate(4+msg_length).putInt(msg_length).array();
 		buf[4] = msg_type.getCode();
-		System.out.println("byte output buffer ="+Arrays.toString(buf));
+		LogConfig.getLogRecord().debugLog("byte output buffer ="+Arrays.toString(buf));
 		if (msg_payload!=null && msg_payload.length>0) {
-			System.out.println("sending msg_payload ="+Arrays.toString(msg_payload)+" msg_payload.length = "+msg_payload.length);
+			LogConfig.getLogRecord().debugLog("sending msg_payload ="+Arrays.toString(msg_payload)+" msg_payload.length = "+msg_payload.length);
 			System.arraycopy(msg_payload, 0, buf, 5, msg_payload.length);
 		}
-		System.out.println("output buffer ="+Arrays.toString(buf));
+		LogConfig.getLogRecord().debugLog("output buffer ="+Arrays.toString(buf));
 		ioStreamWriter.write(buf);
 		//byte []buf = new byte[4+1+msg_payload.length];
 		//ioStreamWriter.writeByte(msg_length);
@@ -159,7 +167,7 @@ public class Message {
 	}
 	private void writeintgeter(IOStreamWriter ioStreamWriter, int v) throws IOException{
 		byte arr[] = ByteBuffer.allocate(4).putInt(v).array();
-		System.out.println("int array  ="+Arrays.toString(arr));
+		LogConfig.getLogRecord().debugLog("int array  ="+Arrays.toString(arr));
 		ioStreamWriter.write(arr, 0, 4);
 		//for (byte b : arr){
 		//	ioStreamWriter.writeByte(b);

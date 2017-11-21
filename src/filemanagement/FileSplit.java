@@ -6,6 +6,7 @@ import java.util.BitSet;
 
 import init.CommonConfig;
 import init.Initialization;
+import init.LogConfig;
 
 /* Uses common config file to read properties like input file name/size/piece size etc
  * initProperties() - create CommonConfig object with all the properties read from the cfg file
@@ -61,12 +62,12 @@ public class FileSplit implements Initialization {
 			 if(!folder.exists()){
 				boolean result = folder.mkdir();
 				if(result){
-					System.out.println("Successfully created "+folder.getAbsolutePath());
+					LogConfig.getLogRecord().debugLog("Successfully created "+folder.getAbsolutePath());
 				} else {
-					System.out.println("Failed creating "+folder.getAbsolutePath());
+					LogConfig.getLogRecord().debugLog("Failed creating "+folder.getAbsolutePath());
 				}
 			 } else {
-				 System.out.println("Folder already exists");
+				 LogConfig.getLogRecord().debugLog("Folder already exists");
 				//and clean all files in the directory (if any) before adding new split files
 				 Arrays.stream(new File(splitDirectoryPath).listFiles()).forEach(File::delete);
 			 }
@@ -88,7 +89,7 @@ public class FileSplit implements Initialization {
 			 }
 			 inpFile.close();
         } catch (IOException e) {
-           System.out.println("Error occured while reading,spiltting and writing file");
+        	LogConfig.getLogRecord().debugLog("Error occured while reading,spiltting and writing file");
         }
 		 getAvailablePartsFromFilePieces();
 	}
@@ -145,7 +146,7 @@ public class FileSplit implements Initialization {
 					this.availableParts.set(pieceIndex);
 		    }
 		}
-		System.out.println("file split available parts= "+this.availableParts);
+		LogConfig.getLogRecord().debugLog("file split available parts= "+this.availableParts);
 		return this.availableParts;
 	}
 
@@ -160,7 +161,7 @@ public class FileSplit implements Initialization {
 	            assert (bytesRead == (int) file.length());
 	            return fileBytes;
 	        } catch (FileNotFoundException e) {
-	        		System.out.println("file not found");
+	        	LogConfig.getLogRecord().debugLog("file not found");
 	        } catch (IOException e) {
 
 	        }

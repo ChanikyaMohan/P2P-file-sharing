@@ -4,19 +4,21 @@ import java.nio.*;
 import java.nio.channels.*;
 import java.util.*;
 
+import init.LogConfig;
+
 public class Server {
 
 	private static final int sPort = 8000; // The server will be listening on
 											// this port number
 
 	public static void main(String[] args) throws Exception {
-		System.out.println("The server is running.");
+		LogConfig.getLogRecord().debugLog("The server is running.");
 		ServerSocket listener = new ServerSocket(sPort);
 		int clientNum = 1;
 		try {
 			while (true) {
 				new Handler(listener.accept(), clientNum).start();
-				System.out.println("Client " + clientNum + " is connected!");
+				LogConfig.getLogRecord().debugLog("Client " + clientNum + " is connected!");
 				clientNum++;
 			}
 		} finally {
@@ -52,17 +54,17 @@ public class Server {
 						// receive the message sent from the client
 						message = (String) in.readObject();
 						// show the message to the user
-						System.out.println("Receive message: " + message + " from client " + no);
+						LogConfig.getLogRecord().debugLog("Receive message: " + message + " from client " + no);
 						// Capitalize all letters in the message
 						MESSAGE = message.toUpperCase();
 						// send MESSAGE back to the client
 						sendMessage(MESSAGE);
 					}
 				} catch (ClassNotFoundException classnot) {
-					System.err.println("Data received in unknown format");
+					LogConfig.getLogRecord().debugLog("Data received in unknown format");
 				}
 			} catch (IOException ioException) {
-				System.out.println("Disconnect with Client " + no);
+				LogConfig.getLogRecord().debugLog("Disconnect with Client " + no);
 			} finally {
 				// Close connections
 				try {
@@ -70,7 +72,7 @@ public class Server {
 					out.close();
 					connection.close();
 				} catch (IOException ioException) {
-					System.out.println("Disconnect with Client " + no);
+					LogConfig.getLogRecord().debugLog("Disconnect with Client " + no);
 				}
 			}
 		}
@@ -80,7 +82,7 @@ public class Server {
 			try {
 				out.writeObject(msg);
 				out.flush();
-				System.out.println("Send message: " + msg + " to Client " + no);
+				LogConfig.getLogRecord().debugLog("Send message: " + msg + " to Client " + no);
 			} catch (IOException ioException) {
 				ioException.printStackTrace();
 			}

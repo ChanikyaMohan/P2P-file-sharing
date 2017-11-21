@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import init.CommonConfig;
 import init.Initialization;
+import init.LogConfig;
 
 /* FileMerge takes name of the file to while all the split files should be merged
  * initProperties() - takes output file name and create cfg object
@@ -51,7 +52,8 @@ public class FileMerge implements Initialization{
 			int nofSplits =  (int) Math.ceil(inpFileLength/splitPieceSize);
 	    	//read each file in the folder and write the buffer contents to output stream
 	        for (int i=0;i<nofSplits;i++) {
-	        	System.out.println("Printing file : "+i+"_madhav.dat");
+	        	LogConfig.getLogRecord().debugLog("Printing file : "+i+"_madhav.dat");
+	        	//System.out.println("Printing file : "+i+"_madhav.dat");
 	        	File f = new File(splitDirectoryPath+"/"+i+"_madhav.dat");
 	        	inpFile = new FileInputStream(f);
 	        	int fileSize = (int) f.length();
@@ -65,7 +67,8 @@ public class FileMerge implements Initialization{
 	        }
 	        outFileStream.close();
 	    } catch (Exception e) {
-	       System.out.println("Error occured while merging file");
+	    	LogConfig.getLogRecord().debugLog("Error occured while merging file");
+	        //System.out.println("Error occured while merging file");
 	    }
 	}
 
