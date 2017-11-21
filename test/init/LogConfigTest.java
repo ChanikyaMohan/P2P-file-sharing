@@ -9,7 +9,7 @@ public class LogConfigTest {
 	@Test
 	public void testSetLoggerForPeer() {
 
-		logger.setLoggerForPeer(1001);
+		//logger.setLoggerForPeer(1001);
 
 		//fail("Not yet implemented");
 	}

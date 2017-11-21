@@ -68,6 +68,24 @@ public final class LogConfig implements Initialization{
 
     }
 
+    public static int getLineNumber()
+    {
+        int lineNumber = 0;
+        StackTraceElement[] stackTraceElement = Thread.currentThread()
+                .getStackTrace();
+        int currentIndex = -1;
+        for (int i = 0; i < stackTraceElement.length; i++) {
+            if (stackTraceElement[i].getMethodName().compareTo("getLineNumber") == 0)
+            {
+                currentIndex = i + 1;
+                break;
+            }
+        }
+
+        lineNumber = stackTraceElement[currentIndex].getLineNumber();
+
+        return lineNumber;
+    }
 
     public static void closeLogger()
     {
@@ -80,7 +98,7 @@ public final class LogConfig implements Initialization{
     public void debugLog(String msg)
     {
     	if(_debug == true)
-    		logger.log(Level.INFO, this.peerid+": "+ msg);
+    		logger.log(Level.INFO, "|Peer ID: " + this.peerid + "|Message: "+ msg + "|Line Number: " + getLineNumber());
     }
 
     public void connectTo (int peerId) {
