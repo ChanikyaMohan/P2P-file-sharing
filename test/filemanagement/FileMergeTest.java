@@ -8,7 +8,7 @@ public class FileMergeTest {
 
 	@Test
 	public void testMergeFiles() {
-		FileMerge filem =  new FileMerge("mergedfile.pdf");
+		FileMerge filem =  new FileMerge("mergedfile.jpg");
 		filem.init();
 		System.out.println("Config:"+filem.cfg);
 		filem.mergeFiles();
