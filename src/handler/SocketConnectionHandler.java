@@ -115,6 +115,7 @@ public class SocketConnectionHandler implements Runnable{
 							if (this.remotepeerId == -1 || this.remotepeerId == h.peerID){
 								state = ConnectionState.connected;
 								this.remotepeerId = h.peerID;
+								LogConfig.getLogRecord().isConnected(this.remotepeerId);
 								LogConfig.getLogRecord().debugLog("Connected to peer : "+h.peerID);
 								if (phandler.ConnectionTable.get(this.remotepeerId)!=null){
 									//do something with the old connection

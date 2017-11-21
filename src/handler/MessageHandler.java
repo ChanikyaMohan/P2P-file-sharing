@@ -37,6 +37,7 @@ public class MessageHandler {
 				// send request message for a piece
 				LogConfig.getLogRecord().debugLog("Received unchoke message");
 				selfpeer.Unchoke();
+				LogConfig.getLogRecord().unchoked(remotepeerID);
 				if (required.isEmpty()){
 					// send Not interested message
 					this.phandler.insertChokedPeer(remotepeer);
@@ -52,22 +53,28 @@ public class MessageHandler {
 			case CHOKE:
 				// do nothing for now
 				selfpeer.Choke();
+				LogConfig.getLogRecord().choked(remotepeerID);
 				LogConfig.getLogRecord().debugLog("Received choke message");
 				break;
 			case INTERESTED:
 				// should add remotepeer in the list of preferred peers
 				LogConfig.getLogRecord().debugLog("Received interested message addding to preferred");
+				LogConfig.getLogRecord().receivedInterested(remotepeerID);
 				this.phandler.addPreferredPeer(remotepeerID);
+				LogConfig.getLogRecord().changeOfPrefereedNeighbors(this.phandler.getPreferredPeers());
 				return null;
 				//break;
 			case NOT_INTERESTED:
 				// should remove remotepeer in the list of preferred peers
+				LogConfig.getLogRecord().receivedNotInterested(remotepeerID);
 				this.phandler.removePreferredPeer(remotepeerID);
+				LogConfig.getLogRecord().changeOfPrefereedNeighbors(this.phandler.getPreferredPeers());
 				return null;
 				//break;
 			case HAVE:
 				Have h = (Have)msg;
 				int index = h.getpieceIndex();
+				LogConfig.getLogRecord().receivedHave(remotepeerID, index);
 				remotepeer.setAvailablePartsIndex(index);
 				if (selfpeer.isFile && fmgr.checkIfAllPiecesAreReceived()){
 					SocketConnectionHandler con = this.phandler.ConnectionTable.get(this.selfpeerID);

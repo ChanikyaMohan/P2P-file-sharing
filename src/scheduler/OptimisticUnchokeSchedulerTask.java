@@ -34,6 +34,7 @@ public class OptimisticUnchokeSchedulerTask extends TimerTask{
 			if (sc!=null)
 				sc.send(new Unchoke()); //if the new peer is the new unchoked peer send unchoke message
 			this.pHandle.addOptunChokedPeer(optpeer);
+			LogConfig.getLogRecord().changeOfOptimisticallyUnchokedNeighbors(optpeer);
 			LogConfig.getLogRecord().debugLog("Optimistic Unchoked peer"+optpeer);
 		}
 

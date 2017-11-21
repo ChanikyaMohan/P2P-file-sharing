@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
@@ -98,7 +99,7 @@ public final class LogConfig implements Initialization{
     public void debugLog(String msg)
     {
     	if(_debug == true)
-    		logger.log(Level.INFO, "|Peer ID: " + this.peerid + "|Message: "+ msg + "|Line Number: " + getLineNumber());
+    		logger.log(Level.INFO, "|Peer ID: " + this.peerid + "|Message: "+ msg);
     }
 
     public void connectTo (int peerId) {
@@ -119,14 +120,14 @@ public final class LogConfig implements Initialization{
     }
 
 
-    public void changeOfPrefereedNeighbors (HashSet<Integer> preferredNeighbours) {
+    public void changeOfPrefereedNeighbors (List<Integer> preferredNeighbours) {
 
         String neighbours = converttoString(preferredNeighbours);
          String msg = logSuffix + " has preferred neighbors "+ neighbours;
         logger.log (Level.INFO,msg);
     }
 
-    private String converttoString(HashSet<Integer> preferredNeighbours) {
+    private String converttoString(List<Integer> preferredNeighbours) {
 
         StringBuilder s =new StringBuilder();
 

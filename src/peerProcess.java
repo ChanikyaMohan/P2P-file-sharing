@@ -102,7 +102,7 @@ public class peerProcess implements Runnable, Initialization{
     		while(true) {
 				try {
 						connection  = new SocketConnectionHandler(this.peerId, listener.accept(), pHandler, this.fmgr);
-		        		System.out.println("Client "  + this.peerId + " is connected!");
+						LogConfig.getLogRecord().debugLog("Client "  + this.peerId + " is connected!");
 		        		if (connection != null){
 			        		activeConnections.add(connection);
 			        		startConnection(connection);
@@ -133,6 +133,7 @@ public class peerProcess implements Runnable, Initialization{
 				requestSocket = new Socket(peer.host, peer.port);
 				SocketConnectionHandler connection  = new SocketConnectionHandler(this.peerId, peer.id,requestSocket, pHandler, this.fmgr);
 				System.out.println("Connected to "+peer.host+" in port "+ peer.port);
+				LogConfig.getLogRecord().connectTo(peer.id);
 				activeConnections.add(connection);
 				startConnection(connection);
 

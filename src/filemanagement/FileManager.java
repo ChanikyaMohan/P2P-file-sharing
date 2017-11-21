@@ -172,6 +172,7 @@ public class FileManager implements Initialization{
 		if(checkIfAllPiecesAreReceived()){
 			//merge all pieces
 			fileMerge.mergeFiles();
+			LogConfig.getLogRecord().fileComplete();
 			Peer p = PeerHandler.getInstance().getPeer(this.peerId);
 			p.isFile = true;
 		}
