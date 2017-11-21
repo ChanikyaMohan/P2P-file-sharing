@@ -108,6 +108,7 @@ public class MessageHandler {
 				Piece p = (Piece)msg;
 				int i = p.getpieceIndex();
 				fmgr.savePiece(i,p.getPieceContent());
+				LogConfig.getLogRecord().pieceDownloaded(selfpeerID, i, this.phandler.getPeer(selfpeerID).availableParts.cardinality());
 				sendHave(i);
 				remotepeer.set_downloadrate(p.getPieceContent().length);
 				int inx = required.nextSetBit(0);

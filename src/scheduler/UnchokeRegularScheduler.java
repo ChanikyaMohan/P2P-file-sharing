@@ -13,10 +13,12 @@ public class UnchokeRegularScheduler implements Initialization {
 	private Timer _Opttimer;
 	private Timer _Unchoketimer;
 	private boolean _set;
-	public UnchokeRegularScheduler(int OptUnchokeIntl, int UnchokeIntl, int maxk,PeerHandler phandle){
+	private int peerID;
+	public UnchokeRegularScheduler(int peerid, int OptUnchokeIntl, int UnchokeIntl, int maxk,PeerHandler phandle){
 		this.OptUnchokeIntl = OptUnchokeIntl;
 		this.UnchokeIntl = UnchokeIntl;
 		this.phandler = phandle;
+		this.peerID = peerid;
 		this.peferredn = maxk; //number of preferred neighbours allowed
 		_Opttimer = new Timer(true);
 		_Unchoketimer = new Timer(true);
@@ -27,7 +29,7 @@ public class UnchokeRegularScheduler implements Initialization {
 		if (this._set)
 			return;
 		synchronized(this){
-			UnchokeSchedulerTask unChokeTask = new UnchokeSchedulerTask(this.phandler,this.peferredn );
+			UnchokeSchedulerTask unChokeTask = new UnchokeSchedulerTask(this.peerID, this.phandler,this.peferredn );
 			OptimisticUnchokeSchedulerTask optUnchokeTask = new OptimisticUnchokeSchedulerTask(this.phandler);
 			_Unchoketimer.scheduleAtFixedRate(unChokeTask, 0, this.UnchokeIntl*1000);
 			_Opttimer.scheduleAtFixedRate(optUnchokeTask, 0, this.OptUnchokeIntl*1000);

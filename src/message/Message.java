@@ -150,10 +150,10 @@ public class Message {
 		buf[4] = msg_type.getCode();
 		LogConfig.getLogRecord().debugLog("byte output buffer ="+Arrays.toString(buf));
 		if (msg_payload!=null && msg_payload.length>0) {
-			LogConfig.getLogRecord().debugLog("sending msg_payload ="+Arrays.toString(msg_payload)+" msg_payload.length = "+msg_payload.length);
+			//LogConfig.getLogRecord().debugLog("sending msg_payload ="+Arrays.toString(msg_payload)+" msg_payload.length = "+msg_payload.length);
 			System.arraycopy(msg_payload, 0, buf, 5, msg_payload.length);
 		}
-		LogConfig.getLogRecord().debugLog("output buffer ="+Arrays.toString(buf));
+		//LogConfig.getLogRecord().debugLog("output buffer ="+Arrays.toString(buf));
 		ioStreamWriter.write(buf);
 		//byte []buf = new byte[4+1+msg_payload.length];
 		//ioStreamWriter.writeByte(msg_length);
