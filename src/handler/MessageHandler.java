@@ -31,7 +31,8 @@ public class MessageHandler {
 		Message MESSAGE = null;
 		Peer remotepeer = this.phandler.getPeer(remotepeerID);
 		Peer selfpeer = this.phandler.getPeer(selfpeerID);
-
+		LogConfig.getLogRecord().debugLog("RemotePeer Parts:"+remotepeer.availableParts);
+		LogConfig.getLogRecord().debugLog("Selfpeer Parts:"+selfpeer.availableParts);
 		BitSet required = selfpeer.getRequiredPart(remotepeer.availableParts);
 
 		switch(msg.msg_type){
@@ -110,10 +111,11 @@ public class MessageHandler {
 				Piece p = (Piece)msg;
 				int i = p.getpieceIndex();
 				fmgr.savePiece(i,p.getPieceContent());
-				LogConfig.getLogRecord().pieceDownloaded(selfpeerID, i, this.phandler.getPeer(selfpeerID).availableParts.cardinality());
+				LogConfig.getLogRecord().pieceDownloaded(this.remotepeerID, i, this.phandler.getPeer(selfpeerID).availableParts.cardinality());
 				sendHave(i);
 				remotepeer.set_downloadrate(p.getPieceContent().length);
 				int inx = pickRandomIndex(required);
+
 				if (!selfpeer.ischoke() && inx >=0){
 					selfpeer.setAvailablePartsIndex(inx);
 					byte[] b = ByteBuffer.allocate(4).putInt(inx).array();

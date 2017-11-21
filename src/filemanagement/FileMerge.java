@@ -54,9 +54,9 @@ public class FileMerge implements Initialization{
 	    	//int numberOfFiles = listOfFiles.length;
 	    	//read each file in the folder and write the buffer contents to output stream
 	        for (int i=0;i<noOfSplits;i++) {
-	        	LogConfig.getLogRecord().debugLog("Printing file : "+i+"_madhav.dat");
+	        	LogConfig.getLogRecord().debugLog("Printing file : "+i+"_"+outFileName);
 	        	//System.out.println("Printing file : "+i+"_madhav.dat");
-	        	File f = new File(splitDirectoryPath+"/"+i+"_madhav.dat");
+	        	File f = new File(splitDirectoryPath+"/"+i+"_"+outFileName);
 	        	inpFile = new FileInputStream(f);
 	        	int fileSize = (int) f.length();
 	        	byte[] buffer = new byte[fileSize];
