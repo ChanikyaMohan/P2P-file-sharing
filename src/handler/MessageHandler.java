@@ -74,6 +74,7 @@ public class MessageHandler {
 				} else {
 					return new NotInterested(); //already have the piece
 				}*/
+				break;
 			case BIT_FIELD:
 				Bitfield bf = (Bitfield)msg;
 				LogConfig.getLogRecord().debugLog("Bitfield recieved :"+ bf.getBitSet());
