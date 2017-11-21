@@ -138,8 +138,11 @@ public class MessageHandler {
 		for (int i = required.nextSetBit(0); i != -1; i = required.nextSetBit(i + 1)) {
 		    indexes.add(i);
 		}
+		if (indexes.size()> 0){
 		int index = randomGenerator.nextInt(indexes.size());
-		return indexes.get(index);
+			return indexes.get(index);
+		} else
+			return -1;
 	}
 
 	public void sendHave(int index){
