@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import init.LogConfig;
+import iostream.IOStreamReader;
 
 public class Piece extends Message{
 	public Piece(byte[] pieceIndex, byte[] pieceContent){
@@ -54,4 +55,20 @@ public class Piece extends Message{
 		LogConfig.getLogRecord().debugLog("piececontentlen = "+pieceContent.length);
 		return pieceContent;
 	}
+
+	@Override
+	public void read (IOStreamReader ioStreamReader, int length) throws IOException
+	{
+		if (length>0){
+			msg_payload = new byte[length];
+	        if (msg_payload!=null && msg_payload.length>0)
+	        	ioStreamReader.readFully(msg_payload, 0, length);
+	           // System.arraycopy(buf, pos, msg_payload, 0, length);
+	        else
+	        {
+	        	LogConfig.getLogRecord().debugLog("Payload is empty");
+	        	throw new IOException("Payload is empty");
+	        }
+		}
+    }
 }

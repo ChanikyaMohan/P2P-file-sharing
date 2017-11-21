@@ -66,11 +66,12 @@ public class MessageHandler {
 			case HAVE:
 				Have h = (Have)msg;
 				int index = h.getpieceIndex();
-				if (required.get(index)){
+				remotepeer.setAvailablePartsIndex(index);
+				/*if (required.get(index)){
 					return new Interested(); //interesting piece
 				} else {
 					return new NotInterested(); //already have the piece
-				}
+				}*/
 			case BIT_FIELD:
 				Bitfield bf = (Bitfield)msg;
 				LogConfig.getLogRecord().debugLog("Bitfield recieved :"+ bf.getBitSet());
@@ -91,6 +92,7 @@ public class MessageHandler {
 			case PIECE:
 				Piece p = (Piece)msg;
 				fmgr.savePiece(p.getpieceIndex(),p.getPieceContent());
+				remotepeer.set_downloadrate(p.getPieceContent().length);
 				int inx = required.nextSetBit(0);
 				if (!selfpeer.ischoke() && inx >=0){
 					selfpeer.setAvailablePartsIndex(inx);

@@ -4,6 +4,7 @@ import handler.ConnectionState;
 import handler.SocketConnectionHandler;
 import init.CommonConfig;
 import init.Initialization;
+import init.LogConfig;
 import init.Peer;
 import init.PeerInfoConfig;
 
@@ -67,6 +68,7 @@ public class peerProcess implements Runnable, Initialization{
 		pHandler = PeerHandler.getInstance();
 		this.fmgr = new FileSplit(config.fileName,this.peerId);
 		this.fmgr.init();
+		LogConfig.getLogRecord().setLoggerForPeer(this.peerId);
 		for (Peer peer : pconfig.peersList){
 			if (peer.id == peerId){
 				this.peerPort = peer.port;
