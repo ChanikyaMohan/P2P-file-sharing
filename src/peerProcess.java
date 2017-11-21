@@ -1,3 +1,4 @@
+import filemanagement.FileManager;
 import filemanagement.FileSplit;
 import handler.PeerHandler;
 import handler.ConnectionState;
@@ -33,7 +34,7 @@ public class peerProcess implements Runnable, Initialization{
 	List<Peer>peers = new ArrayList<Peer>();
 	PeerInfoConfig pconfig;
 	PeerHandler pHandler;
-	FileSplit fmgr;
+	FileManager fmgr;
 	List<SocketConnectionHandler> activeConnections = Collections.synchronizedList(new ArrayList<SocketConnectionHandler>());
 
 	public static void main (String[] args) throws IOException, ClassNotFoundException, IllegalAccessException, InterruptedException {
@@ -66,7 +67,7 @@ public class peerProcess implements Runnable, Initialization{
 		PeerInfoConfig pconfig = new PeerInfoConfig();
 		pconfig.init();
 		pHandler = PeerHandler.getInstance();
-		this.fmgr = new FileSplit(config.fileName,this.peerId);
+		this.fmgr = new FileManager(this.peerId,pconfig, config);
 		this.fmgr.init();
 		LogConfig.getLogRecord().setLoggerForPeer(this.peerId);
 		for (Peer peer : pconfig.peersList){
@@ -74,9 +75,9 @@ public class peerProcess implements Runnable, Initialization{
 				this.peerPort = peer.port;
 				this.peerHostAddress = peer.host;
 				this.hasFile = peer.isFile;
-				if (this.hasFile){
+				/*if (this.hasFile){
 					this.fmgr.splitFile();
-				}
+				}*/
 				this.pHandler.getPeer(peerId).setparts(this.fmgr.getCurrentAvailableParts());
 				break;
 			}
@@ -179,14 +180,6 @@ public class peerProcess implements Runnable, Initialization{
 		}
 	}
 
-	public void sendHave(int index){
-		for (SocketConnectionHandler con : activeConnections){
-			if (con !=null){
-				//con.terminate();
-				con.send(new Have(index));
-			}
-		}
-	}
 
 	//main method
 	/*public static void main(String args[])

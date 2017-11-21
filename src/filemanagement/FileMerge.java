@@ -28,6 +28,12 @@ public class FileMerge implements Initialization{
 	 * whether the size of each piece is equal to given value or not etc
 	 */
 
+	public FileMerge(String string) {
+		// TODO Auto-generated constructor stub
+		outFileName = cfg.fileName;
+		outFile = new File(outFileName);
+	}
+
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub

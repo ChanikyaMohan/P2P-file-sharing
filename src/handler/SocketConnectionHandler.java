@@ -1,5 +1,6 @@
 package handler;
 
+import filemanagement.FileManager;
 import filemanagement.FileSplit;
 import init.LogConfig;
 import iostream.IOStreamReader;
@@ -39,9 +40,9 @@ public class SocketConnectionHandler implements Runnable{
 	private LinkedBlockingQueue<Message> msgQueue = new LinkedBlockingQueue<Message>();
 	private PeerHandler phandler;
 	private MessageHandler msgHandler;
-	private FileSplit fmgr;
+	private FileManager fmgr;
 
-	public SocketConnectionHandler(int peerId,Socket socket, PeerHandler p,FileSplit f ){
+	public SocketConnectionHandler(int peerId,Socket socket, PeerHandler p,FileManager f ){
 			this.socket = socket;
 			this.peerId = peerId;
 			this.remotepeerId = -1;
@@ -64,7 +65,7 @@ public class SocketConnectionHandler implements Runnable{
 
 
 	}
-	public SocketConnectionHandler(int peerId,int remotePeer, Socket socket, PeerHandler p, FileSplit fmgr){
+	public SocketConnectionHandler(int peerId,int remotePeer, Socket socket, PeerHandler p, FileManager fmgr){
 		this(peerId, socket, p, fmgr);
 		this.remotepeerId = remotePeer;
 

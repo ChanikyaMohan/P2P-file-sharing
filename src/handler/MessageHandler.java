@@ -1,9 +1,11 @@
 package handler;
 import java.nio.ByteBuffer;
 import java.util.BitSet;
+import java.util.List;
 
 import init.LogConfig;
 import init.Peer;
+import filemanagement.FileManager;
 import filemanagement.FileSplit;
 import handler.PeerHandler;
 import message.*;
@@ -12,10 +14,10 @@ import message.Message.Type;
 public class MessageHandler {
 	private int remotepeerID;
 	private int selfpeerID;
-	private FileSplit fmgr;
+	private FileManager fmgr;
 	public PeerHandler phandler;
 
-	public MessageHandler(int self,int remote, FileSplit fmgr) {
+	public MessageHandler(int self,int remote, FileManager fmgr) {
 		this.selfpeerID = self;
 		this.fmgr = fmgr;
 		this.remotepeerID =remote;
@@ -91,7 +93,9 @@ public class MessageHandler {
 				//break;
 			case PIECE:
 				Piece p = (Piece)msg;
-				fmgr.savePiece(p.getpieceIndex(),p.getPieceContent());
+				int i = p.getpieceIndex();
+				fmgr.savePiece(i,p.getPieceContent());
+				sendHave(i);
 				remotepeer.set_downloadrate(p.getPieceContent().length);
 				int inx = required.nextSetBit(0);
 				if (!selfpeer.ischoke() && inx >=0){
@@ -110,6 +114,19 @@ public class MessageHandler {
 		}
 
 		return MESSAGE;
+	}
+
+	public void sendHave(int index){
+		//List<SocketConnectionHandler> cons = this.phandler.ConnectionTable.values();
+		for (int  key :  this.phandler.ConnectionTable.keySet()){
+			if (this.selfpeerID != key){
+				SocketConnectionHandler con = this.phandler.ConnectionTable.get(key);
+				if (con !=null){
+					//con.terminate();
+					con.send(new Have(index));
+				}
+			}
+		}
 	}
 
 }

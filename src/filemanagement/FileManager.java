@@ -24,7 +24,7 @@ public class FileManager implements Initialization{
 	private FileMerge fileMerge;
 	private BitSet availableParts;
 
-	FileManager(int peerId, PeerInfoConfig peerInfo, CommonConfig cmnCfg){
+	public FileManager(int peerId, PeerInfoConfig peerInfo, CommonConfig cmnCfg){
 		this.peerId = peerId;
 		this.peerInfo = peerInfo;
 		this.cfg = cmnCfg;
