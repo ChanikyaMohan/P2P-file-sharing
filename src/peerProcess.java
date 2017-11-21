@@ -166,6 +166,15 @@ public class peerProcess implements Runnable, Initialization{
 		} catch(Exception e){
 			System.err.println("error: "+e);
 		}
+		terminate();
+	}
+
+	public void terminate(){
+		for (SocketConnectionHandler con : activeConnections){
+			if (con !=null){
+				con.terminate();
+			}
+		}
 	}
 
 	//main method

@@ -78,14 +78,15 @@ public class SocketConnectionHandler implements Runnable{
             public void run() {
             	Message msg = null;
             	// listen to incoming message
-            	while(!socket.isClosed()){
+            	while(!socket.isClosed() || state != ConnectionState.close){
             		try{
-					while ((msg = msgQueue.poll()) != null) {
-						LogConfig.getLogRecord().debugLog("Sending message....");
-					    SendMessage(msg);
-					}
+            			msg = msgQueue.poll();
+						if (msg!= null) {
+							LogConfig.getLogRecord().debugLog("Sending message....");
+						    SendMessage(msg);
+						}
             		} catch(Exception e){
-            			System.out.println("error here"+e);
+            			LogConfig.getLogRecord().debugLog("error here"+e);
             		}
             	}
             }
@@ -99,7 +100,7 @@ public class SocketConnectionHandler implements Runnable{
 			send(new Handshake(this.peerId));
 			//send(new Interested());
 			try{
-				while(!socket.isClosed())
+				while(!socket.isClosed() || state != ConnectionState.close)
 				{
 					//receive the message sent from the client
 					try {
@@ -148,6 +149,7 @@ public class SocketConnectionHandler implements Runnable{
 			state = ConnectionState.disconnected;
 			try {
 				socket.close();
+				state = ConnectionState.close;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -177,6 +179,10 @@ public class SocketConnectionHandler implements Runnable{
 		catch(IOException ioException){
 			ioException.printStackTrace();
 		}
+	}
+
+	public void terminate(){
+		state = ConnectionState.close;
 	}
 
 
