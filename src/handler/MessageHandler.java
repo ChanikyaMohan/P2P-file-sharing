@@ -1,7 +1,9 @@
 package handler;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+import java.util.Random;
 
 import init.LogConfig;
 import init.Peer;
@@ -44,7 +46,7 @@ public class MessageHandler {
 					return new NotInterested();
 				} else {
 					// send reuqest message of random piece index
-					int index = required.nextSetBit(0);
+					int index = pickRandomIndex(required);
 					LogConfig.getLogRecord().debugLog("Required Index Request: "+index);
 					selfpeer.setAvailablePartsIndex(index);
 					byte[] b = ByteBuffer.allocate(4).putInt(index).array();
@@ -111,7 +113,7 @@ public class MessageHandler {
 				LogConfig.getLogRecord().pieceDownloaded(selfpeerID, i, this.phandler.getPeer(selfpeerID).availableParts.cardinality());
 				sendHave(i);
 				remotepeer.set_downloadrate(p.getPieceContent().length);
-				int inx = required.nextSetBit(0);
+				int inx = pickRandomIndex(required);
 				if (!selfpeer.ischoke() && inx >=0){
 					selfpeer.setAvailablePartsIndex(inx);
 					byte[] b = ByteBuffer.allocate(4).putInt(inx).array();
@@ -128,6 +130,16 @@ public class MessageHandler {
 		}
 
 		return MESSAGE;
+	}
+
+	public int pickRandomIndex(BitSet required){
+		List<Integer> indexes = new ArrayList<Integer>();
+		Random randomGenerator = new Random();
+		for (int i = required.nextSetBit(0); i != -1; i = required.nextSetBit(i + 1)) {
+		    indexes.add(i);
+		}
+		int index = randomGenerator.nextInt(indexes.size());
+		return indexes.get(index);
 	}
 
 	public void sendHave(int index){
