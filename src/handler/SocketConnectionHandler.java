@@ -131,7 +131,7 @@ public class SocketConnectionHandler implements Runnable{
 
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						//e.printStackTrace();
 						socket.isClosed();
 						state = ConnectionState.close;
 					}
@@ -139,8 +139,8 @@ public class SocketConnectionHandler implements Runnable{
 				}
 			}
 			catch(ClassNotFoundException classnot){
-					LogConfig.getLogRecord().debugLog("Data received in unknown format");
-					classnot.printStackTrace();
+					//LogConfig.getLogRecord().debugLog("Data received in unknown format");
+					//classnot.printStackTrace();
 					socket.isClosed();
 					state = ConnectionState.close;
 			}
@@ -154,7 +154,7 @@ public class SocketConnectionHandler implements Runnable{
 				state = ConnectionState.close;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 
 		}
@@ -179,7 +179,7 @@ public class SocketConnectionHandler implements Runnable{
 			LogConfig.getLogRecord().debugLog("Send message from("+this.peerId+"): " + message + " to Client " + this.remotepeerId);
 		}
 		catch(IOException ioException){
-			ioException.printStackTrace();
+			//ioException.printStackTrace();
 		}
 	}
 
