@@ -50,7 +50,9 @@ public class FileManager implements Initialization{
 		//clear previous folders if any and create new folders
 		createPeerFolder();
 		fileSplit = new FileSplit(peerId,noOfSplits,cfg);
-		fileMerge = new FileMerge(peerId,noOfSplits);
+//		fileSplit.init();
+		fileMerge = new FileMerge(peerId,noOfSplits,cfg.fileName);
+		fileMerge.init();
 		//available parts
 		this.availableParts = new BitSet(noOfSplits);
 		generateSplitsIfHave();
@@ -168,7 +170,9 @@ public class FileManager implements Initialization{
 	public BitSet savePart(int index, byte[] buf){
 		savePiece(index,buf);
 		//update bit field
-		getAvailablePartsFromFilePieces();
+//		getAvailablePartsFromFilePieces();
+		availableParts.set(index);
+		LogConfig.getLogRecord().debugLog("availbale parts updated for"+ index);
 		if(checkIfAllPiecesAreReceived()){
 			//merge all pieces
 			fileMerge.mergeFiles();
@@ -181,7 +185,8 @@ public class FileManager implements Initialization{
 
 	public Boolean checkIfAllPiecesAreReceived() {
 		// TODO Auto-generated method stub
-		if(availableParts.nextClearBit(0) >= noOfSplits){
+		LogConfig.getLogRecord().debugLog("availableParts.cardinality()" + availableParts.cardinality());
+		if(availableParts.cardinality() >= noOfSplits){
 			return true;
 		}
 		return false;

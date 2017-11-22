@@ -31,8 +31,10 @@ public class MessageHandler {
 		Message MESSAGE = null;
 		Peer remotepeer = this.phandler.getPeer(remotepeerID);
 		Peer selfpeer = this.phandler.getPeer(selfpeerID);
+
 		LogConfig.getLogRecord().debugLog("RemotePeer Parts:"+remotepeer.availableParts);
 		LogConfig.getLogRecord().debugLog("Selfpeer Parts:"+selfpeer.availableParts);
+
 		BitSet required = selfpeer.getRequiredPart(remotepeer.availableParts);
 
 		switch(msg.msg_type){
@@ -110,13 +112,14 @@ public class MessageHandler {
 			case PIECE:
 				Piece p = (Piece)msg;
 				int i = p.getpieceIndex();
-				fmgr.savePiece(i,p.getPieceContent());
+				fmgr.savePart(i,p.getPieceContent());
 				LogConfig.getLogRecord().pieceDownloaded(this.remotepeerID, i, this.phandler.getPeer(selfpeerID).availableParts.cardinality());
 				sendHave(i);
 				remotepeer.set_downloadrate(p.getPieceContent().length);
 				int inx = pickRandomIndex(required);
-
+				LogConfig.getLogRecord().debugLog("Got random" +inx);
 				if (!selfpeer.ischoke() && inx >=0){
+					LogConfig.getLogRecord().debugLog("in if");
 					selfpeer.setAvailablePartsIndex(inx);
 					byte[] b = ByteBuffer.allocate(4).putInt(inx).array();
 					return new Request(b);
@@ -135,16 +138,20 @@ public class MessageHandler {
 	}
 
 	public int pickRandomIndex(BitSet required){
+		LogConfig.getLogRecord().debugLog("required: "+required);
 		List<Integer> indexes = new ArrayList<Integer>();
 		Random randomGenerator = new Random();
 		for (int i = required.nextSetBit(0); i != -1; i = required.nextSetBit(i + 1)) {
 		    indexes.add(i);
 		}
+		LogConfig.getLogRecord().debugLog("inside random before if");
 		if (indexes.size()> 0){
-		int index = randomGenerator.nextInt(indexes.size());
+			LogConfig.getLogRecord().debugLog("inside random");
+			int index = randomGenerator.nextInt(indexes.size());
 			return indexes.get(index);
-		} else
+		} else{
 			return -1;
+		}
 	}
 
 	public void sendHave(int index){

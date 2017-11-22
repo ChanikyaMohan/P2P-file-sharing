@@ -17,9 +17,11 @@ public class FileMerge implements Initialization{
 	private int noOfSplits;
 	private int peerId;
 
-	public FileMerge(int peerId,int noOfSplits){
+	public FileMerge(int peerId,int noOfSplits, String outputFileName){
 		this.peerId = peerId;
 		this.noOfSplits = noOfSplits;
+		this.outFileName = outputFileName;
+		outFile = new File(this.outFileName);
 	}
 
 	/* here cfg object can be used to check the size of combined file
@@ -37,8 +39,8 @@ public class FileMerge implements Initialization{
 	public void init() {
 		// TODO Auto-generated method stub
 		//init the output file name
-		outFileName = cfg.fileName;
-		outFile = new File(outFileName);
+		//outFileName = cfg.fileName;
+//		outFile = new File(outFileName);
 	}
 
 	public void mergeFiles(){
