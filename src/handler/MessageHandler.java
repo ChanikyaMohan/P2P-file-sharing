@@ -85,13 +85,15 @@ public class MessageHandler {
 					SocketConnectionHandler con = this.phandler.ConnectionTable.get(this.selfpeerID);
 					if (con!= null)
 						con.terminate();
+					return null;
 				}
-				/*if (required.get(index)){
+				required = selfpeer.getRequiredPart(remotepeer.availableParts);
+				if (required.get(index)){
 					return new Interested(); //interesting piece
 				} else {
 					return new NotInterested(); //already have the piece
-				}*/
-				break;
+				}
+				//break;
 			case BIT_FIELD:
 				Bitfield bf = (Bitfield)msg;
 				LogConfig.getLogRecord().debugLog("Bitfield recieved :"+ bf.getBitSet());

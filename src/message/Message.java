@@ -148,7 +148,7 @@ public class Message {
 		LogConfig.getLogRecord().debugLog("writing message");
 		byte buf [] = ByteBuffer.allocate(4+msg_length).putInt(msg_length).array();
 		buf[4] = msg_type.getCode();
-		LogConfig.getLogRecord().debugLog("byte output buffer ="+Arrays.toString(buf));
+		//LogConfig.getLogRecord().debugLog("byte output buffer ="+Arrays.toString(buf));
 		if (msg_payload!=null && msg_payload.length>0) {
 			//LogConfig.getLogRecord().debugLog("sending msg_payload ="+Arrays.toString(msg_payload)+" msg_payload.length = "+msg_payload.length);
 			System.arraycopy(msg_payload, 0, buf, 5, msg_payload.length);
