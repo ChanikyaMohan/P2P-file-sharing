@@ -28,12 +28,14 @@ public class OptimisticUnchokeSchedulerTask extends TimerTask{
 			int optpeer = chokelist.get(randompeer);
 			this.pHandle.getPeer(optpeer).OptunChoke();
 			Peer oldoptunchoked = this.pHandle.getPeer(this.pHandle.getOptunChokedPeer());
-			if (oldoptunchoked!= null)
-				oldoptunchoked.OptChoke();
-			SocketConnectionHandler sc = this.pHandle.ConnectionTable.get(optpeer);
-			if (sc!=null)
-				sc.send(new Unchoke()); //if the new peer is the new unchoked peer send unchoke message
-			this.pHandle.addOptunChokedPeer(optpeer);
+			if (oldoptunchoked.id != optpeer){
+				if (oldoptunchoked!= null)
+					this.pHandle.getPeer(oldoptunchoked.id).OptChoke();
+				SocketConnectionHandler sc = this.pHandle.ConnectionTable.get(optpeer);
+				if (sc!=null)
+					sc.send(new Unchoke()); //if the new peer is the new unchoked peer send unchoke message
+				this.pHandle.addOptunChokedPeer(optpeer);
+			}
 			LogConfig.getLogRecord().changeOfOptimisticallyUnchokedNeighbors(optpeer);
 			LogConfig.getLogRecord().debugLog("Optimistic Unchoked peer"+optpeer);
 		}

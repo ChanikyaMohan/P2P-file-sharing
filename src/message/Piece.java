@@ -21,10 +21,10 @@ public class Piece extends Message{
 	private void concatinateByteArrays(byte[] pieceIndex, byte[] pieceContent) {
 		// TODO Auto-generated method stub
 		//ByteArrayOutputStream stream = new ByteArrayOutputStream( );
-		super.msg_payload  = new byte [pieceIndex.length+pieceContent.length];
+		super.msg_payload  = new byte [4+pieceContent.length];
 		System.arraycopy(pieceIndex, 0, super.msg_payload, 0, pieceIndex.length);
 		System.arraycopy(pieceContent, 0, super.msg_payload, pieceIndex.length, pieceContent.length);
-		LogConfig.getLogRecord().debugLog(" after pieceContent lenth = "+ super.msg_payload.length);
+		//LogConfig.getLogRecord().debugLog(" after pieceContent lenth = "+ super.msg_payload.length);
 		/*try {
 			System.out.println("before  pieceContent lenth = "+ pieceContent.length);
 			stream.write(pieceIndex);
@@ -52,7 +52,7 @@ public class Piece extends Message{
 		/*for(int i=4;i<super.msg_payload.length;i++){
 			pieceContent[i] = super.msg_payload[i];
 		}*/
-		LogConfig.getLogRecord().debugLog("piececontentlen = "+pieceContent.length);
+		//LogConfig.getLogRecord().debugLog("piececontentlen = "+pieceContent.length);
 		return pieceContent;
 	}
 

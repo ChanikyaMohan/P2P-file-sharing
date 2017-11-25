@@ -6,12 +6,14 @@ import init.Peer;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Random;
 import java.util.TimerTask;
 
+import message.Choke;
 import message.Unchoke;
 
 public class UnchokeSchedulerTask extends TimerTask {
@@ -35,12 +37,12 @@ public class UnchokeSchedulerTask extends TimerTask {
 		// find the K max downloadable peers
 		List<Integer> peers = this.pHandle.getPreferredPeers();
 		if (this.pHandle.getPeer(this.peerId).isFile){
-			findKprefferedpeerondwnRate(peers);
+			findKprefferedpeerondwnRate(peers, true);
 		} else {
-			findKprefferedpeerondwnRate(peers);
+			findKprefferedpeerondwnRate(peers, false);
 		}
 
-		List<Integer> unchokedlist = new ArrayList<Integer>();
+		HashSet<Integer> unchokedlist = new HashSet<Integer>();
 		//System.out.print("New Unchoke peers list: ");
 		//this.pHandle.reload(); //clear unchoked list
 		for (Peer p :peerMinQueue){
@@ -51,7 +53,7 @@ public class UnchokeSchedulerTask extends TimerTask {
 			}
 
 			unchokedlist.add(p.id); //add the pid to the unchoke list
-			p.Unchoke(); //unchoke the preferred peers
+			//p.Unchoke(); //unchoke the preferred peers
 			//System.out.print(p.id+", ");
 
 		}
@@ -60,6 +62,13 @@ public class UnchokeSchedulerTask extends TimerTask {
 		if (this.pHandle.getOptunChokedPeer() > 0){
 			this.pHandle.addunChokedPeer(this.pHandle.getOptunChokedPeer()); //add the unchoked peer into the list
 		}
+		// send choke msg to all choked neighbours
+		for (int pId: this.pHandle.getChokedPeers()){
+				SocketConnectionHandler sc = this.pHandle.ConnectionTable.get(pId);
+				if (sc!=null)
+					sc.send(new Choke()); // peer send choke msg
+		}
+		//set download rate to 0
 
 	}
 
@@ -71,31 +80,50 @@ public class UnchokeSchedulerTask extends TimerTask {
 	        }
 	};
 
-	public void findKprefferedpeerRandom(List<Integer> peers){
+	/*public void findKprefferedpeerRandom(List<Integer> peers){
 		//int i =0;
-		//while(i < )
-	}
+		if (peers.size()<= this.preferredN)
+			return this.peerMinQueue.addAll(peers);
+		HashSet<Integer> randomKneighbours = new HashSet<Integer>();
+		while()
 
-	public void findKprefferedpeerondwnRate(List<Integer> peers){
-		for (int i=0; i < peers.size();i++){
-			Peer p = this.pHandle.getPeer(peers.get(i));
-			if (p.id != this.pHandle.getOptunChokedPeer())
-				p.Choke(); //choke all peers as reset
-			if (this.peerMinQueue.size() >= this.preferredN){
-				Peer top = this.peerMinQueue.peek();
-				if (top.rate == p.rate){
-					if (this._rand.nextBoolean()){
+		//while(i < )
+	}*/
+
+	public void findKprefferedpeerondwnRate(List<Integer> peers, boolean random){
+		this.peerMinQueue.clear();
+		if (random && peers.size() > this.preferredN){
+			//HashSet<Integer> r = new HashSet<Integer>();
+			while(this.peerMinQueue.size() < this.preferredN){
+				int i = this._rand.nextInt(peers.size());
+				Peer p = this.pHandle.getPeer(peers.get(i));
+				this.pHandle.getPeer(peers.get(i)).get_downloadrate();//setting the download rate to zero and saving it in rate variable
+				this.peerMinQueue.offer(p);
+				peers.remove(i);
+			}
+		} else {
+			for (int i=0; i < peers.size();i++){
+				Peer p = this.pHandle.getPeer(peers.get(i));
+				this.pHandle.getPeer(peers.get(i)).get_downloadrate();//setting the download rate to zero and saving it in rate variable
+				//if (p.id != this.pHandle.getOptunChokedPeer())
+				//	p.Choke(); //choke all peers as reset
+				if (this.peerMinQueue.size() >= this.preferredN){
+					Peer top = this.peerMinQueue.peek();
+					if (top.rate == p.rate){
+						if (this._rand.nextBoolean()){
+							this.peerMinQueue.poll();
+							this.peerMinQueue.offer(p);
+						}
+					} else if (top.rate < p.rate){
 						this.peerMinQueue.poll();
 						this.peerMinQueue.offer(p);
 					}
-				} else if (top.rate < p.rate){
-					this.peerMinQueue.poll();
+				} else {
 					this.peerMinQueue.offer(p);
 				}
-			} else {
-				this.peerMinQueue.offer(p);
 			}
 		}
+
 	}
 
 }

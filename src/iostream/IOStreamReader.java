@@ -80,8 +80,8 @@ public class IOStreamReader extends DataInputStream implements ObjectInput{
 			if(b.length >= 32)
 			{
 				String s = new String (b, 0, 18);
-				LogConfig.getLogRecord().debugLog("received byte"+s);
-				LogConfig.getLogRecord().debugLog("b ="+Arrays.toString(b)+" b.length = "+b.length);
+				//LogConfig.getLogRecord().debugLog("received byte"+s);
+				//LogConfig.getLogRecord().debugLog("b ="+Arrays.toString(b)+" b.length = "+b.length);
 				if(s.equals("P2PFILESHARINGPROJ"))
 				{
 					hanshk_recvd = true;
@@ -95,7 +95,7 @@ public class IOStreamReader extends DataInputStream implements ObjectInput{
 			Message msg;
 			//System.out.println("b ="+Arrays.toString(b)+" b.length = "+b.length);
 			//Type type = Message.Type.getTypeFromCode(b[4]);
-			LogConfig.getLogRecord().debugLog("len ="+len);
+			//LogConfig.getLogRecord().debugLog("len ="+len);
 
 			msg = Message.getMessage(Message.Type.getTypeFromCode(readByte()), len);
 			//Passing message length - type of 1 byte

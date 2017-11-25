@@ -49,12 +49,13 @@ public class peerProcess implements Runnable, Initialization{
         t1.start();
 		p1.start();
 		int i = 0;
-		while(i< 5){
+		while(!p1.isterminate){
 			TimeUnit.SECONDS.sleep(10);
 			System.out.println("waiting... i ="+i);
 			i++;
 		}
-		p1.isterminate = true;
+		System.out.println("process terminated "+peerId);
+		System.exit(0);
 	}
 	public peerProcess(int peerId ) {
 		this.peerId = peerId;
@@ -70,7 +71,9 @@ public class peerProcess implements Runnable, Initialization{
 		this.fmgr = new FileManager(this.peerId,pconfig, config);
 		this.fmgr.init();
 		LogConfig.getLogRecord().setLoggerForPeer(this.peerId);
+		boolean seq = true;
 		for (Peer peer : pconfig.peersList){
+			this.pHandler.getPeer(peer.id).settotalParts(this.fmgr.noOfSplits);
 			if (peer.id == peerId){
 				this.peerPort = peer.port;
 				this.peerHostAddress = peer.host;
@@ -79,9 +82,10 @@ public class peerProcess implements Runnable, Initialization{
 					this.fmgr.splitFile();
 				}*/
 				this.pHandler.getPeer(peerId).setparts(this.fmgr.getCurrentAvailableParts());
-				break;
+				seq = false;
 			}
-			peers.add(peer);
+			if (seq)
+				peers.add(peer);
 		}
 
 
@@ -99,7 +103,7 @@ public class peerProcess implements Runnable, Initialization{
 			listener = new ServerSocket(this.peerPort);
 			System.out.println("server running on port "+this.peerPort);
 			SocketConnectionHandler connection = null;
-    		while(true) {
+			while(!isterminate) {
 				try {
 						connection  = new SocketConnectionHandler(this.peerId, listener.accept(), pHandler, this.fmgr);
 						LogConfig.getLogRecord().debugLog("Client "  + this.peerId + " is connected!");
@@ -129,10 +133,10 @@ public class peerProcess implements Runnable, Initialization{
 		for (Peer peer: peers){
 			try{
 				//create a socket to connect to the server
-				System.out.println("Requesting socket Host= "+ peer.host+"and port= "+peer.port);
+				LogConfig.getLogRecord().debugLog("Requesting socket Host= "+ peer.host+"and port= "+peer.port);
 				requestSocket = new Socket(peer.host, peer.port);
 				SocketConnectionHandler connection  = new SocketConnectionHandler(this.peerId, peer.id,requestSocket, pHandler, this.fmgr);
-				System.out.println("Connected to "+peer.host+" in port "+ peer.port);
+				LogConfig.getLogRecord().debugLog("Connected to "+peer.host+" in port "+ peer.port);
 				LogConfig.getLogRecord().connectTo(peer.id);
 				activeConnections.add(connection);
 				startConnection(connection);
@@ -160,25 +164,55 @@ public class peerProcess implements Runnable, Initialization{
 	public void start(){
 		try{
 			ConnectPeers() ;
-				while(!isterminate){
-					for (SocketConnectionHandler con : activeConnections){
-						if (con.state ==ConnectionState.close)
-							isterminate= true;
-							//System.out.println("terminating server");
+			//HashSet<Integer> activepeers = new HashSet<Integer>();
+			//activepeers.addAll(this.pHandler.getPeersList());
+			while(!isterminate){
+				int count = 0;
+				for (int id : this.pHandler.getPeersList()) {
+				  //  Integer id = i.next();
+					LogConfig.getLogRecord().debugLog("Peerd Id:"+id+", isfile= "+this.pHandler.getPeer(id).isFile);
+				    if (this.pHandler.getPeer(id).isFile){
+						//SocketConnectionHandler con = this.pHandler.ConnectionTable.get(id);
+						//if (con!= null && con.msgQueue.size() <=0)
+							//con.terminate();
+							count++;
+						//i.remove();
 					}
+				}
+				LogConfig.getLogRecord().debugLog("Peer list size :"+this.pHandler.getPeersList().size()+", count= "+count);
+				if (this.pHandler.getPeersList().size()==count)
+					isterminate = true;
+				TimeUnit.SECONDS.sleep(10); //fix this
+				/*for (int id: activepeers){
+					if (this.pHandler.getPeer(id).isFile && this.hasFile){
+						SocketConnectionHandler con = this.pHandler.ConnectionTable.get(id);
+						if (con!= null)
+							con.terminate();
+						activepeers.remove(id);
+					}
+					if (activepeers.size()<=0)
+						isterminate = true;
+				}*/
+				/*for (SocketConnectionHandler con : activeConnections){
+					if (con.state ==ConnectionState.close){
+						//isterminate= true;
+					}
+
+				}*/
 			}
 		} catch(Exception e){
-			System.err.println("error: "+e);
+			System.err.println("error here: "+e);
 		}
-		terminate();
+		terminateall();
 	}
 
-	public void terminate(){
+	public void terminateall(){
 		for (SocketConnectionHandler con : activeConnections){
 			if (con !=null){
 				con.terminate();
 			}
 		}
+		isterminate= true;
 	}
 
 

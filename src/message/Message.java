@@ -167,7 +167,7 @@ public class Message {
 	}
 	private void writeintgeter(IOStreamWriter ioStreamWriter, int v) throws IOException{
 		byte arr[] = ByteBuffer.allocate(4).putInt(v).array();
-		LogConfig.getLogRecord().debugLog("int array  ="+Arrays.toString(arr));
+		//LogConfig.getLogRecord().debugLog("int array  ="+Arrays.toString(arr));
 		ioStreamWriter.write(arr, 0, 4);
 		//for (byte b : arr){
 		//	ioStreamWriter.writeByte(b);

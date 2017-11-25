@@ -26,7 +26,7 @@ public final class LogConfig implements Initialization{
 	private static Logger logger;
     private static LogConfig logRecord = new LogConfig();
     static String logSuffix;
-    private boolean _debug = false;
+    private boolean _debug = true;
     private int peerid;
 
     static
@@ -157,7 +157,7 @@ public final class LogConfig implements Initialization{
     }
 
     public void receivedHave (int peerId, int pieceIdx) {
-        String msg = logSuffix + " received the 'have' message from " + Integer.toString(peerId)+ "for the piece " + Integer.toString(pieceIdx);
+        String msg = logSuffix + " received the 'have' message from " + Integer.toString(peerId)+ " for the piece " + Integer.toString(pieceIdx);
         logger.log (Level.INFO,msg);
     }
 

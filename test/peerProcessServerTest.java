@@ -16,12 +16,13 @@ public class peerProcessServerTest {
         t1.start();
 		p1.start();
 		int i = 0;
-		while(i< 5){
+		while(!p1.isterminate){
 			TimeUnit.SECONDS.sleep(10);
 			System.out.println("waiting... i ="+i);
 			i++;
 		}
-		p1.isterminate = true;
+		System.out.println("process terminated 1001");
+		//p1.isterminate = true;
 
 
 	}

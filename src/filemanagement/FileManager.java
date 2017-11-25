@@ -19,7 +19,7 @@ public class FileManager implements Initialization{
 	private int peerId;
 	private PeerInfoConfig peerInfo;
 	private CommonConfig cfg;
-	private int noOfSplits;
+	public int noOfSplits;
 	private Peer peer;
 	private FileSplit fileSplit;
 	private FileMerge fileMerge;
@@ -172,13 +172,14 @@ public class FileManager implements Initialization{
 		//update bit field
 //		getAvailablePartsFromFilePieces();
 		availableParts.set(index);
+		PeerHandler.getInstance().getPeer(this.peerId).setsaveparts(availableParts);
 		LogConfig.getLogRecord().debugLog("availbale parts updated for"+ index);
 		if(checkIfAllPiecesAreReceived()){
 			//merge all pieces
 			fileMerge.mergeFiles();
 			LogConfig.getLogRecord().fileComplete();
-			Peer p = PeerHandler.getInstance().getPeer(this.peerId);
-			p.isFile = true;
+			PeerHandler.getInstance().getPeer(this.peerId).isFile =true;
+			//p.isFile = true;
 		}
 		return availableParts;
 	}

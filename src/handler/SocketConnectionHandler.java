@@ -37,7 +37,7 @@ public class SocketConnectionHandler implements Runnable{
 	private   IOStreamReader in;	//stream read from the socket
 	private boolean isunchoked;
 	private IOStreamWriter out;    //stream write to the socket
-	private LinkedBlockingQueue<Message> msgQueue = new LinkedBlockingQueue<Message>();
+	public LinkedBlockingQueue<Message> msgQueue = new LinkedBlockingQueue<Message>();
 	private PeerHandler phandler;
 	private MessageHandler msgHandler;
 	private FileManager fmgr;
@@ -83,7 +83,7 @@ public class SocketConnectionHandler implements Runnable{
             		try{
             			msg = msgQueue.poll();
 						if (msg!= null) {
-							LogConfig.getLogRecord().debugLog("Sending message....");
+							//LogConfig.getLogRecord().debugLog("Sending message....");
 						    SendMessage(msg);
 						}
             		} catch(Exception e){
@@ -97,7 +97,7 @@ public class SocketConnectionHandler implements Runnable{
 			LogConfig.getLogRecord().debugLog("socket is null ");
 		if(!socket.isClosed()){
 			Message message =null;
-			LogConfig.getLogRecord().debugLog("sending handshake from "+this.peerId);
+			//LogConfig.getLogRecord().debugLog("sending handshake from "+this.peerId);
 			send(new Handshake(this.peerId));
 			//send(new Interested());
 			try{
@@ -111,12 +111,12 @@ public class SocketConnectionHandler implements Runnable{
 							continue;
 						if (message instanceof Handshake){
 							Handshake h = (Handshake) message;
-							LogConfig.getLogRecord().debugLog("Handshake Message Received peerid: "+h.peerID);
+							//LogConfig.getLogRecord().debugLog("Handshake Message Received peerid: "+h.peerID);
 							if (this.remotepeerId == -1 || this.remotepeerId == h.peerID){
 								state = ConnectionState.connected;
 								this.remotepeerId = h.peerID;
 								LogConfig.getLogRecord().isConnected(this.remotepeerId);
-								LogConfig.getLogRecord().debugLog("Connected to peer : "+h.peerID);
+								//LogConfig.getLogRecord().debugLog("Connected to peer : "+h.peerID);
 								if (phandler.ConnectionTable.get(this.remotepeerId)!=null){
 									//do something with the old connection
 								}
@@ -125,7 +125,7 @@ public class SocketConnectionHandler implements Runnable{
 							}
 						}
 						if (msgHandler != null) {
-							LogConfig.getLogRecord().debugLog(" Message received from peer("+this.remotepeerId+")"+message.msg_type);
+							//LogConfig.getLogRecord().debugLog(" Message received from peer("+this.remotepeerId+")"+message.msg_type);
 							send(msgHandler.handleRequest(message));
 						}
 
@@ -176,7 +176,7 @@ public class SocketConnectionHandler implements Runnable{
 		try{
 			out.writeObject(message);
 			out.flush();
-			LogConfig.getLogRecord().debugLog("Send message from("+this.peerId+"): " + message + " to Client " + this.remotepeerId);
+			//LogConfig.getLogRecord().debugLog("Send message from("+this.peerId+"): " + message + " to Client " + this.remotepeerId);
 		}
 		catch(IOException ioException){
 			//ioException.printStackTrace();

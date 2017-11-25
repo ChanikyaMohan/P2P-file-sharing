@@ -5,12 +5,12 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 
-public class peerProcessClientTest {
+public class peerProcessClientTest2 {
 
 	@Test
 	public void testPeerProcess() throws InterruptedException {
 
-		peerProcess p2 = new peerProcess(1002);
+		peerProcess p2 = new peerProcess(1003);
 		p2.init();
 		Thread t1 = new Thread(p2);
         t1.start();

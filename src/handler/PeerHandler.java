@@ -129,12 +129,20 @@ public class PeerHandler implements Initialization {
 
 
 	public void addunChokedPeer(int peerId){
-		Peer p = _peerTable.get(peerId);
-		p.Unchoke();
+		//Peer p = _peerTable.get(peerId);
+		_peerTable.get(peerId).Unchoke();
 		_unChokedPeers.add(peerId);
 	}
 
-	public void resetandaddunChokePeers(List<Integer> list){
+	public void resetandaddunChokePeers(HashSet<Integer> list){
+		for(int id : getPreferredPeers()){
+
+			if (list.contains(id) ||  getOptunChokedPeer() == id){
+				_peerTable.get(id).Unchoke();
+			} else {
+				_peerTable.get(id).Choke();
+			}
+		}
 		this._unChokedPeers.clear();
 		this._unChokedPeers.addAll(list);
 
@@ -142,8 +150,8 @@ public class PeerHandler implements Initialization {
 
 
 	public void addOptunChokedPeer(int peerId){
-		Peer p = _peerTable.get(peerId);
-		p.OptunChoke();
+		//Peer p = _peerTable.get(peerId);
+		_peerTable.get(peerId).OptunChoke();
 		this.OptunChokePeer = peerId;
 		_unChokedPeers.add(peerId);
 	}

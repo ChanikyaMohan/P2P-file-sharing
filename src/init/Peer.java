@@ -8,11 +8,13 @@ public class Peer {
 	public String host;
 	public int id;
 	public boolean isFile;
+	public boolean remotechoke;
 	private AtomicInteger _downloadrate;
 	private boolean _isChoke; //not use
 	private boolean _isOptunchoke; //not use
 	public BitSet availableParts;
 	public int rate;
+	public int noOfParts;
 	public Peer(int id, String host, int port, boolean isfile){
 		this.id = id;
 		this.host = host;
@@ -22,6 +24,8 @@ public class Peer {
 		this.availableParts = new BitSet();
 		this.Choke();
 		this.OptChoke();
+		this.noOfParts = Integer.MAX_VALUE;
+		this.remotechoke = true;
 	}
 	public int get_downloadrate() {
 		this.rate =  _downloadrate.getAndSet(0);
@@ -32,12 +36,40 @@ public class Peer {
 
 	public void setparts(BitSet b){
 		availableParts.or(b);
+		if(availableParts.cardinality() == this.noOfParts){
+			isFile =  true;
+		} else {
+			isFile = false;
+		}
+
+	}
+
+
+	public void setsaveparts(BitSet b){
+		if(b.cardinality() == this.noOfParts){
+			isFile =  true;
+		} else {
+			isFile = false;
+		}
+		availableParts = b;
+	}
+
+	public void settotalParts(int parts){
+		//setAvailablePartsIndex(index);
+		this.noOfParts = parts;
+		this.availableParts = new BitSet(this.noOfParts);
 	}
 
 	public void setAvailablePartsIndex(int index){
 		if (index > availableParts.size())
 			return;
 		availableParts.set(index);
+		LogConfig.getLogRecord().debugLog("available parts size= "+this.noOfParts+" cardinallity="+availableParts.cardinality());
+		if(availableParts.cardinality() == this.noOfParts){
+			isFile =  true;
+		} else {
+			isFile = false;
+		}
 	}
 
 	public BitSet getRequiredPart(BitSet b){
@@ -52,7 +84,8 @@ public class Peer {
 	}
 
 	public int set_downloadrate(int bytelenght) {
-		return this._downloadrate.addAndGet(bytelenght);
+		this.rate = this._downloadrate.addAndGet(bytelenght);
+		return this.rate;
 	}
 	public void Choke() {
 		this._isChoke = true;
@@ -60,11 +93,24 @@ public class Peer {
 	public void Unchoke() {
 		this._isChoke = false;
 	}
+
+	public boolean isRemoteChoke() {
+		return this.remotechoke;
+	}
+
+	public void RemoteChoke() {
+		this.remotechoke = true;
+	}
+	public void RemoteUnchoke() {
+		this.remotechoke = false;
+	}
 	public void OptChoke() {
 		this._isOptunchoke = false;
+		this._isChoke = true;
 	}
 	public void OptunChoke() {
 		this._isOptunchoke = true;
+		this._isChoke = false;
 	}
 	public boolean ischoke(){
 		return this._isChoke;
