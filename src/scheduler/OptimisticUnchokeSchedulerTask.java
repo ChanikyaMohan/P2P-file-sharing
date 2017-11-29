@@ -28,7 +28,7 @@ public class OptimisticUnchokeSchedulerTask extends TimerTask{
 			int optpeer = chokelist.get(randompeer);
 			this.pHandle.getPeer(optpeer).OptunChoke();
 			Peer oldoptunchoked = this.pHandle.getPeer(this.pHandle.getOptunChokedPeer());
-			if (oldoptunchoked.id != optpeer){
+			if (oldoptunchoked ==null || oldoptunchoked.id != optpeer){
 				if (oldoptunchoked!= null)
 					this.pHandle.getPeer(oldoptunchoked.id).OptChoke();
 				SocketConnectionHandler sc = this.pHandle.ConnectionTable.get(optpeer);

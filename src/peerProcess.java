@@ -39,7 +39,7 @@ public class peerProcess implements Runnable, Initialization{
 
 	public static void main (String[] args) throws IOException, ClassNotFoundException, IllegalAccessException, InterruptedException {
         if (args.length != 1) {
-           System.out.println("wrong arguments");
+           //System.out.println("wrong arguments");
            return;
         }
         final int peerId = Integer.parseInt(args[0]);
@@ -51,10 +51,10 @@ public class peerProcess implements Runnable, Initialization{
 		int i = 0;
 		while(!p1.isterminate){
 			TimeUnit.SECONDS.sleep(10);
-			System.out.println("waiting... i ="+i);
+			//System.out.println("waiting... i ="+i);
 			i++;
 		}
-		System.out.println("process terminated "+peerId);
+		//System.out.println("process terminated "+peerId);
 		System.exit(0);
 	}
 	public peerProcess(int peerId ) {
@@ -101,7 +101,7 @@ public class peerProcess implements Runnable, Initialization{
     	ServerSocket listener = null;
 		try {
 			listener = new ServerSocket(this.peerPort);
-			System.out.println("server running on port "+this.peerPort);
+			LogConfig.getLogRecord().debugLog("server running on port "+this.peerPort);
 			SocketConnectionHandler connection = null;
 			while(!isterminate) {
 				try {

@@ -70,7 +70,7 @@ public class FileMerge implements Initialization{
 	            inpFile.close();
 	        }
 	        outFileStream.close();
-	        System.out.println("File Merge is sucessful");
+	        LogConfig.getLogRecord().debugLog("File Merge is sucessful");
 	    } catch (Exception e) {
 	    	LogConfig.getLogRecord().debugLog("Error occured while merging file");
 	        //System.out.println("Error occured while merging file");

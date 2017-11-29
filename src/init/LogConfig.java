@@ -26,7 +26,7 @@ public final class LogConfig implements Initialization{
 	private static Logger logger;
     private static LogConfig logRecord = new LogConfig();
     static String logSuffix;
-    private boolean _debug = true;
+    private boolean _debug = false;
     private int peerid;
 
     static
@@ -103,7 +103,7 @@ public final class LogConfig implements Initialization{
     }
 
     public void connectTo (int peerId) {
-        String msg = logSuffix + " makes a connection to "+ Integer.toString(peerId) ;
+        String msg = logSuffix + " makes a connection to Peer "+ Integer.toString(peerId) ;
 
         logger.log (Level.INFO,msg);
     }
@@ -130,12 +130,13 @@ public final class LogConfig implements Initialization{
     private String converttoString(List<Integer> preferredNeighbours) {
 
         StringBuilder s =new StringBuilder();
-
+        int count =0;
         for(Integer i : preferredNeighbours)
         {
             s.append(Integer.toString(i));
-            i++;
-            if(i!=preferredNeighbours.size())
+           // i++;
+            count++;
+            if(count!=preferredNeighbours.size())
             {
                 s.append(",");
             }
@@ -172,7 +173,7 @@ public final class LogConfig implements Initialization{
     }
 
     public void pieceDownloaded (int peerId, int pieceIndex, int currNumberOfPieces) {
-        final String msg = logSuffix + " has downloaded the piece " + Integer.toString(pieceIndex) +" from peer "+ Integer.toString(peerId) +" Now the number of pieces it has is " + Integer.toString(currNumberOfPieces);
+        final String msg = logSuffix + " has downloaded the piece " + Integer.toString(pieceIndex) +" from "+ Integer.toString(peerId) +" Now the number of pieces it has is " + Integer.toString(currNumberOfPieces);
         logger.log(Level.INFO,msg);
     }
 
