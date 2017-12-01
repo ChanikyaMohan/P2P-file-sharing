@@ -58,10 +58,30 @@ public class FileSplit implements Initialization {
 					 outFile.close();
 				 }
 			 }
+			 File dest = new File(System.getProperty("user.dir")+"/peer_"+peerId+"/"+cfg.fileName);
+			 File src = new File(System.getProperty("user.dir")+"/"+cfg.fileName);
+			 copyFileUsingStream(src, dest);
 			 inpFile.close();
         } catch (IOException e) {
         	LogConfig.getLogRecord().debugLog("Error occured while reading,spiltting and writing file");
         }
+	}
+
+	private static void copyFileUsingStream(File source, File dest) throws IOException {
+	    InputStream is = null;
+	    OutputStream os = null;
+	    try {
+	        is = new FileInputStream(source);
+	        os = new FileOutputStream(dest);
+	        byte[] buffer = new byte[1024];
+	        int length;
+	        while ((length = is.read(buffer)) > 0) {
+	            os.write(buffer, 0, length);
+	        }
+	    } finally {
+	        is.close();
+	        os.close();
+	    }
 	}
 
 	@Override

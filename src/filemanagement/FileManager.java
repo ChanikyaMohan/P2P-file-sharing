@@ -155,9 +155,11 @@ public class FileManager implements Initialization{
 		for(File f:files){
 			if (f.isFile()) {
 				String[] n = f.getName().split("_");
-				int pieceIndex = Integer.parseInt(n[0]);
-				if (pieceIndex >= 0)
-					this.availableParts.set(pieceIndex);
+				if (n.length>1){
+					int pieceIndex = Integer.parseInt(n[0]);
+					if (pieceIndex >= 0)
+						this.availableParts.set(pieceIndex);
+				}
 		    }
 		}
 		LogConfig.getLogRecord().debugLog("file split available parts= "+this.availableParts);
@@ -191,6 +193,10 @@ public class FileManager implements Initialization{
 			return true;
 		}
 		return false;
+	}
+
+	public void deletedparts(){
+		fileMerge.deleteFiles();
 	}
 
 	@Override

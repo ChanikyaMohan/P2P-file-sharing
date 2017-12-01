@@ -21,7 +21,8 @@ public class FileMerge implements Initialization{
 		this.peerId = peerId;
 		this.noOfSplits = noOfSplits;
 		this.outFileName = outputFileName;
-		outFile = new File(this.outFileName);
+		outFile = new File(System.getProperty("user.dir")+"/peer_"+peerId+"/"+outFileName);
+		//outFile = new File(this.outFileName);
 	}
 
 	/* here cfg object can be used to check the size of combined file
@@ -32,7 +33,8 @@ public class FileMerge implements Initialization{
 	public FileMerge(String string) {
 		// TODO Auto-generated constructor stub
 		outFileName = string;
-		outFile = new File(outFileName);
+		//outFile = new File(outFileName);
+		outFile = new File(System.getProperty("user.dir")+"/peer_"+peerId+"/"+outFileName);
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public class FileMerge implements Initialization{
 	    	//int numberOfFiles = listOfFiles.length;
 	    	//read each file in the folder and write the buffer contents to output stream
 	        for (int i=0;i<noOfSplits;i++) {
-	        	LogConfig.getLogRecord().debugLog("Printing file : "+i+"_"+outFileName);
+	        	//System.out.println("Printing file : "+i+"_"+outFileName);
 	        	//System.out.println("Printing file : "+i+"_madhav.dat");
 	        	File f = new File(splitDirectoryPath+"/"+i+"_"+outFileName);
 	        	inpFile = new FileInputStream(f);
@@ -68,15 +70,40 @@ public class FileMerge implements Initialization{
 //	            	outFileStream.flush();
 	            }
 	            inpFile.close();
+	            //f.delete();
 	        }
 	        outFileStream.close();
+
+	        //LogConfig.getLogRecord().debugLog("File Merge is sucessful");
+	    } catch (Exception e) {
+	    	//LogConfig.getLogRecord().debugLog("Error occured while merging file");
+	        //System.out.println("Error occured while merging file");
+	    }
+	}
+
+	public void deleteFiles(){
+	    try {
+
+	    	//name of folder containing all the split files
+	    	//listFiles() will return all the files in the folder
+	    	String splitDirectoryPath = System.getProperty("user.dir")+"/peer_"+peerId;
+	    	//File splitFilesFolder = new File(splitDirectoryPath);
+	    	///File[] listOfFiles = splitFilesFolder.listFiles();
+	    	//int numberOfFiles = listOfFiles.length;
+	    	//read each file in the folder and write the buffer contents to output stream
+	        for (int i=0;i<noOfSplits;i++) {
+	        	LogConfig.getLogRecord().debugLog("Printing file : "+i+"_"+outFileName);
+	        	//System.out.println("Printing file : "+i+"_madhav.dat");
+	        	File f = new File(splitDirectoryPath+"/"+i+"_"+outFileName);
+	            f.delete();
+	        }
+
 	        LogConfig.getLogRecord().debugLog("File Merge is sucessful");
 	    } catch (Exception e) {
 	    	LogConfig.getLogRecord().debugLog("Error occured while merging file");
 	        //System.out.println("Error occured while merging file");
 	    }
 	}
-
 	@Override
 	public void reload() {
 		// TODO Auto-generated method stub

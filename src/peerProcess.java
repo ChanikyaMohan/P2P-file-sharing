@@ -204,6 +204,8 @@ public class peerProcess implements Runnable, Initialization{
 			System.err.println("error here: "+e);
 		}
 		terminateall();
+
+		fmgr.deletedparts();
 	}
 
 	public void terminateall(){
